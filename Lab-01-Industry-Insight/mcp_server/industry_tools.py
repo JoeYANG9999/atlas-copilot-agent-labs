@@ -397,6 +397,41 @@ def get_signals(
     }
 
 
+def search_signals(
+    *,
+    keyword: str,
+    signals_path: str | Path = DEFAULT_OUTPUT / "raw_signals.json",
+    limit: int = 20,
+) -> dict[str, Any]:
+    """客户雷达：按关键词（客户名、竞品名、产品名）在本周信号的标题、摘要、来源里搜索，不区分大小写。"""
+    word = (keyword or "").strip()
+    if not word:
+        raise ValueError("keyword 不能为空，例如「宁德时代」「Kaeser」")
+    data = _load_signals(signals_path)
+    low = word.lower()
+    hits = [
+        it for it in data["items"]
+        if low in f"{it['title']} {it['summary']} {it['source']}".lower()
+    ]
+    limit = max(1, min(int(limit or 20), 50))
+    return {
+        "keyword": word,
+        "window": data["window"],
+        "total": len(hits),
+        "items": [
+            {
+                "id": it["id"],
+                "topic": it["topic"],
+                "source": it["source"],
+                "date": (it["published_at"] or "")[:10],
+                "title": it["title"],
+                "url": it["url"],
+            }
+            for it in hits[:limit]
+        ],
+    }
+
+
 # --------------------------------------------------------------------------- #
 # 校验 + 兜底 + 渲染
 # --------------------------------------------------------------------------- #

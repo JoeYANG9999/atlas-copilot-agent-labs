@@ -91,3 +91,11 @@ def test_invalid_insights_fall_back(tmp_path):
     # 两条几乎相同的标题被归并成一个热点
     assert len(report["topics"][0]["hotspots"]) == 1
     assert len(report["topics"][0]["hotspots"][0]["references"]) == 2
+
+
+def test_search_signals_matches_title_case_insensitive(tmp_path):
+    sig = _signals(tmp_path)
+    res = t.search_signals(keyword="电池厂", signals_path=sig)
+    assert res["total"] == 2
+    assert res["items"][0]["url"].startswith("https://")
+    assert t.search_signals(keyword="不存在的公司", signals_path=sig)["total"] == 0

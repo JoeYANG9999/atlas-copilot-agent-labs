@@ -1,7 +1,7 @@
 """行业洞察 MCP 服务器（stdio）。
 
 VS Code 通过仓库根目录的 .vscode/mcp.json 启动它；Copilot Agent 模式就能调用
-下面四个工具 —— 这就是「给智能体装上手去取数据」。
+下面五个工具 —— 这就是「给智能体装上手去取数据」。
 
 手动调试：python Lab-01-Industry-Insight/mcp_server/server.py（会等待 stdio 输入）。
 """
@@ -46,6 +46,16 @@ def get_signals(topic: str | None = None, limit: int = 40) -> dict[str, Any]:
     topic 填 focus.md 里的行业标题（如「锂电」），留空返回全部。写洞察时用 id（如 S012）引用出处。
     """
     return tools.get_signals(topic=topic, limit=limit)
+
+
+@server.tool()
+def search_signals(keyword: str, limit: int = 20) -> dict[str, Any]:
+    """客户雷达：按客户名、竞品名或产品名搜索本周抓到的信号，返回标题、来源、日期和原文链接。
+
+    用户问「某家公司 / 某个竞品本周有什么动静」时调用，例如 keyword 填「宁德时代」「Kaeser」。
+    需要先调用过 fetch_industry_signals。
+    """
+    return tools.search_signals(keyword=keyword, limit=limit)
 
 
 @server.tool()

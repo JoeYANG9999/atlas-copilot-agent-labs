@@ -15,6 +15,7 @@ COMMANDS = {
     "read_focus": tools.read_focus,
     "fetch_industry_signals": tools.fetch_industry_signals,
     "get_signals": tools.get_signals,
+    "search_signals": tools.search_signals,
     "build_weekly_report": tools.build_weekly_report,
 }
 
