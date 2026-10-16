@@ -82,7 +82,49 @@ async function loadReport(reportPath) {
   }
 }
 
+function escapeHtml(text) {
+  return String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+// 只看高影响：从 report.json 里挑出影响等级为「高」的热点，按行业列出
+async function renderHighImpact() {
+  setStatus("正在加载：report.json");
+  try {
+    const res = await fetch("report.json", { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
+    }
+    const report = await res.json();
+    const parts = [`<h1>${escapeHtml(report.title)} · 只看高影响</h1>`];
+    let count = 0;
+    for (const topic of report.topics) {
+      const high = topic.hotspots.filter((h) => h.level === "高");
+      if (!high.length) continue;
+      parts.push(`<h2>${escapeHtml(topic.name)}</h2>`);
+      for (const h of high) {
+        count += 1;
+        const refs = h.references
+          .map((r) => `<a href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">${escapeHtml(r.source)}</a>`)
+          .join("；");
+        parts.push(
+          `<h3>${escapeHtml(h.title)} <code>${escapeHtml(h.impact_area)}·高</code></h3>` +
+            `<ul><li>发生了什么：${escapeHtml(h.what_happened)}</li>` +
+            `<li>对我们的影响：${escapeHtml(h.impact)}</li><li>来源：${refs}</li></ul>`,
+        );
+      }
+    }
+    if (!count) parts.push("<p>本周没有影响等级为「高」的热点。</p>");
+    document.getElementById("content").innerHTML = globalThis.DOMPurify.sanitize(parts.join(""));
+    setStatus(`只看高影响：共 ${count} 条`);
+  } catch (err) {
+    console.error(err);
+    setStatus(`加载失败：report.json。${err?.message || err}`, "error");
+  }
+}
+
 function wireUi() {
+  const toggle = document.getElementById("high-only");
+  toggle.addEventListener("change", () => (toggle.checked ? renderHighImpact() : loadReport("report.md")));
   loadReport("report.md");
 }
 
