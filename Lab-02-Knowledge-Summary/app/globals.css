@@ -283,6 +283,29 @@ input {
   background: rgba(32, 36, 42, 0.12);
 }
 
+.style-preview.brand {
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(0, 58, 112, 0.12);
+}
+
+.style-preview.brand::before {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: #003a70;
+}
+
+.style-preview.brand::after {
+  top: 22px;
+  left: 18px;
+  width: 52%;
+  height: 12px;
+  border-radius: 3px;
+  background: #003a70;
+  border-bottom: 4px solid #ffc20e;
+}
+
 .style-tag {
   display: inline-flex;
   width: fit-content;

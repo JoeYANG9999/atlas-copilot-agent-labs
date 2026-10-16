@@ -1,4 +1,4 @@
-export type PresentationStyleId = "geek" | "consulting" | "magazine";
+export type PresentationStyleId = "geek" | "consulting" | "magazine" | "brand";
 
 export const DEFAULT_PAGES = 6;
 export const MIN_PAGES = 1;
@@ -28,6 +28,14 @@ export const PRESENTATION_STYLES = [
     description: "版式感更强、报刊式分栏、保留留白与节奏，适合内容型页面转述。",
     emphasis: "更强调视觉节奏与阅读体验。",
     previewClassName: "magazine",
+  },
+  {
+    id: "brand",
+    label: "公司品牌风",
+    shortLabel: "Brand",
+    description: "白底，主色深蓝 #003A70，强调色亮黄 #FFC20E，标题加粗，每页底部一条深蓝细条。",
+    emphasis: "统一公司品牌视觉：所有页面白底，深蓝主色配亮黄强调色，标题加粗，每页底部固定一条深蓝 #003A70 细条。",
+    previewClassName: "brand",
   },
 ];
 
