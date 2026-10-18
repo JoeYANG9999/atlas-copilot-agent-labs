@@ -21,8 +21,9 @@ HOST="${CODESPACE_NAME}-3000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
 BASE="https://${HOST}"
 KEY="$(sed -nE 's/^[[:space:]]*LAB_API_KEY=[[:space:]]*//p' "$ENV_FILE" 2>/dev/null | tail -1)"
 
-echo "openapi.yaml 里的 host 填：${HOST}（title 记得改成「Atlas Agent Labs · 你的名字」）"
-echo "连接器的 API 密钥填：${KEY:-（未设置，请先运行 bash .devcontainer/set-key.sh）}"
+# 值的前后留空格：终端里双击时中文全角标点不算分隔符，挨着会把「填：」一起选中
+echo "openapi.yaml 里的 host 填： ${HOST} （title 记得改成「Atlas Agent Labs · 你的名字」）"
+echo "连接器的 API 密钥填： ${KEY:-（未设置，请先运行 bash .devcontainer/set-key.sh）}"
 echo
 
 pass=0; fail=0
