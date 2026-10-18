@@ -192,19 +192,34 @@
 
 ## 用户手动重跑反馈（2026-10-18）
 
-- [x] Lab-02 第 4 步报 `Tool failed: unexpected user permission response`：PR #8 把 @github/copilot 升到 1.0.43，权限回复只认 approve-once 等新写法，
-      lib/copilot.ts（和 SDK 0.2.2 自带的 approveAll）还返回旧的 `{ kind: "approved" }`。用 SDK 的 BYOK provider 接本地假模型复现：
-      approved → 失败、approve-once → 成功；ask_user 回复格式不受影响。已改 approve-once，typecheck / lint / build 通过（PR #8 没测的那一步就是这里）
-- [x] Lab-03 连接报错，根因是**环境不对**：Studio 默认停在 Caldova (default)，智能体建在了那里（课程用 Ontology-trial）。在 default 里建连接没有 API 密钥输入框、工具报 We couldn't enable this connection；
-      Power Automate 停在另一个环境，所以找不到连接；4 个工具的 Connection 显示 Not connected
-      （原连接 427ae67e… 已被删，新连接 dd1850… 没绑上）→ 测试报 404 `The connection … is not found`。另外 smoke-test 输出「密钥填：<key>」双击会连中文一起选中
-      → 手册 / README / INSTRUCTOR：401 先跑 smoke-test 看端口、Power Automate 先切环境、404 逐个工具重选连接、别点连接旁的垃圾桶；smoke-test 值前后加空格
-- [x] 手册：所有命令和提示词加「复制」按钮（32 个框 + 21 个行内值）；Studio 智能体指令直接放进页面；开头加「先看全局」（流水线 + 每一步目标表 + 名词解释）；
-      Lab-01 第 4 步写明「只读不改」，附可选的改定时步骤（本机实测 `gh aw compile industry-insight` 可用，v0.92.0）
-- [ ] 👤 在 Ontology-trial 里重建智能体、导入工具、建连接（对话框要有 API 密钥框）；fork 点 Sync fork 后在 Codespace `git pull`，Lab-02 里 `npm ci && npm run dev`
-- [x] 🤖 清理 Caldova (default) 里的测试资源（10-18）：连接「Atlas · Tarry」、4 个 AIPluginOperation、AIPlugin 先删；连接器第一次删被拒（Object dependencies exist：旧智能体的 Connection Reference）→ 用户删掉旧智能体后 Connection Reference 跟着消失，再删连接器和两个自动 Solution。
-      复查：Agents 0、Custom connectors 0、Connections 0、Solutions 只剩两个内置；Ontology-trial 没动
-- [x] 新增 docs/manual/architecture.html（子智能体做，我审）：业务逻辑图 + 技术架构图 3 张（Lab-01 内部 / Lab-03→Lab-02 / Lab-02 内部）+ 时序图 + 核心文件一览；Mermaid 12.1.0 本地放在 docs/manual/vendor/（5.5 MB，离线、国内都能渲染），1280 / 390 宽度都无报错、无横向滚动
-- [x] 顺手修：手册「服务的所有接口都要求 x-api-key」不准确（首页、/api/generate/stream、/insight、进度页、下载都不查密钥）→ 改成只说 Studio 的 4 个接口要密钥、公开期间别外传；Google Fonts 改成不阻塞渲染（国内打不开时不再白屏）；devcontainer.json 头注释去掉「不要先 fork」；权限报错的处理补 `npm ci`
+### 踩坑清单（症状 → 原因 → 处理，都已写进手册 / Lab README / INSTRUCTOR）
+
+1. Lab-02 网页生成 PPT 报 `Tool failed: unexpected user permission response` → PR #8 把 Copilot CLI 升到 1.0.43 后，权限回复只认 `approve-once` 等新写法，
+   lib/copilot.ts 和 SDK 0.2.2 自带的 approveAll 还返回 `{ kind: "approved" }` → 代码改成 `approve-once`（PR #10）；旧 fork 要 Sync fork、`git pull`、`npm ci`。
+   复现方法：SDK 的 BYOK provider 指向本地假 OpenAI 服务，让假模型发起 bash 调用（不用令牌、不耗额度）。
+2. Studio 打开时默认停在 Caldova (default)；Power Automate 停在另一个环境时「找不到连接」→ 先切到 Ontology-trial，Power Automate 右上角切到同一个环境。
+3. 建连接的对话框只有 Display name、没有 API 密钥框；连接状态 `Parameter value missing`，Studio 里连接旁红色「!」，工具提示 `We couldn't enable this connection`
+   → 导入向导 Authentication 那步 **Parameter label 空着** → Power Automate 编辑连接器 → 2. Security → 补 label → Update connector，再到连接 ⋯ → Edit 补填密钥。
+   （一开始误判成「在 default 环境里建」导致，文档写错过一次，已更正：对比 v1 连接器 label 空 → 没有密钥框，v2 填了 → 有密钥框）
+4. 工具报 `connectorRequestFailure` 404 + `The connection … is not found` → 连接被删了（Studio 连接下拉里的垃圾桶会直接删）→ 4 个工具逐个重选连接 → Save。
+5. 工具报 `connectorRequestFailure` 404（不带上面那句）→ 连接器 host 少抄了 Codespace 名字后面的随机串（形如 `xxx-space-system-3000`，应为 `xxx-space-system-<随机串>-3000`）
+   → Power Automate 编辑连接器 → 1. General → Host 改对 → Update connector，不用重新导入。
+6. 同样的 404 → Codespace 空闲 30 分钟自动 Shutdown，公网地址一律 404（`gh codespace list` 可查）→ 打开 Codespace、重启 `npm run dev`、3000 设回 Public。
+7. 工具报 `connectorPowerFxError … '<' is an invalid start of a value` → 3000 端口是 Private，GitHub 把请求 302 到 github.dev 登录页，Studio 拿网页去解析 JSON → 设 Public。
+8. 工具报 401 `connectorAuthorizationError` → 端口 Private 或密钥不对；这次是密钥少复制了一位（31 位，应为 32 位）→ 用 `sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env` 打印纯密钥再复制。
+   另：smoke-test 原来输出「密钥填：<key>」，双击会把中文一起选中 → 脚本已在值前后加空格（PR #10）。
+9. 删连接器提示 Object dependencies exist（依赖是智能体的 Connection Reference）→ 先删智能体，引用会跟着消失。
+10. 重新导入 REST API 工具会多出一个连接器（名字带 v2），两个连接器下的连接同名（都叫 tarry v2）分不清 → 看连接名下面的连接器名；多余的课后清理。
+11. 工具的 Connection 下拉选了但保存的还是旧连接、凭据还是 End user credentials → 每个工具 Save 前看一眼 Connection 和 Credentials to use。
+12. 智能体没按指令默认用 consulting，反问风格；回答 geek 后 `Content was filtered`（ContentFiltered）→ 指令加「不要反问」，测试句带上风格；ContentFiltered 的具体触发原因没查到（Activity 列表有延迟，没看到那一轮）。
+
+### 状态
+
+- [x] PR #10：Lab-02 权限回复修复、smoke-test 加空格；手册 v1.4 加复制按钮、「先看全局」、architecture.html（Mermaid 12.1.0 本地 vendored）、字体不阻塞渲染、改正「所有接口都要密钥」的说法
+- [x] 本次文档更正：上面 2~12 写进手册排障表、第 5 步失败说明、Lab-03 README、INSTRUCTOR 现场排障；Power Automate 菜单路径写明（More → Connections；More → Discover all → Data → Custom connectors）；
+      「Codespace 重建后」改成就地改 host 和密钥，不用重新导入；智能体指令加「不要反问」，第 4 句测试带上风格
+- [x] 🤖 清理 Caldova (default) 的测试资源：连接、4 个 AIPluginOperation、AIPlugin 先删；连接器第一次删被拒（旧智能体的 Connection Reference）→ 用户删掉智能体后再删连接器和两个自动 Solution。复查全空
+- [x] 用户在 Ontology-trial 重建后：给连接器补 label、连接补密钥（Connected）、改对 host、Codespace 重新起来并设 Public、密钥补全 → 第 5 句在 Activity 里核对过通过；第 4 句遇到反问 + ContentFiltered；1~3 句用户说已改好，未逐条核对
+- [ ] 👤 Ontology-trial 里的测试资源（智能体、两个连接器、连接）课后按讲师手册清理
 - 待定：首页生成接口 /api/generate/stream 不查密钥，端口公开时任何人都能花学员的额度；加检查要给网页加输入密钥的地方，先只在文档里提醒
 - 未验证：Codespace 自带的令牌能否推送 `.github/workflows/` 下的文件（手册写了兜底：报 refusing to allow … workflow 就在本机做）
