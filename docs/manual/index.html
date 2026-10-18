@@ -1293,11 +1293,12 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
     if (sec) {
       targets.push({ el: sec, link: secLink, secLink: secLink });
       var sub = document.createElement('ol');
-      sec.querySelectorAll('.step').forEach(function (step) {
+      sec.querySelectorAll('.step').forEach(function (step, i) {
         var no = step.querySelector('.step-no');
         var title = step.querySelector('h3');
         if (!no || !title) return;
-        if (!step.id) step.id = sec.id + '-' + no.textContent.trim().replace(/\./g, '-');
+        // 锚点用章节 id + 序号（如 lab01-3），不拿页面文字拼 URL
+        if (!step.id) step.id = sec.id + '-' + (i + 1);
         var stepLink = document.createElement('a');
         stepLink.href = '#' + step.id;
         stepLink.textContent = no.textContent.trim() + ' · ' + title.textContent.trim();
