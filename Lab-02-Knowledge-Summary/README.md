@@ -108,6 +108,7 @@ curl -s -X POST localhost:3000/api/jobs/insight -H "x-api-key: $KEY" -H 'content
 | 现象 | 处理 |
 |---|---|
 | 「无法列出模型，请确认环境变量已配置」 | 令牌没填或无效：重新运行 `bash .devcontainer/set-key.sh`，然后重启 `npm run dev`；令牌正确仍报错，多半是组织没开 Copilot CLI 策略，找讲师 |
+| 网页生成失败，日志里 `Tool failed: unexpected user permission response` | fork 里是 2026-10-18 修复之前的代码（Copilot CLI 1.0.43 起「同意执行」的回复要写 `approve-once`）：GitHub 上你的 fork → **Sync fork** → **Update branch**（别点 Discard commits），Codespace 里 `git pull`，再重启 `npm run dev` |
 | 生成到一半报找不到 `playwright` / `pptxgenjs` | 终端运行 `echo $NODE_PATH`，应指向 `Lab-02-Knowledge-Summary/node_modules`；不对就重建 Codespace |
 | 报 Chromium 缺失 | `cd Lab-02-Knowledge-Summary && npx playwright install --with-deps chromium` |
 | 「还没有行业洞察周报」 | 先完成 Lab-01，或确认 `Lab-01-Industry-Insight/frontend/report.json` 存在 |

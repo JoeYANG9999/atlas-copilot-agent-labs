@@ -47,7 +47,7 @@ interface CopilotClientOptionsLike {
 }
 
 interface PermissionRequestResultLike {
-  kind: "approved";
+  kind: "approve-once";
 }
 
 interface SessionEventLike {
@@ -369,7 +369,9 @@ export async function runKnowledgeToPpt(
   const { client, modelId } = await bootstrapClient();
   const timeoutMs = DEFAULT_TIMEOUT_MS;
   const eventLog: string[] = [];
-  const approveAll = (): PermissionRequestResultLike => ({ kind: "approved" });
+  // Copilot CLI 1.0.43 起权限回复只认 approve-once / approve-for-session / reject 等写法；
+  // SDK 0.2.2 自带的 approveAll 仍返回旧的 { kind: "approved" }，每次工具调用都会报「unexpected user permission response」。
+  const approveAll = (): PermissionRequestResultLike => ({ kind: "approve-once" });
 
   const session = await client.createSession({
     model: modelId,
