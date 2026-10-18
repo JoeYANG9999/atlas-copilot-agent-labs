@@ -189,3 +189,22 @@
       focus.md 加行业的说法；时长注明含休息 30 分钟，INSTRUCTOR.md 和 docs/codespaces.md 的环节与时长对齐手册
 - 未改：docs/teaching-design.html 里还有 fork 之前的说法（student/<名字> 分支、Issue + 分支、讲师演示 gh-aw），它是课程设计稿，留着不动
 - [ ] 👤 手动全程重跑时顺带确认：课后清理第 2 步三行命令、Lab-03 第 4 句网页→PPT
+
+## 用户手动重跑反馈（2026-10-18）
+
+- [x] Lab-02 第 4 步报 `Tool failed: unexpected user permission response`：PR #8 把 @github/copilot 升到 1.0.43，权限回复只认 approve-once 等新写法，
+      lib/copilot.ts（和 SDK 0.2.2 自带的 approveAll）还返回旧的 `{ kind: "approved" }`。用 SDK 的 BYOK provider 接本地假模型复现：
+      approved → 失败、approve-once → 成功；ask_user 回复格式不受影响。已改 approve-once，typecheck / lint / build 通过（PR #8 没测的那一步就是这里）
+- [x] Lab-03 连接报错，根因是**环境不对**：Studio 默认停在 Caldova (default)，智能体建在了那里（课程用 Ontology-trial）。在 default 里建连接没有 API 密钥输入框、工具报 We couldn't enable this connection；
+      Power Automate 停在另一个环境，所以找不到连接；4 个工具的 Connection 显示 Not connected
+      （原连接 427ae67e… 已被删，新连接 dd1850… 没绑上）→ 测试报 404 `The connection … is not found`。另外 smoke-test 输出「密钥填：<key>」双击会连中文一起选中
+      → 手册 / README / INSTRUCTOR：401 先跑 smoke-test 看端口、Power Automate 先切环境、404 逐个工具重选连接、别点连接旁的垃圾桶；smoke-test 值前后加空格
+- [x] 手册：所有命令和提示词加「复制」按钮（32 个框 + 21 个行内值）；Studio 智能体指令直接放进页面；开头加「先看全局」（流水线 + 每一步目标表 + 名词解释）；
+      Lab-01 第 4 步写明「只读不改」，附可选的改定时步骤（本机实测 `gh aw compile industry-insight` 可用，v0.92.0）
+- [ ] 👤 在 Ontology-trial 里重建智能体、导入工具、建连接（对话框要有 API 密钥框）；fork 点 Sync fork 后在 Codespace `git pull`，Lab-02 里 `npm ci && npm run dev`
+- [x] 🤖 清理 Caldova (default) 里的测试资源（10-18）：连接「Atlas · Tarry」、4 个 AIPluginOperation、AIPlugin 先删；连接器第一次删被拒（Object dependencies exist：旧智能体的 Connection Reference）→ 用户删掉旧智能体后 Connection Reference 跟着消失，再删连接器和两个自动 Solution。
+      复查：Agents 0、Custom connectors 0、Connections 0、Solutions 只剩两个内置；Ontology-trial 没动
+- [x] 新增 docs/manual/architecture.html（子智能体做，我审）：业务逻辑图 + 技术架构图 3 张（Lab-01 内部 / Lab-03→Lab-02 / Lab-02 内部）+ 时序图 + 核心文件一览；Mermaid 12.1.0 本地放在 docs/manual/vendor/（5.5 MB，离线、国内都能渲染），1280 / 390 宽度都无报错、无横向滚动
+- [x] 顺手修：手册「服务的所有接口都要求 x-api-key」不准确（首页、/api/generate/stream、/insight、进度页、下载都不查密钥）→ 改成只说 Studio 的 4 个接口要密钥、公开期间别外传；Google Fonts 改成不阻塞渲染（国内打不开时不再白屏）；devcontainer.json 头注释去掉「不要先 fork」；权限报错的处理补 `npm ci`
+- 待定：首页生成接口 /api/generate/stream 不查密钥，端口公开时任何人都能花学员的额度；加检查要给网页加输入密钥的地方，先只在文档里提醒
+- 未验证：Codespace 自带的令牌能否推送 `.github/workflows/` 下的文件（手册写了兜底：报 refusing to allow … workflow 就在本机做）

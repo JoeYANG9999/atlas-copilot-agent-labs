@@ -41,6 +41,8 @@
    - 为每位学员开好 M365 账号 + Copilot Studio 授权（试用许可即可）；
    - Power Platform 管理中心的 **DLP 策略允许自定义连接器**访问 `*.app.github.dev`；
    - 确认学员用哪个环境：2026-10-16 实测演示租户的 Default 环境新建智能体会一直转圈，**Trial 环境（Ontology-trial）正常**；
+     2026-10-18 在 Default（Caldova (default)）里已能建出智能体，但建连接没有 API 密钥输入框、工具报 We couldn't enable this connection，所以**只用 Ontology-trial**。
+     Studio 打开时默认停在 Caldova (default)，课前通知和 Lab-03 开始时都要提醒「先切环境」；课后清理两个环境都要查；
    - 自己用一个学员账号把 Lab-03 完整走一遍（[Lab-03 README](Lab-03-Copilot-Studio/README.md) 已按 2026-10-17 重跑写成，含所有坑）；
    - 学员的 4 个工具都要改成 **Maker-provided credentials**（工具详情 → Additional details → Credentials to use），否则测试时会反复弹「先连接……打开连接管理器」。Agent status 因此会多一条「使用作者凭据」的提醒，本课不发布智能体，可以忽略；
    - 每个学员导入一次 REST API 工具，租户里就会多出：1 个 Solution（「<title> Solution」）、1 个自定义连接器、1 个 AIPlugin + 4 个 AIPluginOperation、1 个连接。课后清理见下文「课后」。
@@ -89,7 +91,11 @@
 | 学员 gh-aw 报 401 | 学员 fork 没设 Actions secret 或令牌过期 | fork → Settings → Secrets and variables → Actions → `COPILOT_GITHUB_TOKEN` |
 | 学员 `git restore --source origin/answer/...` 报 invalid reference | fork 时只复制了 main | `git remote add upstream <本仓库地址> && git fetch upstream`，改用 `upstream/answer/...` |
 | Studio 里一堆同名「Atlas Agent Labs」 | 学员没改 openapi.yaml 的 title | 让学员把 title 改成「Atlas Agent Labs · 名字」重新导入，删掉自己旧的那个 |
-| Studio 工具卡片 `connectorAuthorizationError`（HTTP 401） | 连接里的密钥不是学员当前 Codespace 的（每个 Codespace 的 LAB_API_KEY 都不同，课前建过、重建过的最容易错） | Power Automate → Connections → 学员的连接 ⋯ → Edit → 粘贴 smoke-test 打印的密钥 → Update，不用删连接 |
+| Studio 工具卡片 `connectorAuthorizationError`（HTTP 401） | ① 3000 端口变回了 Private（Codespace 重启后）；② 连接里的密钥不是学员当前 Codespace 的（每个 Codespace 的 LAB_API_KEY 都不同，课前建过、重建过的最容易错），或复制时带上了「填：」 | 先让学员跑 smoke-test：公网那项没过就设回 Public；都过再到 Power Automate（右上角切到和 Studio 同一个环境）→ Connections → 学员的连接 ⋯ → Edit → 粘贴密钥 → Update，不用删连接 |
+| Studio 工具卡片 `connectorRequestFailure`（HTTP 404）`The connection … is not found` | 工具绑定的连接被删了（学员点了连接下拉里的垃圾桶，或删掉重建过），工具详情 Connection 显示 Not connected | 4 个工具逐个打开 → Connection 下拉选学员的「Atlas · 名字」（没有就 Create new connection）→ Save → New test session（2026-10-18 讲师重跑时遇到） |
+| 学员在 Power Automate 里找不到自己的连接 | Power Automate 和 Studio 不在同一个环境（演示租户有 Caldova (default) 和 Ontology-trial 两个） | Power Automate 右上角 Environments 切到 Studio 左下角显示的那个环境 |
+| 建连接没有 API 密钥输入框、工具提示 `We couldn't enable this connection` | 学员的智能体建在了 Caldova (default)（Studio 默认停在这里），不是 Ontology-trial | 让学员切到 Ontology-trial 从头建；课前通知里强调「先切环境」，课后连 default 环境一起清理（2026-10-18 讲师重跑时遇到） |
+| Lab-02 网页生成报 `Tool failed: unexpected user permission response` | 学员 fork 早于 2026-10-18 的修复（Copilot CLI 1.0.43 起权限回复要写 `approve-once`） | 学员 fork → Sync fork → Update branch，Codespace 里 `git pull`，再在 Lab-02 目录 `npm ci && npm run dev`（按锁文件装对 CLI 版本） |
 | 测试时反复弹「先连接……打开连接管理器」 | 工具还是 End user credentials | 工具详情 → Additional details → Credentials to use 改成 Maker-provided credentials → Save |
 | Chat 没有 Agent 模式 / 工具图标 | Copilot 策略没开 Agent 或 MCP | 管理员开策略；临时让学员看讲师屏幕 |
 | 「无法列出模型」且令牌正确 | Copilot CLI 策略没开 | 管理员开策略；临时用讲师 Codespace 演示 |
@@ -100,9 +106,11 @@
 ## 课后
 
 - 提醒学员按 [实操手册 · 课后清理](docs/manual/index.html#after) 做：端口改回 Private、推送改动、删除 Codespace、删除 PAT 和两处 Secret、删 Studio 里自己的智能体和工具。
-- 讲师：清理 Studio 演示租户（2026-10-17 实测顺序，**只在 Power Automate 里删自定义连接器删不干净，刷新后会自己回来**）：
+- 讲师：清理 Studio 演示租户（2026-10-17 实测顺序，**只在 Power Automate 里删自定义连接器删不干净，刷新后会自己回来**）。
+  **Ontology-trial 和 Caldova (default) 两个环境都要按下面走一遍**（Studio 默认停在 default，总有学员建错环境）：
   1. 学员没删的智能体：Copilot Studio → Agents → ⋯ → Delete（会提示数据永久删除）；
-  2. Copilot Studio → 左侧 ⋯ → **Solutions** → 打开 **Default Solution** → **Objects**，按类型筛选后多选删除（Delete from this environment）：先 **AIPluginOperation**（工具操作），再 **AIPlugin**（工具），最后 **Custom connectors**；名字都带「Atlas Agent Labs」；
+  2. Copilot Studio → 左侧 ⋯ → **Solutions** → 打开 **Default Solution** → **Objects**，按类型筛选后多选删除（Delete from this environment）：先 **AIPluginOperation**（工具操作），再 **AIPlugin**（工具），最后 **Custom connectors**；名字都带「Atlas Agent Labs」。
+     删连接器提示 Object dependencies exist（View Dependencies 里是 `…bizreport….shared_…` 这样的 Connection Reference）= 还有智能体在用它，先回第 1 步删掉那个智能体，Connection Reference 会跟着消失（2026-10-18 实测）；
   3. [Power Automate](https://make.powerautomate.com) → Connections：删掉「Atlas · …」「Connect to Atlas Agent Labs …」等连接；
   4. Solutions 列表里删掉导入时自动生成的「Atlas Agent Labs … Solution」（只是空容器）；
   5. Connection references 里的 Content Conversion、Dataverse 是 SYSTEM 托管的，不要动。

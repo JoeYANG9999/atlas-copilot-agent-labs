@@ -1,0 +1,1145 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>架构图 · 阿特拉斯中国 Copilot 智能体工作坊</title>
+  <meta name="description" content="用 Mermaid 图讲清工作坊项目：业务逻辑、核心代码文件怎么配合、一次请求的全过程。"/>
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+  <!-- 字体不阻塞渲染：fonts.googleapis.com 打不开时（国内常见）直接用系统字体，页面不会一直白屏 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  <style>
+/* ============================================================================
+   埃知科技 · 上海埃知科技有限公司 — Brand Tokens (aizhi-html)
+   Drop into any HTML page to get the canonical palette, fonts, motifs.
+   Themes: <body class="theme-light"> (纸感) · <body class="theme-dark"> (墨紫)
+   ============================================================================ */
+
+:root {
+  /* --- Hue family: orchid (logo) · plum ink · ivory-pink paper --- */
+  --az-orchid:       #BD59A5;   /* logo colour · accent fills · rule segment 1 */
+  --az-orchid-deep:  #9A3F85;   /* text-safe accent on light */
+  --az-orchid-soft:  #D998C9;   /* accent on dark · rule segment 2 */
+  --az-orchid-tint:  #F4E4F0;   /* tags · soft fills */
+  --az-orchid-mist:  #FAF0F7;   /* faint bands */
+
+  --az-ink:          #2D1E3A;   /* primary text (light) · page base (dark) */
+  --az-ink-2:        #4B3A5B;   /* body text */
+  --az-ink-3:        #7E6F8A;   /* muted */
+  --az-ink-4:        #C9BFD0;   /* hairline / disabled */
+
+  --az-paper:        #F8F4F7;
+  --az-paper-deep:   #F1EAEF;
+  --az-surface:      #FFFFFF;
+  --az-surface-2:    #FAF5F8;
+  --az-border:       #E7DEE5;
+  --az-border-2:     #D3C6D0;
+
+  --az-night:        #2D1E3A;
+  --az-night-2:      #43305A;
+  --az-night-surface:   #3E2E51;
+  --az-night-surface-2: #4A3961;
+  --az-night-border:    #5B4A72;
+  --az-night-text:      #F7F2F6;
+  --az-night-text-2:    #D9CCE0;
+  --az-night-muted:     #A895B4;
+
+  --az-warn:         #C2603E;   /* only for「问题」labels */
+
+  /* --- Tuned page backgrounds (use these, not flat white / black) --- */
+  --az-bg-light: linear-gradient(135deg, #FBF8FA 0%, #F7F2F5 55%, #F1EAEF 100%);
+  --az-bg-dark:  linear-gradient(135deg, #2D1E3A 0%, #352544 45%, #43305A 100%);
+  --az-glow-light: radial-gradient(60% 50% at 88% 0%, rgba(189,89,165,.14), rgba(189,89,165,0) 70%);
+  --az-glow-dark:  radial-gradient(60% 50% at 82% 0%, rgba(189,89,165,.32), rgba(189,89,165,0) 70%);
+
+  /* --- Type --- */
+  --font-cn:   "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-sans: "Noto Sans", "Noto Sans SC", "PingFang SC", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* --- Shape --- */
+  --az-radius:    10px;
+  --az-radius-lg: 16px;
+  --az-shadow:    0 6px 18px rgba(45, 30, 58, 0.08), 0 1px 3px rgba(45, 30, 58, 0.05);
+  --az-shadow-lg: 0 16px 40px rgba(45, 30, 58, 0.14);
+
+  /* --- The mark as CSS images (vector, recolourable) --- */
+  --az-mark-orchid: url("data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20800%201000'%3E%3Cpath%20fill='%23BD59A5'%20stroke='%23BD59A5'%20stroke-width='6'%20stroke-linejoin='round'%20fill-rule='evenodd'%20d='M392.3%202.5%20L384.2%206.1%20L373.1%2019.5%20L157.9%20373.9%20L134.5%20416.8%20L133.9%20424.6%20L138.1%20434.3%20L147.8%20442.9%20L157.6%20444.9%20L280.9%20443.2%20L282.0%20449.1%20L244.2%20511.1%20L157.6%20635.9%20L96.3%20712.1%20L7.8%20808.7%20L2.5%20820.7%20L2.8%20831.0%20L11.4%20842.1%20L27.8%20846.0%20L257.8%20846.0%20L266.1%20843.5%20L274.8%20836.0%20L307.1%20790.4%20L306.8%20778.1%20L299.8%20769.5%20L287.0%20767.5%20L140.6%20767.3%20L138.6%20764.2%20L187.9%20703.0%20L267.8%20593.3%20L328.5%20499.4%20L395.3%20385.9%20L399.8%20382.5%20L526.4%20587.4%20L355.2%20588.5%20L347.2%20591.0%20L335.7%20602.4%20L310.4%20643.1%20L311.0%20654.8%20L317.9%20662.0%20L483.0%20664.3%20L485.8%20668.7%20L405.3%20767.8%20L239.4%20964.1%20L232.5%20976.9%20L232.2%20989.4%20L239.7%20996.7%20L560.1%20997.2%20L569.9%20988.3%20L569.3%20978.3%20L539.3%20934.0%20L527.6%20924.6%20L515.3%20922.6%20L370.0%20922.6%20L366.9%20919.3%20L464.4%20799.0%20L579.3%20666.5%20L686.5%20791.5%20L682.1%20798.4%20L656.7%20806.0%20L643.9%20817.7%20L642.5%20833.0%20L647.8%20841.6%20L664.0%20846.0%20L779.2%20846.0%20L788.1%20842.1%20L795.4%20834.1%20L797.3%20818.5%20L791.5%20806.5%20L743.9%20758.9%20L676.8%20682.1%20L614.1%20600.8%20L526.7%20469.9%20L433.7%20312.6%20L404.8%20267.8%20L397.0%20264.5%20L391.1%20268.4%20L331.0%20370.0%20L241.6%20370.3%20L242.2%20365.5%20L384.5%20126.4%20L399.5%20105.2%20L408.4%20115.8%20L505.3%20277.6%20L577.7%20392.3%20L573.5%20399.2%20L557.1%20407.3%20L547.6%20415.9%20L544.5%20422.0%20L547.6%20437.6%20L554.3%20442.7%20L564.6%20445.2%20L645.6%20445.2%20L654.8%20441.3%20L665.4%20429.6%20L667.0%20420.4%20L661.7%20407.0%20L587.7%20289.5%20L428.7%2020.6%20L412.0%204.5%20L401.4%201.7%20Z'/%3E%3C/svg%3E");
+  --az-mark-white:  url("data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20800%201000'%3E%3Cpath%20fill='%23FFFFFF'%20stroke='%23FFFFFF'%20stroke-width='6'%20stroke-linejoin='round'%20fill-rule='evenodd'%20d='M392.3%202.5%20L384.2%206.1%20L373.1%2019.5%20L157.9%20373.9%20L134.5%20416.8%20L133.9%20424.6%20L138.1%20434.3%20L147.8%20442.9%20L157.6%20444.9%20L280.9%20443.2%20L282.0%20449.1%20L244.2%20511.1%20L157.6%20635.9%20L96.3%20712.1%20L7.8%20808.7%20L2.5%20820.7%20L2.8%20831.0%20L11.4%20842.1%20L27.8%20846.0%20L257.8%20846.0%20L266.1%20843.5%20L274.8%20836.0%20L307.1%20790.4%20L306.8%20778.1%20L299.8%20769.5%20L287.0%20767.5%20L140.6%20767.3%20L138.6%20764.2%20L187.9%20703.0%20L267.8%20593.3%20L328.5%20499.4%20L395.3%20385.9%20L399.8%20382.5%20L526.4%20587.4%20L355.2%20588.5%20L347.2%20591.0%20L335.7%20602.4%20L310.4%20643.1%20L311.0%20654.8%20L317.9%20662.0%20L483.0%20664.3%20L485.8%20668.7%20L405.3%20767.8%20L239.4%20964.1%20L232.5%20976.9%20L232.2%20989.4%20L239.7%20996.7%20L560.1%20997.2%20L569.9%20988.3%20L569.3%20978.3%20L539.3%20934.0%20L527.6%20924.6%20L515.3%20922.6%20L370.0%20922.6%20L366.9%20919.3%20L464.4%20799.0%20L579.3%20666.5%20L686.5%20791.5%20L682.1%20798.4%20L656.7%20806.0%20L643.9%20817.7%20L642.5%20833.0%20L647.8%20841.6%20L664.0%20846.0%20L779.2%20846.0%20L788.1%20842.1%20L795.4%20834.1%20L797.3%20818.5%20L791.5%20806.5%20L743.9%20758.9%20L676.8%20682.1%20L614.1%20600.8%20L526.7%20469.9%20L433.7%20312.6%20L404.8%20267.8%20L397.0%20264.5%20L391.1%20268.4%20L331.0%20370.0%20L241.6%20370.3%20L242.2%20365.5%20L384.5%20126.4%20L399.5%20105.2%20L408.4%20115.8%20L505.3%20277.6%20L577.7%20392.3%20L573.5%20399.2%20L557.1%20407.3%20L547.6%20415.9%20L544.5%20422.0%20L547.6%20437.6%20L554.3%20442.7%20L564.6%20445.2%20L645.6%20445.2%20L654.8%20441.3%20L665.4%20429.6%20L667.0%20420.4%20L661.7%20407.0%20L587.7%20289.5%20L428.7%2020.6%20L412.0%204.5%20L401.4%201.7%20Z'/%3E%3C/svg%3E");
+  --az-mark-ink:    url("data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20800%201000'%3E%3Cpath%20fill='%232D1E3A'%20stroke='%232D1E3A'%20stroke-width='6'%20stroke-linejoin='round'%20fill-rule='evenodd'%20d='M392.3%202.5%20L384.2%206.1%20L373.1%2019.5%20L157.9%20373.9%20L134.5%20416.8%20L133.9%20424.6%20L138.1%20434.3%20L147.8%20442.9%20L157.6%20444.9%20L280.9%20443.2%20L282.0%20449.1%20L244.2%20511.1%20L157.6%20635.9%20L96.3%20712.1%20L7.8%20808.7%20L2.5%20820.7%20L2.8%20831.0%20L11.4%20842.1%20L27.8%20846.0%20L257.8%20846.0%20L266.1%20843.5%20L274.8%20836.0%20L307.1%20790.4%20L306.8%20778.1%20L299.8%20769.5%20L287.0%20767.5%20L140.6%20767.3%20L138.6%20764.2%20L187.9%20703.0%20L267.8%20593.3%20L328.5%20499.4%20L395.3%20385.9%20L399.8%20382.5%20L526.4%20587.4%20L355.2%20588.5%20L347.2%20591.0%20L335.7%20602.4%20L310.4%20643.1%20L311.0%20654.8%20L317.9%20662.0%20L483.0%20664.3%20L485.8%20668.7%20L405.3%20767.8%20L239.4%20964.1%20L232.5%20976.9%20L232.2%20989.4%20L239.7%20996.7%20L560.1%20997.2%20L569.9%20988.3%20L569.3%20978.3%20L539.3%20934.0%20L527.6%20924.6%20L515.3%20922.6%20L370.0%20922.6%20L366.9%20919.3%20L464.4%20799.0%20L579.3%20666.5%20L686.5%20791.5%20L682.1%20798.4%20L656.7%20806.0%20L643.9%20817.7%20L642.5%20833.0%20L647.8%20841.6%20L664.0%20846.0%20L779.2%20846.0%20L788.1%20842.1%20L795.4%20834.1%20L797.3%20818.5%20L791.5%20806.5%20L743.9%20758.9%20L676.8%20682.1%20L614.1%20600.8%20L526.7%20469.9%20L433.7%20312.6%20L404.8%20267.8%20L397.0%20264.5%20L391.1%20268.4%20L331.0%20370.0%20L241.6%20370.3%20L242.2%20365.5%20L384.5%20126.4%20L399.5%20105.2%20L408.4%20115.8%20L505.3%20277.6%20L577.7%20392.3%20L573.5%20399.2%20L557.1%20407.3%20L547.6%20415.9%20L544.5%20422.0%20L547.6%20437.6%20L554.3%20442.7%20L564.6%20445.2%20L645.6%20445.2%20L654.8%20441.3%20L665.4%20429.6%20L667.0%20420.4%20L661.7%20407.0%20L587.7%20289.5%20L428.7%2020.6%20L412.0%204.5%20L401.4%201.7%20Z'/%3E%3C/svg%3E");
+}
+
+/* ----------------------------------------------------------------------------
+   Base + themes
+   ---------------------------------------------------------------------------- */
+body {
+  margin: 0;
+  font-family: var(--font-cn);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+body.theme-light { background: var(--az-glow-light), var(--az-bg-light); color: var(--az-ink); }
+body.theme-dark  { background: var(--az-glow-dark),  var(--az-bg-dark);  color: var(--az-night-text); }
+body.theme-light, body.theme-dark { min-height: 100vh; }
+
+/* Faint chevron texture (the apex of the pine, repeated). Add class to <body>. */
+.az-chevron-pattern { position: relative; }
+.az-chevron-pattern::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='132' height='114'%3E%3Cpolyline points='24,80 66,25 108,80' fill='none' stroke='%23BD59A5' stroke-opacity='0.05' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 132px 114px;
+}
+body.theme-dark.az-chevron-pattern::before {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='132' height='114'%3E%3Cpolyline points='24,80 66,25 108,80' fill='none' stroke='%23FFFFFF' stroke-opacity='0.05' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* ----------------------------------------------------------------------------
+   Mark + lockup   (mark aspect w/h = 0.80)
+   ---------------------------------------------------------------------------- */
+.az-mark {
+  display: inline-block; width: 32px; height: 40px;
+  background: var(--az-mark-orchid) center / contain no-repeat;
+}
+.az-mark.white { background-image: var(--az-mark-white); }
+.az-mark.ink   { background-image: var(--az-mark-ink); }
+
+.az-lockup { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+.az-lockup .az-mark { width: 36px; height: 45px; }
+.az-lockup .wm {
+  font-family: var(--font-cn); font-weight: 700; font-size: 17px; letter-spacing: 0.16em; line-height: 1;
+}
+.az-lockup .sub {
+  font-family: var(--font-cn); font-size: 10px; letter-spacing: 0.08em; margin-top: 5px; color: var(--az-ink-3);
+}
+body.theme-dark .az-lockup .sub { color: var(--az-night-muted); }
+
+/* Ghost mark decoration — put inside a position:relative container */
+.az-ghost {
+  position: absolute; pointer-events: none; z-index: 0;
+  width: 520px; height: 650px; right: -120px; top: -60px;
+  background: var(--az-mark-orchid) center / contain no-repeat; opacity: .10;
+}
+body.theme-dark .az-ghost { background-image: var(--az-mark-white); opacity: .08; }
+
+/* ----------------------------------------------------------------------------
+   Eyebrow (with mini mark), titles, 双段线 rule
+   ---------------------------------------------------------------------------- */
+.az-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.18em;
+  color: var(--az-orchid-deep);
+}
+.az-eyebrow::before {
+  content: ""; width: 11px; height: 14px; flex: none;
+  background: var(--az-mark-orchid) center / contain no-repeat;
+}
+body.theme-dark .az-eyebrow { color: var(--az-orchid-soft); }
+
+.az-title   { font-family: var(--font-cn); font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; margin: 0; color: inherit; }
+.az-sub     { font-family: var(--font-cn); font-size: 14px; color: var(--az-ink-3); margin: 0; }
+body.theme-dark .az-sub { color: var(--az-night-muted); }
+
+/* 双段线：一长一短，呼应两层松枝 */
+.az-rule { display: flex; align-items: center; gap: 6px; height: 3px; margin: 18px 0; }
+.az-rule::before { content: ""; width: 48px; height: 3px; background: var(--az-orchid); border-radius: 2px; }
+.az-rule::after  { content: ""; width: 14px; height: 3px; background: var(--az-orchid-soft); border-radius: 2px; }
+.az-rule.on-orchid::before { background: #FFFFFF; }
+.az-rule.on-orchid::after  { background: #F3DDEE; }
+
+/* ----------------------------------------------------------------------------
+   Cards
+   ---------------------------------------------------------------------------- */
+.az-card {
+  background: var(--az-surface); border: 1px solid var(--az-border);
+  border-radius: var(--az-radius); box-shadow: var(--az-shadow); padding: 28px; position: relative;
+}
+body.theme-dark .az-card { background: var(--az-night-surface); border-color: var(--az-night-border); box-shadow: none; }
+.az-card.has-accent::before {
+  content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 3px;
+  background: var(--az-orchid); border-radius: 0 0 2px 2px;
+}
+.az-card.is-orchid { background: var(--az-orchid-deep); border-color: transparent; color: #fff; }
+body.theme-dark .az-card.is-orchid { background: var(--az-orchid); }
+.az-card.is-orchid .az-sub, .az-card.is-orchid .az-eyebrow { color: #F3DDEE; }
+.az-card.is-orchid .az-eyebrow::before { background-image: var(--az-mark-white); }
+.az-card.is-tint { background: var(--az-orchid-tint); border-color: transparent; }
+body.theme-dark .az-card.is-tint { background: #4E355F; }
+
+/* Tag / chip */
+.az-tag {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  background: var(--az-orchid-tint); color: var(--az-orchid-deep);
+  font-family: var(--font-cn); font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+}
+body.theme-dark .az-tag { background: #4E355F; color: var(--az-night-text); }
+
+/* Key chip (A/B/C/D) */
+.az-key {
+  display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+  border-radius: 10px; background: var(--az-orchid); color: #fff;
+  font-family: var(--font-mono); font-weight: 600; font-size: 14px;
+}
+
+/* ----------------------------------------------------------------------------
+   Lists — never "•" glyphs; small orchid squares
+   ---------------------------------------------------------------------------- */
+.az-list { list-style: none; margin: 0; padding: 0; }
+.az-list li { position: relative; padding-left: 20px; margin: 8px 0; font-size: 14px; color: var(--az-ink-2); }
+.az-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; background: var(--az-orchid); }
+body.theme-dark .az-list li { color: var(--az-night-text-2); }
+.az-card.is-orchid .az-list li { color: #fff; }
+.az-card.is-orchid .az-list li::before { background: #fff; }
+
+/* ----------------------------------------------------------------------------
+   KPI block
+   ---------------------------------------------------------------------------- */
+.az-kpi .big {
+  font-family: var(--font-sans); font-weight: 700; font-size: 48px; letter-spacing: -0.03em; line-height: 1;
+  color: var(--az-orchid-deep); margin: 0;
+}
+body.theme-dark .az-kpi .big { color: var(--az-orchid-soft); }
+.az-kpi .label { font-family: var(--font-cn); font-size: 15px; font-weight: 700; margin: 14px 0 4px; color: inherit; }
+.az-kpi .sub   { font-family: var(--font-cn); font-size: 12px; color: var(--az-ink-3); }
+body.theme-dark .az-kpi .sub { color: var(--az-night-muted); }
+
+/* ----------------------------------------------------------------------------
+   松塔阶梯 — tiers that widen downward (会用 → 会做 → 会造 → 上生产)
+   ---------------------------------------------------------------------------- */
+.az-tiers { display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+.az-tier {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  border-radius: 14px; padding: 16px 24px; box-shadow: var(--az-shadow);
+}
+.az-tier .name { font-family: var(--font-cn); font-weight: 700; font-size: 20px; letter-spacing: 0.04em; }
+.az-tier .who  { font-size: 12px; opacity: .8; margin-top: 2px; }
+.az-tier .prod { font-size: 13px; text-align: right; max-width: 55%; }
+.az-tier:nth-child(1) { width: 52%; background: var(--az-orchid-tint); color: var(--az-ink); }
+.az-tier:nth-child(2) { width: 66%; background: #E4BFDA; color: var(--az-ink); }
+.az-tier:nth-child(3) { width: 80%; background: var(--az-orchid); color: #fff; }
+.az-tier:nth-child(4) { width: 94%; background: var(--az-orchid-deep); color: #fff; }
+body.theme-dark .az-tier:nth-child(1) { background: #4E355F; color: var(--az-night-text); }
+body.theme-dark .az-tier:nth-child(2) { background: #6A4A7E; color: var(--az-night-text); }
+body.theme-dark .az-tier:nth-child(3) { background: #A45C93; }
+body.theme-dark .az-tier:nth-child(4) { background: var(--az-orchid); }
+body.theme-dark .az-tier { box-shadow: none; }
+.az-tiers .trunk { width: 30px; height: 22px; background: var(--az-ink-4); border-radius: 0 0 6px 6px; }
+@media (max-width: 720px) {
+  .az-tier { flex-direction: column; align-items: flex-start; }
+  .az-tier .prod { text-align: left; max-width: 100%; }
+  .az-tier:nth-child(1) { width: 76%; } .az-tier:nth-child(2) { width: 84%; }
+  .az-tier:nth-child(3) { width: 92%; } .az-tier:nth-child(4) { width: 100%; }
+}
+
+/* ----------------------------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------------------------- */
+.az-btn {
+  display: inline-block; padding: 12px 24px; border-radius: 10px; text-decoration: none; cursor: pointer;
+  font-family: var(--font-cn); font-weight: 700; font-size: 14px; letter-spacing: 0.04em;
+  border: 1px solid transparent; transition: transform .12s ease, box-shadow .12s ease;
+}
+.az-btn:hover { transform: translateY(-1px); box-shadow: var(--az-shadow); }
+.az-btn-primary { background: var(--az-orchid-deep); color: #fff; }
+body.theme-dark .az-btn-primary { background: var(--az-orchid); }
+.az-btn-ghost { background: transparent; color: var(--az-orchid-deep); border-color: var(--az-orchid-deep); }
+body.theme-dark .az-btn-ghost { color: var(--az-orchid-soft); border-color: var(--az-orchid-soft); }
+
+/* ----------------------------------------------------------------------------
+   Table
+   ---------------------------------------------------------------------------- */
+.az-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.az-table th { text-align: left; padding: 14px 16px; background: var(--az-ink); color: #fff; font-weight: 700; }
+.az-table th.us { color: var(--az-orchid-soft); }
+.az-table td { padding: 13px 16px; border-bottom: 1px solid var(--az-border); color: var(--az-ink-2); }
+.az-table td.us { color: var(--az-orchid-deep); font-weight: 700; }
+.az-table tr:nth-child(even) td { background: var(--az-surface-2); }
+body.theme-dark .az-table th { background: var(--az-night-surface-2); color: var(--az-night-text); }
+body.theme-dark .az-table td { color: var(--az-night-text-2); border-color: var(--az-night-border); }
+body.theme-dark .az-table tr:nth-child(even) td { background: var(--az-night-surface); }
+body.theme-dark .az-table td.us { color: var(--az-orchid-soft); }
+
+/* ----------------------------------------------------------------------------
+   Footer
+   ---------------------------------------------------------------------------- */
+.az-footer {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  border-top: 1px solid var(--az-border); padding: 16px 0 0; margin-top: 64px;
+  font-family: var(--font-cn); font-size: 11px; letter-spacing: 0.06em; color: var(--az-ink-3);
+}
+.az-footer .mono { font-family: var(--font-mono); letter-spacing: 0.16em; }
+body.theme-dark .az-footer { border-top-color: var(--az-night-border); color: var(--az-night-muted); }
+
+
+    /* Page-specific layout — keep generic styles in tokens.css */
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 56px 72px; position: relative; z-index: 1; }
+    .header-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 24px; }
+    .deck-meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; color: var(--az-ink-3); }
+    body.theme-dark .deck-meta { color: var(--az-night-muted); }
+
+    .hero { position: relative; padding: 72px 0 80px; }
+    .hero h1 { font-size: 60px; margin: 16px 0 0; }
+    .hero h2.tail { font-size: 28px; font-weight: 700; margin: 10px 0 0; color: var(--az-orchid-deep); letter-spacing: 0.02em; }
+    body.theme-dark .hero h2.tail { color: var(--az-orchid-soft); }
+    .hero .lead { font-size: 17px; color: var(--az-ink-2); max-width: 640px; margin: 0; letter-spacing: 0.02em; }
+    body.theme-dark .hero .lead { color: var(--az-night-text-2); }
+    .hero .hero-mark { position: absolute; right: 40px; top: 60px; width: 220px; height: 275px; z-index: 1; }
+    .cta-row { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .section { margin-top: 72px; position: relative; }
+    .section-head { margin-bottom: 28px; }
+    .section-head h2 { font-size: 30px; margin: 10px 0 0; }
+    .grid { display: grid; gap: 20px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .card-no { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--az-orchid-deep); }
+    body.theme-dark .card-no { color: var(--az-orchid-soft); }
+    .card-title { font-size: 21px; font-weight: 700; margin: 10px 0 12px; line-height: 1.25; }
+    .card-desc { font-size: 14px; color: var(--az-ink-2); line-height: 1.7; margin: 0; }
+    body.theme-dark .card-desc { color: var(--az-night-text-2); }
+
+    .course { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+    .facts dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.2em; color: #F3DDEE; margin-top: 16px; }
+    .facts dd { margin: 4px 0 0; font-weight: 700; font-size: 15px; }
+    .facts dt:first-child { margin-top: 0; }
+    .agenda { list-style: none; margin: 0; padding: 0; }
+    .agenda li { display: grid; grid-template-columns: 70px 90px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--az-border); align-items: baseline; }
+    .agenda li:last-child { border-bottom: 0; }
+    body.theme-dark .agenda li { border-color: var(--az-night-border); }
+    .agenda .t { font-family: var(--font-mono); color: var(--az-orchid-deep); font-size: 13px; }
+    body.theme-dark .agenda .t { color: var(--az-orchid-soft); }
+    .agenda .n { font-weight: 700; font-size: 16px; }
+    .agenda .d { font-size: 14px; color: var(--az-ink-2); }
+    body.theme-dark .agenda .d { color: var(--az-night-text-2); }
+
+    @media (max-width: 900px) {
+      .wrap { padding: 28px 22px 56px; }
+      .grid-3, .grid-4, .grid-2, .course { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 40px; }
+      .hero .hero-mark { display: none; }
+    }
+  
+
+    html, body { overflow-x: clip; }
+    .hero { overflow: hidden; }
+    .status-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+    code { font-family: var(--font-mono); font-size: 12.5px; background: var(--az-orchid-tint); color: var(--az-ink); padding: 1px 6px; border-radius: 4px; }
+    pre.prompt { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; white-space: pre-wrap; margin: 12px 0 0; padding: 14px 16px;
+                 background: var(--az-surface-2); border: 1px solid var(--az-border); border-left: 3px solid var(--az-orchid); border-radius: 8px; color: var(--az-ink-2); }
+    .az-table td:first-child { font-weight: 700; color: var(--az-ink); white-space: nowrap; }
+    .az-table tr.us-row td { background: var(--az-orchid-mist); }
+    .az-table td { vertical-align: top; line-height: 1.6; }
+    .az-card.is-tint .card-desc, .az-card.is-tint .az-list li { color: var(--az-ink-2); }
+    .map { display:flex; align-items:stretch; gap:10px; flex-wrap:wrap; }
+    .map .node { flex:1 1 180px; background:var(--az-surface); border:1px solid var(--az-border); border-radius:10px; padding:16px 18px; box-shadow:var(--az-shadow); }
+    .map .node.lit { background:var(--az-orchid-tint); border-color:transparent; }
+    .map .node.lit2 { background:var(--az-orchid-deep); border-color:transparent; color:#fff; }
+    .map .node.lit2 .ds, .map .node.lit2 .lab { color:#F3DDEE; }
+    .map .lab { font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; color:var(--az-orchid-deep); }
+    .map .nm { font-weight:700; font-size:17px; margin:6px 0; }
+    .map .ds { font-size:13px; color:var(--az-ink-2); line-height:1.6; }
+    .map .arrow { align-self:center; font-size:22px; color:var(--az-orchid); }
+    .recap { background:var(--az-surface); border:1px dashed var(--az-orchid); border-radius:10px; padding:22px 24px; }
+    .recap dl { margin:12px 0 0; display:grid; grid-template-columns:96px 1fr; gap:10px 14px; }
+    .recap dt { font-weight:700; font-size:13px; color:var(--az-orchid-deep); }
+    .recap dd { margin:0; font-size:13.5px; color:var(--az-ink-2); line-height:1.65; }
+    @media (max-width: 900px) { .az-table td:first-child { white-space: normal; } .map .arrow { display:none; } .recap dl { grid-template-columns:1fr; gap:4px; } .recap dd { margin-bottom:8px; } }
+
+  
+/* ===== 实操手册 ===== */
+.toc { margin: 8px 0 8px; }
+.toc ol { margin: 10px 0 0; padding-left: 22px; columns: 2; column-gap: 32px; }
+.toc li { margin: 4px 0; }
+.toc a { color: var(--az-orchid-deep); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+.step { display: grid; grid-template-columns: 56px 1fr; gap: 18px; margin: 28px 0; }
+.step-no { width: 44px; height: 44px; border-radius: 50%; background: var(--az-orchid); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 15px; }
+.step-body h3 { margin: 6px 0 10px; font-size: 20px; color: var(--az-ink); }
+.step-body p { margin: 8px 0; line-height: 1.75; color: var(--az-ink-2); }
+.step-body .see { background: var(--az-surface-2); border-left: 3px solid var(--az-orchid); padding: 8px 14px; border-radius: 6px; }
+.step-body .tip { font-size: 14px; color: var(--az-ink-3); }
+.step-body .warn { background: #FBEDE7; border-left: 3px solid var(--az-warn); padding: 8px 14px; border-radius: 6px; font-size: 14px; }
+.step-body ol.plain { margin: 8px 0; padding-left: 22px; line-height: 1.8; color: var(--az-ink-2); }
+pre.cmd, pre.prompt { white-space: pre-wrap; word-break: break-word; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; padding: 12px 16px; border-radius: 8px; margin: 10px 0; }
+pre.cmd { background: #2D1E3A; color: #F7F2F6; }
+figure.shot { margin: 14px 0; }
+figure.shot img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--az-border); box-shadow: var(--az-shadow); background: #fff; }
+figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6px; text-align: center; }
+.shot-todo { border: 2px dashed var(--az-border-2); border-radius: 8px; padding: 18px; color: var(--az-ink-3); font-size: 14px; text-align: center; margin: 14px 0; }
+@media (max-width: 720px) { .step { grid-template-columns: 1fr; gap: 6px; } .toc ol { columns: 1; } }
+/* 一键复制：按钮由页尾脚本加到每个命令 / 提示词框和 code.copy 后面 */
+.copy-wrap { position: relative; margin: 10px 0; }
+.copy-wrap > pre.cmd, .copy-wrap > pre.prompt { margin: 0; padding-right: 64px; }
+.copy-btn { position: absolute; top: 7px; right: 7px; font-family: var(--font-cn); font-size: 12px; line-height: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--az-border-2); background: var(--az-surface); color: var(--az-orchid-deep); cursor: pointer; }
+.copy-btn.on-dark { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.3); color: #F7F2F6; }
+.copy-inline { font-family: var(--font-cn); font-size: 11px; line-height: 1; padding: 3px 6px; margin: 0 2px 0 4px; border-radius: 4px; border: 1px solid var(--az-border-2); background: var(--az-surface); color: var(--az-orchid-deep); cursor: pointer; vertical-align: 1px; }
+.copy-btn:hover, .copy-inline:hover { border-color: var(--az-orchid); }
+.copy-btn.done, .copy-inline.done { background: var(--az-orchid); border-color: var(--az-orchid); color: #fff; }
+@media print { .copy-btn, .copy-inline { display: none; } }
+/* 先看全局 */
+.goal-table tr.goal-group td { background: var(--az-orchid-mist); color: var(--az-orchid-deep); font-weight: 700; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 12px; }
+.gloss div { background: var(--az-surface); border: 1px solid var(--az-border); border-radius: 8px; padding: 10px 14px; font-size: 13.5px; line-height: 1.65; color: var(--az-ink-2); }
+.gloss b { color: var(--az-ink); }
+
+/* ===== 架构图页（在实操手册样式之上只加这些） ===== */
+.hero.hero-sm { padding: 48px 0 44px; }
+.hero.hero-sm h1 { font-size: 48px; }
+.back-row { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--az-ink-2); }
+.legend li { display: inline-flex; align-items: center; gap: 8px; }
+.legend .sw { display: inline-block; width: 26px; height: 16px; border-radius: 4px; border: 1.5px solid; flex: none; }
+.legend .sw.person  { background: #9A3F85; border-color: #9A3F85; border-radius: 999px; }
+.legend .sw.agent   { background: #F4E4F0; border-color: #BD59A5; border-width: 2px; }
+.legend .sw.rule    { background: #FFFFFF; border-color: #BD59A5; border-style: dashed; }
+.legend .sw.code    { background: #FFFFFF; border-color: #D998C9; }
+.legend .sw.data    { background: #F1EAEF; border-color: #D3C6D0; }
+.legend .sw.ext     { background: #FFFFFF; border-color: #7E6F8A; border-style: dotted; }
+.legend .sw.out     { background: #BD59A5; border-color: #BD59A5; }
+.legend .ln { display: inline-block; width: 30px; height: 0; border-top: 2px solid var(--az-ink-3); flex: none; }
+.legend .ln.dash  { border-top-style: dashed; }
+.legend .ln.thick { border-top-width: 4px; }
+
+figure.diagram-card { margin: 0; padding: 24px 24px 20px; }
+figure.diagram-card + figure.diagram-card { margin-top: 28px; }
+.diagram-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px 20px; flex-wrap: wrap; }
+.diagram-head .card-title { margin: 8px 0 4px; }
+.mmd-copy { flex: none; font-family: var(--font-cn); font-size: 12px; line-height: 1; padding: 7px 11px; border-radius: 6px; border: 1px solid var(--az-border-2);
+             background: var(--az-surface); color: var(--az-orchid-deep); cursor: pointer; white-space: nowrap; }
+.mmd-copy:hover { border-color: var(--az-orchid); }
+.mmd-copy.done { background: var(--az-orchid); border-color: var(--az-orchid); color: #fff; }
+.howto { font-size: 14px; line-height: 1.7; color: var(--az-ink-2); margin: 10px 0 14px; padding: 8px 14px; background: var(--az-surface-2); border-left: 3px solid var(--az-orchid); border-radius: 6px; }
+.diagram { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; background: #fff; border: 1px solid var(--az-border); border-radius: 8px; padding: 14px; }
+.diagram pre.mermaid { margin: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--az-ink-3); white-space: pre; }
+.js .diagram pre.mermaid:not([data-processed]) { visibility: hidden; height: 240px; overflow: hidden; }
+.mermaid-failed .diagram pre.mermaid { visibility: visible !important; height: auto !important; }
+.diagram svg { display: block; margin: 0 auto; height: auto; }
+.render-note { display: none; font-size: 13px; color: var(--az-warn); margin: 0 0 8px; }
+.mermaid-failed .render-note { display: block; }
+.scroll-hint { display: none; margin: 6px 0 0; font-size: 12px; color: var(--az-ink-3); text-align: right; }
+.diagram-card.is-overflowing .scroll-hint { display: block; }
+.points { margin-top: 14px; }
+.points li { font-size: 14px; line-height: 1.7; }
+.explain { margin: 16px 0 0; font-size: 15px; line-height: 1.85; color: var(--az-ink-2); max-width: 860px; }
+.explain p { margin: 0 0 10px; }
+
+.files-table { min-width: 0; }
+.files-table code { overflow-wrap: anywhere; }
+.files-table td:first-child { white-space: normal; width: 30%; }
+.files-table tr.group td { width: auto; background: var(--az-orchid-mist); color: var(--az-orchid-deep); font-weight: 700; font-size: 13px; letter-spacing: .06em; padding: 9px 16px; }
+.tag-mine { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: var(--az-orchid-tint); color: var(--az-orchid-deep); font-size: 11.5px; font-weight: 700; white-space: nowrap; vertical-align: 1px; }
+
+@media (min-width: 1240px) {
+  .diagram-card.is-wide { box-sizing: border-box; width: min(1440px, calc(100vw - 64px)); margin-left: calc(50% - min(720px, calc(50vw - 32px))); }
+}
+@media (max-width: 900px) {
+  .hero.hero-sm h1 { font-size: 36px; }
+}
+@media (max-width: 600px) {
+  figure.diagram-card { padding: 18px 14px 16px; }
+  .diagram { padding: 10px; }
+  .files-table thead { display: none; }
+  .files-table, .files-table tbody, .files-table tr, .files-table td { display: block; width: auto; }
+  .files-table tr { border-bottom: 1px solid var(--az-border); padding: 10px 0; }
+  .files-table tr:nth-child(even) td { background: transparent; }
+  .files-table td { border: 0; padding: 3px 14px; }
+  .files-table td:first-child { width: auto; }
+  .files-table td[data-label]::before { content: attr(data-label); display: block; font-size: 11.5px; font-weight: 700; color: var(--az-ink-3); letter-spacing: .06em; }
+  .files-table tr.group { padding: 0; }
+}
+@media print {
+  .mmd-copy, .scroll-hint, .back-row { display: none !important; }
+  .az-chevron-pattern::before { display: none; }
+  .diagram { overflow: visible; border: 0; padding: 0; }
+  .diagram svg { min-width: 0 !important; max-width: 100% !important; }
+  .diagram-card { break-inside: avoid; box-shadow: none; }
+  .diagram-card.is-wide { width: auto; margin-left: 0; }
+}
+</style>
+</head>
+<body class="theme-light az-chevron-pattern">
+<div class="wrap">
+
+  <header class="header-row">
+    <a class="az-lockup" href="index.html">
+      <span class="az-mark" role="img" aria-label="埃知科技"></span>
+      <span>
+        <div class="wm">埃知科技</div>
+        <div class="sub">上海埃知科技有限公司</div>
+      </span>
+    </a>
+    <span class="deck-meta">架构图 · 手册 v1.4 · 2026-10-18</span>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero-sm">
+    <div class="az-ghost"></div>
+    <div style="position:relative; z-index:1;">
+      <div class="az-eyebrow">阿特拉斯中国 · Copilot 智能体工作坊 · 架构图</div>
+      <h1 class="az-title">这个项目是怎么搭起来的</h1>
+      <h2 class="az-title tail">业务逻辑 → 技术架构 → 一次请求走一遍</h2>
+      <div class="az-rule"></div>
+      <p class="lead">同一个项目，三种看法：业务同事关心「谁在用、拿到什么」（业务逻辑图）；开发者关心「核心几个代码文件怎么配合」（技术架构图）；排查问题时要知道「一句话进来以后，每一步发生了什么」（时序图）。图里的文件名、接口路径和函数名都按仓库代码核对过（2026-10-18）。</p>
+      <div class="back-row">
+        <a class="az-btn az-btn-ghost" href="index.html">← 回到实操手册</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 目录 + 图例 ===== -->
+  <nav class="toc az-card">
+    <div class="az-eyebrow">目录</div>
+    <ol>
+      <li><a href="#biz">业务逻辑图 · 谁在用、拿到什么</a></li>
+      <li><a href="#tech">技术架构图 · 核心文件怎么配合（3 张）</a></li>
+      <li><a href="#seq">时序图 · 一句话进来以后</a></li>
+      <li><a href="#files">核心文件一览</a></li>
+    </ol>
+    <div class="az-eyebrow" style="margin-top:22px;">图例</div>
+    <ul class="legend">
+      <li><span class="sw person"></span>人</li>
+      <li><span class="sw agent"></span>智能体 / 核心代码</li>
+      <li><span class="sw rule"></span>你会改的规则</li>
+      <li><span class="sw code"></span>代码 / 配置文件</li>
+      <li><span class="sw data"></span>数据 / 生成的文件</li>
+      <li><span class="sw out"></span>产出</li>
+      <li><span class="sw ext"></span>外部服务</li>
+      <li><span class="ln thick"></span>主流程</li>
+      <li><span class="ln"></span>调用 / 读写</li>
+      <li><span class="ln dash"></span>规则、配置、浏览器直接打开</li>
+    </ul>
+    <p class="az-sub" style="margin-top:12px;">箭头上的字说明两者怎么配合；箭头方向是「谁调用谁 / 数据往哪走」。每张图右上角都能复制 Mermaid 源码，粘贴到支持 Mermaid 的编辑器（如 VS Code 的 Markdown 预览）里改。</p>
+  </nav>
+
+  <!-- ===== 1 业务逻辑图 ===== -->
+  <section class="section" id="biz">
+    <div class="section-head">
+      <div class="az-eyebrow">图 1 · 业务逻辑</div>
+      <h2 class="az-title">信息 → 洞察 → 汇报：谁在用、拿到什么</h2>
+      <div class="az-rule"></div>
+      <p class="az-sub">写给不写代码的同事：不需要懂任何技术名词也能看懂</p>
+    </div>
+    <figure class="az-card diagram-card">
+      <div class="diagram-head">
+        <div>
+          <div class="card-no">图 1</div>
+          <h3 class="card-title">业务逻辑图</h3>
+        </div>
+        <button class="mmd-copy" type="button" data-target="d1">复制 Mermaid 源码</button>
+      </div>
+      <p class="howto"><b>怎么读这张图</b>：从上往下读。最上面是开发者，中间是两个智能体把新闻变成周报、把周报变成 PPT，最下面是业务同事；粗线是主流程，虚线是「规则」：开发者改了规则，智能体的做法就跟着变。</p>
+      <p class="render-note">图没有画出来（vendor/mermaid.min.js 没加载成功），下面显示的是 Mermaid 源码。</p>
+      <div class="diagram"><pre class="mermaid" id="d1">
+flowchart TB
+  accTitle: 业务逻辑图
+  accDescr: 行业新闻经 Lab-01 行业洞察智能体变成每周周报，Lab-02 知识总结智能体把周报做成 PPT，业务同事在 Lab-03 Copilot Studio 里一句话拿到洞察和 PPT；开发者在 VS Code 里用 GitHub Copilot 造能力、改规则。
+
+  DEV(["开发者（今天的你）&lt;br/>在 VS Code 里用 GitHub Copilot&lt;br/>造能力、改规则"])
+
+  FOCUS["focus.md&lt;br/>看哪些行业、看什么"]
+  TOOLS["MCP 工具&lt;br/>抓新闻、去重、附原文链接"]
+  NEWS[("行业媒体 RSS&lt;br/>+ Google News")]
+  TIMER{{"gh-aw 定时任务&lt;br/>每周一 08:00（北京时间）"}}
+  L1["&lt;b>Lab-01 行业洞察智能体&lt;/b>&lt;br/>收集新闻 → 挑重点 → 判断对业务的影响"]
+
+  SKILL["SKILL.md&lt;br/>团队汇报规范"]
+  STYLE["网页风格&lt;br/>PPT 配色和版式"]
+  REPORT["每周周报&lt;br/>每条结论附原文链接&lt;br/>（经 PR 人工审核）"]
+  ARTICLE[("任意网页文章&lt;br/>技术文章、竞品页、展会报道")]
+  L2["&lt;b>Lab-02 知识总结智能体&lt;/b>&lt;br/>结论 → 要点 → 建议"]
+  PPT["可编辑的 PPT"]
+
+  L3["&lt;b>Lab-03 Copilot Studio&lt;/b>&lt;br/>「业务汇报助手」"]
+  BIZ(["业务同事&lt;br/>销售、产品、市场"])
+
+  DEV -.-> FOCUS &amp; TOOLS
+  DEV -.-> SKILL &amp; STYLE
+  L1 ~~~ SKILL &amp; STYLE
+  FOCUS -.->|决定看什么| L1
+  TOOLS -.-> L1
+  NEWS ==> L1
+  TIMER -->|自动运行| L1
+  L1 ==> REPORT
+  SKILL -.->|决定怎么写| L2
+  STYLE -.-> L2
+  REPORT ==>|作为素材| L2
+  ARTICLE -->|也可以| L2
+  L2 ==> PPT
+  REPORT &lt;-->|查本周洞察| L3
+  L2 &lt;-->|生成汇报| L3
+  PPT -->|下载链接| L3
+  L3 &lt;==>|"一句话提问 ⇄ 结论 + PPT"| BIZ
+
+  classDef person fill:#9A3F85,stroke:#9A3F85,color:#FFFFFF
+  classDef agent fill:#F4E4F0,stroke:#BD59A5,stroke-width:2px,color:#2D1E3A
+  classDef rule fill:#FFFFFF,stroke:#BD59A5,stroke-width:1.5px,stroke-dasharray:5 3,color:#2D1E3A
+  classDef ext fill:#FFFFFF,stroke:#7E6F8A,stroke-dasharray:3 3,color:#4B3A5B
+  classDef trigger fill:#FFFFFF,stroke:#9A3F85,color:#2D1E3A
+  classDef out fill:#BD59A5,stroke:#BD59A5,color:#FFFFFF
+  class DEV,BIZ person
+  class L1,L2,L3 agent
+  class FOCUS,TOOLS,SKILL,STYLE rule
+  class NEWS,ARTICLE ext
+  class TIMER trigger
+  class REPORT,PPT out
+</pre></div>
+      <p class="scroll-hint">图比屏幕宽，可以左右滑动查看</p>
+      <div class="explain">
+        <p>整个项目是一条「信息 → 洞察 → 汇报」的流水线。<b>行业洞察智能体</b>（Lab-01）去行业媒体和 Google News 收集近 7 天的新闻，按 <code>focus.md</code> 里写的行业和关注点挑出值得汇报的事件，判断对我们业务的影响，写成每条结论都附原文链接的周报。</p>
+        <p>云端版由 gh-aw 每周一早上 8 点（北京时间）在 GitHub 上自动运行；它不能直接改仓库，结果先变成一个 Pull Request，有人审核、合并后才算正式发布。</p>
+        <p><b>知识总结智能体</b>（Lab-02）把周报（也可以是任意一篇网页文章）按 <code>SKILL.md</code> 里的团队汇报规范，整理成可以直接编辑的 PPT。</p>
+        <p>业务同事不用打开 VS Code：在 Copilot Studio 的「业务汇报助手」（Lab-03）里说一句话，它自己决定先查洞察、再生成 PPT，把结论和 PPT 的进度页链接发回来，几分钟后在那个页面下载。</p>
+        <p>开发者（今天的你）用 GitHub Copilot 造这些能力、改这些规则：改 <code>focus.md</code> 换行业、加 MCP 工具、改 <code>SKILL.md</code> 定规范、加网页风格，都不用从零写代码。</p>
+      </div>
+    </figure>
+  </section>
+
+  <!-- ===== 2 技术架构图 ===== -->
+  <section class="section" id="tech">
+    <div class="section-head">
+      <div class="az-eyebrow">图 2 · 技术架构</div>
+      <h2 class="az-title">核心几个代码文件之间是怎么配合的</h2>
+      <div class="az-rule"></div>
+      <p class="az-sub">一张图放不下，按 Lab 拆成三张：Lab-01 内部、Lab-03 到 Lab-02 的接口、Lab-02 内部的生成链路</p>
+    </div>
+
+    <figure class="az-card diagram-card" id="tech-lab01">
+      <div class="diagram-head">
+        <div>
+          <div class="card-no">图 2-1 · 开发环境 + Lab-01 + gh-aw</div>
+          <h3 class="card-title">Lab-01 内部：一套工具函数，两个入口</h3>
+        </div>
+        <button class="mmd-copy" type="button" data-target="d2a">复制 Mermaid 源码</button>
+      </div>
+      <p class="howto"><b>怎么读这张图</b>：先找中间的 <code>industry_tools.py</code>，干活的代码都在这里。左上是 VS Code 这个入口（经 <code>server.py</code>，MCP 协议），右上是 gh-aw 这个入口（经 <code>cli.py</code>，命令行）；下面一排是它读写的文件；右上角的 Lab-02 读最后生成的 <code>report.json</code>。</p>
+      <p class="render-note">图没有画出来（vendor/mermaid.min.js 没加载成功），下面显示的是 Mermaid 源码。</p>
+      <div class="diagram"><pre class="mermaid" id="d2a">
+flowchart TB
+  accTitle: Lab-01 内部：一套工具函数，两个入口
+  accDescr: VS Code 通过 server.py（MCP）调用 industry_tools.py，gh-aw 通过 cli.py 调用同一套函数；函数读取 focus.md 和 sources.json，抓取 RSS 和 Google News，写出 raw_signals 和周报并同步到 frontend；模型的研判写进 insights.json（VS Code 里由 server.py 写，gh-aw 里由云端智能体写）；gh-aw 用 safe-outputs 开 PR，人审核后合并。
+
+  subgraph VSC["开发环境 · Codespace 里的 VS Code"]
+    CHAT["Copilot Chat（Agent 模式）&lt;br/>输入 /industry-insight"]
+    PROMPT[".github/prompts/&lt;br/>industry-insight.prompt.md"]
+    MCPJSON[".vscode/mcp.json"]
+  end
+
+  subgraph AW["gh-aw · GitHub Actions"]
+    WFMD[".github/workflows/industry-insight.md&lt;br/>gh aw compile → .lock.yml"]
+    AGENT["云端智能体（防火墙内）&lt;br/>engine: copilot&lt;br/>model: claude-sonnet-5.5"]
+    PR["Pull Request&lt;br/>人审核后合并"]
+  end
+
+  subgraph LAB1["Lab-01-Industry-Insight/"]
+    SERVER["mcp_server/server.py&lt;br/>MCP 服务器（stdio）"]
+    CLI["mcp_server/cli.py&lt;br/>命令行入口"]
+    TOOLS["&lt;b>mcp_server/industry_tools.py&lt;/b>&lt;br/>read_focus()&lt;br/>fetch_industry_signals()&lt;br/>get_signals()&lt;br/>build_weekly_report()"]
+    FOCUS["focus.md"]
+    SRC["input/&lt;br/>sources.json"]
+    RAW["output/&lt;br/>raw_signals.json"]
+    INS["output/&lt;br/>insights.json&lt;br/>（模型的研判）"]
+    REPORT["report.md · report.json&lt;br/>写到 output/&lt;br/>同步到 frontend/"]
+    WEB["frontend/index.html · main.js&lt;br/>周报网页"]
+  end
+
+  NET[("行业媒体 RSS&lt;br/>Google News RSS")]
+  LAB2["Lab-02 lib/insight.ts&lt;br/>（见图 2-2）"]
+
+  CHAT -->|读取| PROMPT
+  CHAT -->|"调用 4 个 MCP 工具"| SERVER
+  MCPJSON -->|"注册，stdio 启动"| SERVER
+  WFMD -->|"每周一 08:00 · 手动触发"| AGENT
+  SERVER -->|import| TOOLS
+  CLI -->|import| TOOLS
+  TOOLS -->|读取| FOCUS
+  TOOLS -->|读取| SRC
+  TOOLS -->|HTTP GET| NET
+  TOOLS -->|"写入、读取"| RAW
+  SERVER -->|"写入（insights 参数）"| INS
+  AGENT --> INS
+  AGENT -->|"mcp-scripts 调用"| CLI
+  TOOLS -->|"读取、校验"| INS
+  TOOLS -->|写入| REPORT
+  AGENT -->|safe-outputs| PR
+  PR -->|"合并后更新 frontend/"| REPORT
+  WEB -->|fetch report.md| REPORT
+  LAB2 -->|读取| REPORT
+
+  classDef core fill:#F4E4F0,stroke:#9A3F85,stroke-width:2px,color:#2D1E3A
+  classDef code fill:#FFFFFF,stroke:#D998C9,color:#2D1E3A
+  classDef rule fill:#FFFFFF,stroke:#BD59A5,stroke-width:1.5px,stroke-dasharray:5 3,color:#2D1E3A
+  classDef data fill:#F1EAEF,stroke:#D3C6D0,color:#4B3A5B
+  classDef ext fill:#FFFFFF,stroke:#7E6F8A,stroke-dasharray:3 3,color:#4B3A5B
+  classDef agent fill:#F4E4F0,stroke:#BD59A5,stroke-width:2px,color:#2D1E3A
+  classDef out fill:#BD59A5,stroke:#BD59A5,color:#FFFFFF
+  class TOOLS core
+  class SERVER,CLI,WEB,PROMPT,MCPJSON,WFMD code
+  class FOCUS rule
+  class SRC,RAW,INS,PR data
+  class REPORT out
+  class NET,LAB2 ext
+  class CHAT,AGENT agent
+</pre></div>
+      <p class="scroll-hint">图比屏幕宽，可以左右滑动查看</p>
+      <ul class="az-list points">
+        <li>抓取、去重、编号（S001…）、校验引用、回填原文链接这些确定性的活都在 <code>industry_tools.py</code>；模型只负责挑重点、判断影响，结果写进 <code>insights.json</code>，引用了不存在的信号 ID 会被剔除，全部不合格就走兜底模式。</li>
+        <li>同一套函数，两种包装：<code>server.py</code> 用 <code>@server.tool()</code> 注册成 MCP 工具给 VS Code；<code>cli.py</code> 做成 <code>python cli.py &lt;工具名&gt; [JSON]</code> 给 gh-aw 的 mcp-scripts。所以 Lab-01 第 3 步加「客户雷达」要在两处都注册。</li>
+        <li>大块数据落盘、只传文件路径：<code>raw_signals.json</code> → <code>insights.json</code> → <code>report.*</code>（gh-aw 单个参数有 10KB 上限）。<code>output/</code> 不入库，<code>frontend/</code> 入库。</li>
+        <li>云端智能体只有读权限，还被防火墙限制在 <code>network.allowed</code> 白名单里；它的结果只能经 safe-outputs 开 PR，人审核合并后 <code>frontend/report.*</code> 才更新。</li>
+      </ul>
+    </figure>
+
+    <figure class="az-card diagram-card" id="tech-lab03">
+      <div class="diagram-head">
+        <div>
+          <div class="card-no">图 2-2 · Lab-03 + Lab-02 接口层</div>
+          <h3 class="card-title">Lab-03 → Lab-02：Studio 的 4 个工具打到哪些代码</h3>
+        </div>
+        <button class="mmd-copy" type="button" data-target="d2b">复制 Mermaid 源码</button>
+      </div>
+      <p class="howto"><b>怎么读这张图</b>：从上往下就是一个请求的路线。Studio 的 4 个工具 → 公网端口 3000 → 先过 <code>checkApiKey()</code> → 对应的路由 → <code>lib/</code> 里的代码。虚线是业务同事在浏览器里直接打开的网页和下载，不经过密钥检查。</p>
+      <p class="render-note">图没有画出来（vendor/mermaid.min.js 没加载成功），下面显示的是 Mermaid 源码。</p>
+      <div class="diagram"><pre class="mermaid" id="d2b">
+flowchart TB
+  accTitle: Lab-03 到 Lab-02：Studio 的 4 个工具打到哪些代码
+  accDescr: 业务同事对 Studio 智能体说一句话，智能体通过自定义连接器带上 x-api-key 请求 Codespace 公网端口 3000；Lab-02 先用 checkApiKey 校验密钥，再进入对应路由，分别调用 lib/insight.ts、lib/job-request.ts 和 lib/jobs.ts；周报页、进度页和下载链接在浏览器里直接打开，不检查密钥。
+
+  BIZ(["业务同事"])
+
+  subgraph ST["Lab-03 · Copilot Studio（Power Platform）"]
+    AG["「业务汇报助手」&lt;br/>指令 + 编排：决定调哪个工具"]
+    CONN["自定义连接器 · 4 个工具&lt;br/>由 openapi.yaml（Swagger 2.0）导入&lt;br/>连接里存着 x-api-key"]
+  end
+
+  PORT{{"Codespace 公网端口 3000（Public）&lt;br/>‹codespace›-3000.app.github.dev"}}
+
+  subgraph L2["Lab-02-Knowledge-Summary · Next.js"]
+    GATE["lib/api.ts · checkApiKey()&lt;br/>x-api-key 对比 .env 的 LAB_API_KEY"]
+    R1["GET /api/insight/latest&lt;br/>GetIndustryInsight"]
+    R2["POST /api/jobs/insight&lt;br/>POST /api/jobs/webpage&lt;br/>Create…Presentation"]
+    R3["GET /api/jobs/{id}&lt;br/>GetPresentationJob"]
+    INS["lib/insight.ts&lt;br/>loadLatestReport() · filterByTopic()"]
+    JR["lib/job-request.ts&lt;br/>handleCreateJob()"]
+    JOBS["lib/jobs.ts&lt;br/>createJob() · getJob()"]
+    PAGES["/insight · /jobs/{id} · /api/download&lt;br/>周报页、进度页、下载"]
+  end
+
+  REP["Lab-01 report.json&lt;br/>output/ 优先，frontend/ 兜底"]
+  GEN["后台生成 .pptx&lt;br/>（见图 2-3）"]
+
+  BIZ -->|说一句话| AG
+  AG -->|"选工具、填参数"| CONN
+  CONN -->|"HTTPS + x-api-key"| PORT
+  PORT -->|API 请求| GATE
+  GATE -->|通过| R1
+  GATE -->|通过| R2
+  GATE -->|通过| R3
+  R1 --> INS
+  INS -->|读取| REP
+  R2 --> JR
+  JR -->|"createJob()，立即回 202"| JOBS
+  R3 -->|"getJob()"| JOBS
+  JOBS -->|"排队，一次一个"| GEN
+  BIZ -.->|"浏览器打开回复里的链接"| PORT
+  PORT -.->|"不检查密钥"| PAGES
+  PAGES -.->|"进度页调 getJob()"| JOBS
+
+  classDef person fill:#9A3F85,stroke:#9A3F85,color:#FFFFFF
+  classDef agent fill:#F4E4F0,stroke:#BD59A5,stroke-width:2px,color:#2D1E3A
+  classDef core fill:#F4E4F0,stroke:#9A3F85,stroke-width:2px,color:#2D1E3A
+  classDef code fill:#FFFFFF,stroke:#D998C9,color:#2D1E3A
+  classDef rule fill:#FFFFFF,stroke:#BD59A5,stroke-width:1.5px,stroke-dasharray:5 3,color:#2D1E3A
+  classDef data fill:#F1EAEF,stroke:#D3C6D0,color:#4B3A5B
+  classDef ext fill:#FFFFFF,stroke:#7E6F8A,stroke-dasharray:3 3,color:#4B3A5B
+  classDef gate fill:#FFFFFF,stroke:#9A3F85,stroke-width:2px,color:#2D1E3A
+  class BIZ person
+  class AG agent
+  class CONN rule
+  class PORT ext
+  class GATE gate
+  class R1,R2,R3,PAGES code
+  class INS,JR,JOBS core
+  class REP data
+  class GEN ext
+</pre></div>
+      <p class="scroll-hint">图比屏幕宽，可以左右滑动查看</p>
+      <ul class="az-list points">
+        <li>4 个工具就是 <code>openapi.yaml</code> 里的 4 个 operationId，各对一个路由。<code>summary</code> 成了 Studio 里的工具名，<code>description</code> 决定编排器什么时候调用它。</li>
+        <li>密钥只检查一道：<code>lib/api.ts</code> 的 <code>checkApiKey()</code> 比对请求头 <code>x-api-key</code> 和 <code>.env</code> 里的 <code>LAB_API_KEY</code>。Studio 用的 4 个 API 都要带；周报页、进度页、下载链接和首页（含它用的 <code>/api/generate/stream</code>）不检查。</li>
+        <li>生成 PPT 要几分钟，而 Studio 调工具有超时，所以 <code>POST /api/jobs/*</code> 只建任务、立刻返回 202 和 <code>progressPageUrl</code>，真正的生成在后台排队（见图 2-3）。</li>
+      </ul>
+    </figure>
+
+    <figure class="az-card diagram-card" id="tech-lab02">
+      <div class="diagram-head">
+        <div>
+          <div class="card-no">图 2-3 · Lab-02 内部</div>
+          <h3 class="card-title">Lab-02 内部：一个任务怎么变成 .pptx</h3>
+        </div>
+        <button class="mmd-copy" type="button" data-target="d2c">复制 Mermaid 源码</button>
+      </div>
+      <p class="howto"><b>怎么读这张图</b>：从上往下。两种入口（Studio 的任务、网页首页）都进 <code>generate.ts</code>；<code>copilot.ts</code> 把活交给 Copilot SDK，SDK 启动 Copilot CLI，CLI 一边问模型、一边按 <code>.github/skills</code> 里的两个 skill 干活，最后在会话目录里留下 .pptx。</p>
+      <p class="render-note">图没有画出来（vendor/mermaid.min.js 没加载成功），下面显示的是 Mermaid 源码。</p>
+      <div class="diagram"><pre class="mermaid" id="d2c">
+flowchart TB
+  accTitle: Lab-02 内部：一个任务怎么变成 .pptx
+  accDescr: lib/jobs.ts 的后台任务和首页的 SSE 接口都调用 lib/generate.ts；generate.ts 建会话目录、准备素材，再调用 lib/copilot.ts；copilot.ts 通过 Copilot SDK 启动 Copilot CLI 子进程，CLI 和模型多轮配合，按 .github/skills 里的 knowledge2ppt 和 pptx 两个 skill 在会话目录里生成 .pptx。
+
+  JOBS["lib/jobs.ts · run()&lt;br/>Studio 提交的任务，一次跑一个"]
+  SSE["首页 app/page.tsx&lt;br/>→ app/api/generate/stream/route.ts（SSE）"]
+  GEN["&lt;b>lib/generate.ts&lt;/b>&lt;br/>generatePresentation()"]
+  PF["lib/ppt-files.ts&lt;br/>createSessionDir()&lt;br/>waitForGeneratedPptx()"]
+  INS["lib/insight.ts&lt;br/>loadLatestReport()&lt;br/>reportToMarkdown()"]
+  COP["&lt;b>lib/copilot.ts&lt;/b>&lt;br/>runKnowledgeToPpt()"]
+  ENV[".env&lt;br/>COPILOT_GITHUB_TOKEN"]
+  subgraph RT["Lab-02 node_modules/@github/"]
+    SDK["copilot-sdk&lt;br/>CopilotClient"]
+    CLI["copilot&lt;br/>Copilot CLI 子进程"]
+  end
+  LLM[("Copilot 模型&lt;br/>默认 gpt-5.4")]
+  subgraph SK[".github/skills/"]
+    K2P["knowledge2ppt/SKILL.md&lt;br/>团队汇报规范 + 工作流程"]
+    PPTX["pptx/scripts/html2pptx.js&lt;br/>Playwright + pptxgenjs"]
+  end
+  OUT["output/‹sessionId›/&lt;br/>source.md → outline.md&lt;br/>→ slide*.html → .pptx"]
+  CHAT["VS Code Copilot Chat&lt;br/>（Lab-02 第 1 步）"]
+
+  JOBS -->|调用| GEN
+  SSE -->|调用| GEN
+  GEN -->|建会话目录| PF
+  GEN -->|"读周报、转 Markdown"| INS
+  GEN -->|调用| COP
+  ENV -.->|令牌| COP
+  COP -->|"createSession()：skillDirectories、workingDirectory&lt;br/>sendAndWait(提示词)"| SDK
+  SDK -->|"启动子进程&lt;br/>JSON-RPC over stdio"| CLI
+  CLI &lt;-->|HTTPS| LLM
+  CLI -->|"按 skillDirectories 加载"| K2P
+  K2P -->|按流程调用| PPTX
+  CLI -->|"写 outline.md、slide*.html"| OUT
+  PPTX -->|"生成 .pptx"| OUT
+  GEN -->|"写 source.md（周报素材）"| OUT
+  PF -->|"找到新 .pptx"| OUT
+  CHAT -.->|也读这一份| K2P
+
+  classDef core fill:#F4E4F0,stroke:#9A3F85,stroke-width:2px,color:#2D1E3A
+  classDef code fill:#FFFFFF,stroke:#D998C9,color:#2D1E3A
+  classDef rule fill:#FFFFFF,stroke:#BD59A5,stroke-width:1.5px,stroke-dasharray:5 3,color:#2D1E3A
+  classDef data fill:#F1EAEF,stroke:#D3C6D0,color:#4B3A5B
+  classDef ext fill:#FFFFFF,stroke:#7E6F8A,stroke-dasharray:3 3,color:#4B3A5B
+  classDef agent fill:#F4E4F0,stroke:#BD59A5,stroke-width:2px,color:#2D1E3A
+  class GEN,COP core
+  class JOBS,SSE,PF,INS,SDK,CLI,PPTX code
+  class K2P rule
+  class ENV,OUT data
+  class LLM ext
+  class CHAT agent
+</pre></div>
+      <p class="scroll-hint">图比屏幕宽，可以左右滑动查看</p>
+      <ul class="az-list points">
+        <li><code>copilot.ts</code> 只做三件事：用 <code>COPILOT_GITHUB_TOKEN</code> 启动 SDK 客户端并选模型（默认 <code>gpt-5.4</code>，可用 <code>COPILOT_MODEL</code> 改）；<code>createSession()</code> 时把 <code>skillDirectories</code> 指向仓库根目录的 <code>.github/skills</code>；发出「请使用 knowledge2ppt skill……」这段提示词，并把事件流转给调用方。</li>
+        <li>真正干活的是 SDK 启动的 Copilot CLI 子进程：它和模型来回多轮，按 SKILL.md 写大纲、写每页 HTML、运行 pptx skill 的 <code>html2pptx.js</code>（用 Playwright 的 Chromium 渲染，pptxgenjs 出文件）。</li>
+        <li>Chat、网页、Studio 读的是同一份 <code>.github/skills</code>：Lab-02 第 2 步改的 SKILL.md，三个入口同时生效。</li>
+      </ul>
+    </figure>
+  </section>
+
+  <!-- ===== 3 时序图 ===== -->
+  <section class="section" id="seq">
+    <div class="section-head">
+      <div class="az-eyebrow">图 3 · 时序</div>
+      <h2 class="az-title">一句话进来以后：每一步发生了什么</h2>
+      <div class="az-rule"></div>
+      <p class="az-sub">以 Lab-03 第 5 句测试为例：「看看本周食品饮料行业有什么变化，整理成汇报」</p>
+    </div>
+    <figure class="az-card diagram-card is-wide">
+      <div class="diagram-head">
+        <div>
+          <div class="card-no">图 3</div>
+          <h3 class="card-title">时序图：从 Studio 到 .pptx</h3>
+        </div>
+        <button class="mmd-copy" type="button" data-target="d3">复制 Mermaid 源码</button>
+      </div>
+      <p class="howto"><b>怎么读这张图</b>：从上往下是时间顺序，编号是步骤。前半段是同步的问答，几秒内结束；「后台：生成 PPT」和「业务同事：看进度」两段同时进行，要 2~5 分钟；中间浅色框里的都在你的 Codespace 里运行。</p>
+      <p class="render-note">图没有画出来（vendor/mermaid.min.js 没加载成功），下面显示的是 Mermaid 源码。</p>
+      <div class="diagram"><pre class="mermaid" id="d3">
+sequenceDiagram
+  accTitle: 一次请求的全过程
+  accDescr: 业务同事在 Copilot Studio 里要本周食品饮料行业的洞察和汇报；Studio 先调用查询本周行业洞察，再调用把行业洞察做成汇报 PPT；Lab-02 立即返回任务号和进度页，后台用 Copilot SDK 和 Copilot CLI 生成 .pptx，业务同事在进度页查看并下载。
+  autonumber
+  actor U as 业务同事
+  participant S as Copilot Studio&lt;br/>业务汇报助手
+  box rgb(251,246,250) 你的 Codespace · Lab-02 服务
+    participant P as 公网端口 3000&lt;br/>（Public）
+    participant N as Next.js 路由&lt;br/>app/…
+    participant J as lib/jobs.ts
+    participant G as lib/generate.ts&lt;br/>lib/copilot.ts
+    participant K as Copilot SDK&lt;br/>→ Copilot CLI
+  end
+  participant M as Copilot 模型
+
+  U->>S: 看看本周食品饮料行业&lt;br/>有什么变化，&lt;br/>整理成汇报
+  Note over S: 按指令：&lt;br/>先查洞察，&lt;br/>再生成汇报
+  S->>P: 「查询本周行业洞察」&lt;br/>GET /api/insight/latest&lt;br/>?topic=食品饮料&lt;br/>带请求头 x-api-key
+  P->>N: app/api/insight/&lt;br/>latest/route.ts
+  N->>N: checkApiKey()&lt;br/>（lib/api.ts）
+  N->>N: lib/insight.ts&lt;br/>loadLatestReport()&lt;br/>filterByTopic()&lt;br/>读 Lab-01 report.json
+  N-->>S: 200：摘要、热点、&lt;br/>reportPageUrl
+  S->>P: 「把行业洞察做成&lt;br/>汇报 PPT」&lt;br/>POST /api/jobs/insight&lt;br/>topic、pages、style
+  P->>N: app/api/jobs/&lt;br/>insight/route.ts
+  N->>J: handleCreateJob()&lt;br/>→ createJob()
+  J-->>N: jobId（queued）
+  N-->>S: 202：jobId、&lt;br/>progressPageUrl
+  S-->>U: 洞察结论&lt;br/>+ 进度页链接
+
+  par 后台：生成 PPT（2~5 分钟）
+    J->>G: run() →&lt;br/>generatePresentation()
+    G->>G: 建 output/‹sessionId›/&lt;br/>写 source.md
+    G->>K: runKnowledgeToPpt()&lt;br/>createSession()&lt;br/>sendAndWait()
+    loop 多轮
+      K->>M: 提示词 + skills&lt;br/>+ 上一步结果
+      M-->>K: 下一步：&lt;br/>写 outline.md、&lt;br/>写 slide*.html、&lt;br/>跑 html2pptx.js
+    end
+    K-->>G: 会话结束
+    G->>G: waitForGeneratedPptx()
+    G-->>J: status=succeeded
+  and 业务同事：看进度
+    U->>P: 打开进度页
+    P->>N: app/jobs/[id]/&lt;br/>page.tsx
+    N->>J: getJob()
+    N-->>U: 「生成中」&lt;br/>每 5 秒自动刷新
+  end
+
+  opt 也可以在 Studio 里问「PPT 做好了吗？」
+    U->>S: PPT 做好了吗？
+    S->>P: 「查询 PPT 生成进度」&lt;br/>GET /api/jobs/{id}
+    P->>N: app/api/jobs/&lt;br/>[id]/route.ts
+    N->>J: getJob()
+    N-->>S: downloadUrl
+    S-->>U: 下载链接
+  end
+
+  U->>P: 点下载链接
+  P->>N: app/api/download/&lt;br/>route.ts
+  N->>N: resolveDownloadPath()&lt;br/>（lib/ppt-files.ts）
+  N-->>U: .pptx 文件
+</pre></div>
+      <p class="scroll-hint">图比屏幕宽，可以左右滑动查看</p>
+      <ul class="az-list points">
+        <li>端口 3000 是 Private 时，请求在「公网端口 3000」这一步就被 GitHub 挡掉（302 / 401），根本到不了 Next.js：这就是 smoke-test 要先检查的原因。</li>
+        <li>密钥不对时，请求能到 Next.js，但 <code>checkApiKey()</code> 直接回 401，Studio 的工具卡片显示 <code>connectorAuthorizationError</code>。</li>
+        <li>生成要几分钟，所以 Studio 只拿任务号和进度页链接就回复业务同事；进度页每 5 秒自动刷新，任务完成后出现下载链接。</li>
+      </ul>
+    </figure>
+  </section>
+
+  <!-- ===== 4 核心文件一览 ===== -->
+  <section class="section" id="files">
+    <div class="section-head">
+      <div class="az-eyebrow">核心文件一览</div>
+      <h2 class="az-title">每个文件干什么，谁用它，它用谁</h2>
+      <div class="az-rule"></div>
+      <p class="az-sub">标着「你会改」的，是课上要亲手（或让 Copilot）改的文件</p>
+    </div>
+    <div class="az-card" style="padding:0; overflow:auto;">
+      <table class="az-table files-table">
+        <thead><tr><th>文件</th><th>干什么</th><th>谁用它 / 它用谁</th></tr></thead>
+        <tbody>
+          <tr class="group"><td colspan="3">开发环境 · 仓库根目录</td></tr>
+          <tr><td><code>.devcontainer/devcontainer.json</code></td><td data-label="干什么">定义 Codespace：Python 3.12 + Node 24、4 核，转发端口 3000（Lab-02）和 8080（Lab-01 预览）</td><td data-label="谁用它 / 它用谁">创建时跑 <code>on-create.sh</code>（装 <code>.venv</code>、Lab-02 依赖、Chromium）和 <code>post-create.sh</code>（建 <code>.env</code>）</td></tr>
+          <tr><td><code>.devcontainer/set-key.sh</code></td><td data-label="干什么">把 Copilot 令牌写进 <code>Lab-02-Knowledge-Summary/.env</code>，没有 <code>LAB_API_KEY</code> 就随机生成一把</td><td data-label="谁用它 / 它用谁">开场 0.4 手动运行；Next.js 启动时加载 <code>.env</code>，<code>lib/copilot.ts</code> 用令牌，<code>lib/api.ts</code> 用密钥</td></tr>
+          <tr><td><code>.vscode/mcp.json</code></td><td data-label="干什么">注册 MCP 服务器 industry-insight：用 <code>.venv</code> 的 Python 以 stdio 方式启动 <code>server.py</code></td><td data-label="谁用它 / 它用谁">VS Code 的 Copilot Chat 读它；加了新工具要在这里点 Restart</td></tr>
+          <tr><td><code>.github/prompts/industry-insight.prompt.md</code></td><td data-label="干什么">斜杠命令 <code>/industry-insight</code>：读清单 → 抓取 → 逐个行业研判 → 生成周报</td><td data-label="谁用它 / 它用谁">在 VS Code Chat 里输入它；它指挥模型调用 industry-insight 的 4 个工具</td></tr>
+
+          <tr class="group"><td colspan="3">Lab-01-Industry-Insight · 行业洞察智能体</td></tr>
+          <tr><td><code>focus.md</code><span class="tag-mine">你会改</span></td><td data-label="干什么">行业关注清单：每个「## 行业」的搜索词、排除词、关注点，加上汇报对象和分析要求</td><td data-label="谁用它 / 它用谁"><code>parse_focus()</code> 读搜索词和排除词；模型读关注点和分析要求</td></tr>
+          <tr><td><code>mcp_server/industry_tools.py</code><span class="tag-mine">你会改</span></td><td data-label="干什么">全部逻辑：解析清单、抓取去重并编号、校验研判并回填原文链接、渲染周报（不合格走兜底）</td><td data-label="谁用它 / 它用谁">被 <code>server.py</code> 和 <code>cli.py</code> 调用；读 <code>input/sources.json</code>，写 <code>output/</code>，把周报复制到 <code>frontend/</code></td></tr>
+          <tr><td><code>mcp_server/server.py</code> · <code>cli.py</code><span class="tag-mine">你会改</span></td><td data-label="干什么">同一套函数的两个入口：<code>server.py</code> 注册成 MCP 工具，<code>cli.py</code> 做成 <code>python cli.py &lt;工具名&gt; [JSON]</code></td><td data-label="谁用它 / 它用谁">VS Code 按 <code>mcp.json</code> 启动 <code>server.py</code>；gh-aw 的 mcp-scripts 调 <code>cli.py</code></td></tr>
+          <tr><td><code>frontend/report.md</code> · <code>report.json</code></td><td data-label="干什么">已发布的周报（入库）；<code>output/</code> 下是本地运行的同名文件（不入库）</td><td data-label="谁用它 / 它用谁">周报网页 <code>index.html</code> + <code>main.js</code> 读 <code>report.md</code>；Lab-02 的 <code>lib/insight.ts</code> 读 <code>report.json</code></td></tr>
+          <tr><td><code>.github/workflows/industry-insight.md</code></td><td data-label="干什么">gh-aw 源文件：定时（每周一北京时间 08:00）、网络白名单、mcp-scripts、safe-outputs 开 PR，正文是给云端智能体的说明</td><td data-label="谁用它 / 它用谁"><code>gh aw compile</code> 生成 <code>industry-insight.lock.yml</code>，GitHub Actions 实际运行的是它</td></tr>
+
+          <tr class="group"><td colspan="3">Lab-02-Knowledge-Summary · 知识总结智能体</td></tr>
+          <tr><td><code>.github/skills/knowledge2ppt/SKILL.md</code><span class="tag-mine">你会改</span></td><td data-label="干什么">团队汇报规范 + 工作流程：读素材 → 写 <code>outline.md</code> → 调 pptx skill → 保存 .pptx</td><td data-label="谁用它 / 它用谁">VS Code Chat 自动选中它；网页服务经 SDK 的 <code>skillDirectories</code> 读同一份</td></tr>
+          <tr><td><code>.github/skills/pptx/</code></td><td data-label="干什么">通用 PPT 能力：<code>scripts/html2pptx.js</code> 把每页 HTML 转成可编辑的 .pptx</td><td data-label="谁用它 / 它用谁">被 knowledge2ppt 调用；靠 <code>NODE_PATH</code> 用 Lab-02 装好的 playwright、pptxgenjs</td></tr>
+          <tr><td><code>app/api/…/route.ts</code>（4 个）</td><td data-label="干什么"><code>insight/latest</code> 读周报；<code>jobs/insight</code>、<code>jobs/webpage</code> 提交任务、立即回 202；<code>jobs/[id]</code> 查进度</td><td data-label="谁用它 / 它用谁">Studio 的 4 个工具调用；都先过 <code>lib/api.ts</code> 的 <code>checkApiKey()</code>（另有通用的 <code>POST /api/jobs</code>，curl 调试用）</td></tr>
+          <tr><td><code>app/page.tsx</code> · <code>app/jobs/[id]/page.tsx</code> · <code>app/api/download/route.ts</code></td><td data-label="干什么">首页（经 <code>/api/generate/stream</code> 用 SSE 看进度）、任务进度页（每 5 秒刷新）、.pptx 下载</td><td data-label="谁用它 / 它用谁">在浏览器里直接打开，不检查密钥；读 <code>lib/jobs.ts</code>、<code>lib/ppt-files.ts</code>，首页调 <code>lib/generate.ts</code></td></tr>
+          <tr><td><code>lib/job-request.ts</code> · <code>lib/jobs.ts</code></td><td data-label="干什么"><code>handleCreateJob()</code> 鉴权、校验页数和风格后 <code>createJob()</code>；任务排队一次只跑一个，状态写进 <code>output/jobs/</code></td><td data-label="谁用它 / 它用谁">被 <code>POST /api/jobs*</code> 和进度页调用；<code>run()</code> 调 <code>generate.ts</code></td></tr>
+          <tr><td><code>lib/generate.ts</code></td><td data-label="干什么">一次生成的完整流程：建会话目录 → 准备素材（周报写成 <code>source.md</code>）→ 调 <code>copilot.ts</code> → 等 .pptx 落盘</td><td data-label="谁用它 / 它用谁">被 <code>jobs.ts</code> 和首页的 SSE 接口调用；用 <code>insight.ts</code>、<code>ppt-files.ts</code></td></tr>
+          <tr><td><code>lib/copilot.ts</code></td><td data-label="干什么">启动 Copilot SDK 客户端、选模型，<code>createSession()</code> 挂上 <code>.github/skills</code>，发提示词、转发事件</td><td data-label="谁用它 / 它用谁">被 <code>generate.ts</code> 调用；用 <code>@github/copilot-sdk</code>，SDK 再启动 Copilot CLI 子进程</td></tr>
+          <tr><td><code>lib/insight.ts</code></td><td data-label="干什么">读 Lab-01 周报（<code>output/</code> 优先，<code>frontend/</code> 兜底），按行业筛选，转成 Markdown 素材</td><td data-label="谁用它 / 它用谁">被 <code>/api/insight/latest</code>、<code>/insight</code> 页和 <code>generate.ts</code> 调用</td></tr>
+          <tr><td><code>lib/styles.ts</code><span class="tag-mine">你会改</span></td><td data-label="干什么">PPT 风格（咨询、极客、杂志）和页数范围 1~30</td><td data-label="谁用它 / 它用谁">首页表单、<code>job-request.ts</code>、SSE 接口用；Lab-02 第 3 步在这里加「公司品牌风」</td></tr>
+
+          <tr class="group"><td colspan="3">Lab-03-Copilot-Studio · 串起来</td></tr>
+          <tr><td><code>openapi.yaml</code><span class="tag-mine">你会改</span></td><td data-label="干什么">连接器定义（Swagger 2.0）：4 个操作 GetIndustryInsight、CreateInsightPresentation、CreateWebPagePresentation、GetPresentationJob，鉴权用请求头 <code>x-api-key</code></td><td data-label="谁用它 / 它用谁">导入 Studio 变成 4 个工具；<code>host</code> 改成自己的 Codespace，<code>title</code> 带上名字</td></tr>
+          <tr><td><code>README.md</code>「智能体指令」</td><td data-label="干什么">粘贴进 Studio 的 Instructions：什么时候调哪个工具、页数和风格的默认值、怎么回答</td><td data-label="谁用它 / 它用谁">Studio 的编排器读它，再结合 <code>openapi.yaml</code> 里的工具描述做决定</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="az-footer">
+    <span>埃知科技 · 上海埃知科技有限公司</span>
+    <span>阿特拉斯中国 Copilot 智能体工作坊 · 架构图 · 2026-10-18</span>
+  </footer>
+
+</div>
+
+<script src="vendor/mermaid.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var MIN_SCALE = 0.72;   // 图比容器宽时最多缩到 72%，再窄就在框里左右滑动
+  var root = document.documentElement;
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('pre.mermaid'));
+  var sources = {};
+  blocks.forEach(function (el) { sources[el.id] = el.textContent.trim() + '\n'; });
+
+  // ---- 复制 Mermaid 源码 ----
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '0';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacyCopy(text); });
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+  document.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.mmd-copy');
+    if (!btn) return;
+    var label = btn.getAttribute('data-label') || btn.textContent;
+    btn.setAttribute('data-label', label);
+    copyText(sources[btn.getAttribute('data-target')] || '').then(function (ok) {
+      btn.textContent = ok ? '已复制' : '复制失败，请手动复制';
+      btn.classList.toggle('done', ok);
+      clearTimeout(btn._timer);
+      btn._timer = setTimeout(function () { btn.textContent = label; btn.classList.remove('done'); }, 1600);
+    });
+  });
+
+  // ---- 画图 ----
+  if (!window.mermaid) {
+    root.classList.add('mermaid-failed');
+    return;
+  }
+  var css = getComputedStyle(root);
+  function token(name) { return css.getPropertyValue(name).trim(); }
+
+  var FONT = '"PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Noto Sans", sans-serif';
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'strict',
+    theme: 'base',
+    look: 'classic',
+    fontFamily: FONT,
+    fontSize: 13,           // 时序图的文字和测宽都用这个全局字号
+    themeVariables: {
+      fontFamily: FONT,
+      fontSize: '14px',     // 流程图节点文字
+      dropShadow: 'none',
+      background: '#FFFFFF',
+      primaryColor: token('--az-orchid-tint'),
+      primaryBorderColor: token('--az-orchid'),
+      primaryTextColor: token('--az-ink'),
+      secondaryColor: token('--az-orchid-mist'),
+      secondaryBorderColor: token('--az-orchid-soft'),
+      secondaryTextColor: token('--az-ink'),
+      tertiaryColor: token('--az-surface-2'),
+      tertiaryBorderColor: token('--az-border'),
+      tertiaryTextColor: token('--az-ink-2'),
+      lineColor: token('--az-ink-3'),
+      textColor: token('--az-ink-2'),
+      mainBkg: token('--az-orchid-tint'),
+      nodeBorder: token('--az-orchid'),
+      nodeTextColor: token('--az-ink'),
+      clusterBkg: token('--az-surface-2'),
+      clusterBorder: token('--az-border-2'),
+      titleColor: token('--az-orchid-deep'),
+      edgeLabelBackground: '#FFFFFF',
+      actorBkg: token('--az-orchid-tint'),
+      actorBorder: token('--az-orchid'),
+      actorTextColor: token('--az-ink'),
+      actorLineColor: token('--az-ink-4'),
+      signalColor: token('--az-ink-2'),
+      signalTextColor: token('--az-ink'),
+      labelBoxBkgColor: token('--az-orchid-tint'),
+      labelBoxBorderColor: token('--az-orchid'),
+      labelTextColor: token('--az-ink'),
+      loopTextColor: token('--az-ink-2'),
+      noteBkgColor: token('--az-orchid-mist'),
+      noteBorderColor: token('--az-orchid-soft'),
+      noteTextColor: token('--az-ink'),
+      activationBkgColor: token('--az-orchid-tint'),
+      activationBorderColor: token('--az-orchid'),
+      sequenceNumberColor: '#FFFFFF'
+    },
+    flowchart: { curve: 'basis', nodeSpacing: 34, rankSpacing: 46, padding: 12, wrappingWidth: 320 },
+    sequence: { diagramMarginX: 16, diagramMarginY: 10, actorMargin: 16, width: 104, wrapPadding: 6,
+                boxMargin: 8, noteMargin: 8, messageMargin: 30, mirrorActors: true }
+  });
+
+  function fit(el) {
+    var svg = el.querySelector('svg');
+    if (!svg) return;
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    var natural = vb && vb.width ? vb.width : svg.getBoundingClientRect().width;
+    svg.removeAttribute('height');
+    svg.setAttribute('width', '100%');
+    svg.style.maxWidth = Math.ceil(natural) + 'px';
+    svg.style.minWidth = Math.round(natural * MIN_SCALE) + 'px';
+    svg.style.height = 'auto';
+  }
+  function centerFlowchart(el) {
+    var svg = el.querySelector('svg');
+    var box = el.closest('.diagram');
+    if (svg && box && /^flowchart/.test(svg.getAttribute('aria-roledescription') || '')) {
+      box.scrollLeft = (box.scrollWidth - box.clientWidth) / 2;
+    }
+  }
+  function markOverflow() {
+    blocks.forEach(function (el) {
+      var box = el.closest('.diagram');
+      var card = el.closest('.diagram-card');
+      if (box && card) card.classList.toggle('is-overflowing', box.scrollWidth > box.clientWidth + 2);
+    });
+  }
+
+  // 等字体就绪再量文字宽度，最多等 1.5 秒（字体加载不了也照常画）
+  var fontsReady = document.fonts && document.fonts.ready
+    ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 1500); })])
+    : Promise.resolve();
+  fontsReady
+    .then(function () { return mermaid.run({ nodes: blocks, suppressErrors: true }); })
+    .then(function () {
+      blocks.forEach(fit);
+      blocks.forEach(centerFlowchart);
+      markOverflow();
+      root.classList.add('mermaid-done');
+    })
+    .catch(function (err) {
+      console.error(err);
+      root.classList.add('mermaid-failed');
+    });
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(markOverflow, 150);
+  });
+})();
+</script>
+</body>
+</html>

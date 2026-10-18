@@ -65,7 +65,8 @@
 
 ### 3.1 新建智能体
 
-1. 左下角 **环境切换**，选讲师指定的环境（演示租户里是带 **Trial** 标记的那个；Default 环境可能打不开）。
+1. **先切环境**：左下角 **环境切换** → 选讲师指定的 **Trial** 环境（本次演示租户里叫 Ontology-trial）。
+   > ⚠️ Studio 打开时经常默认停在 Caldova (default)。2026-10-18 在那里建的智能体，建连接时没有 API 密钥输入框、工具一直提示 We couldn't enable this connection。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境。
 2. **Agents → New agent 旁的下拉箭头 → Agent（Standard）**（在下拉菜单下半部分「Other ways to build」里）。
    > 不要选上半部分带「GitHub Copilot」标记的 Agent：那是让 AI 帮你搭建，会消耗 Copilot Credits，步骤也不可复现。
 3. 名称填 `业务汇报助手 你的名字`（全班在同一个环境里，带名字才分得清）；展开 **Agent settings**：
@@ -96,11 +97,13 @@
 1. 点 **Create connection**，会回到 Add tool 对话框。搜索框里输入**你的名字**（只搜 `Atlas` 会出来全班的），在「Atlas Agent Labs 你的名字」（Studio 会去掉「·」）下面能看到 4 个工具，别挂成同学的。
 2. 点第一个「查询本周行业洞察」→ Connection 显示 Not connected → 下拉 → **Create new connection**：
    - Display name 填 `Atlas · 你的名字`（不填会叫「Connect to …」，和别人的、自己以前的重名，分不清）；
-   - 「API 密钥（LAB_API_KEY）」粘贴第 1 步 smoke-test 打印的密钥 → **Create**；
+   - 「API 密钥（LAB_API_KEY）」粘贴第 1 步 smoke-test 第二行冒号后面那一串（别带上前面的中文）→ **Create**；
    - Connection 变成绿色对勾后点 **Add and configure**。
+   > ⚠️ Connection 下拉列表里，连接名右边的**垃圾桶**会直接删掉这个连接，所有用它的工具都会断开（测试时报 404「The connection … is not found」）。想换密钥不要删连接，按第 4 步下面 401 那条改。
 3. 进入工具详情页：展开 **Additional details** → **Credentials to use** 从 End user credentials 改成 **Maker-provided credentials** → 右上角 **Save**。
    > 默认的 End user credentials 要求每个使用者自己授权一次连接，测试时会反复弹「先连接……打开连接管理器」。改成创建者凭据后工具直接用你建的连接，2026-10-17 实测不再弹任何提示。
 4. 其余 3 个照做：Add a tool → 搜你的名字 → 点工具（连接会自动选上）→ **Add and configure** → Additional details 改成 Maker-provided credentials → Save。
+   每个工具保存前看一眼 Connection：显示「Atlas · 你的名字」才对，显示 **Not connected** 就在下拉里选上它再 Save。
 5. 回到 **Tools** 页，确认 4 个工具都是 **On**、Trigger 是 **By agent**。
 
 > Overview 上 Agent status 会显示「3 Warnings」：用了创建者凭据（分享给别人时别人也用你的连接）、还没跑过评估、用了高级功能（发布需要付费许可）。本课只在测试窗格里用、不发布，三条都不影响。
@@ -126,8 +129,13 @@
 | 4 | `把这篇文章做成 5 页汇报：https://semiengineering.com/` | 调用「把网页做成汇报 PPT」，url=这个地址、pages=5 |
 | 5 | `看看本周食品饮料行业有什么变化，整理成汇报` | 一句话里先后调用两个工具：先洞察、再提交 PPT，一条回复里两样都有。食品饮料是 Lab-01 加的行业，生成的 PPT 每页带着 Lab-02 在 SKILL.md 里加的「仅供内部讨论」 |
 
-> 工具卡片显示 Failed、提示 `connectorAuthorizationError … HTTP 401`：连接里的密钥不是这个 Codespace 的。
-> 到 Power Automate → Connections → 你的「Atlas · 名字」→ **⋯ → Edit** → 粘贴 smoke-test 打印的密钥 → **Update**，回来直接重试，不用删连接、也不用重新挂工具。
+> 工具卡片显示 Failed，先看错误里是 401 还是 404：
+>
+> - `connectorAuthorizationError … HTTP 401`：服务拒绝了请求。先跑一次 `bash Lab-03-Copilot-Studio/smoke-test.sh`：
+>   「公网地址可访问」没过 = 3000 端口变回了 Private（Codespace 重启过、第二天再打开都会这样），设回 Public 再试；
+>   4 项都过 = 连接里的密钥不对 → Power Automate（**右上角 Environments 先切到和 Studio 同一个环境**）→ Connections → 你的「Atlas · 名字」→ **⋯ → Edit** → 粘贴 smoke-test 第二行的密钥 → **Update**，回来直接重试，不用删连接、也不用重新挂工具。
+> - `connectorRequestFailure … HTTP 404 … The connection … is not found`：工具绑定的连接被删了，工具详情里 Connection 显示 Not connected。
+>   Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的名字」（没有就 Create new connection）→ Save，再点 New test session 重试。
 >
 > 某个工具忘了改 Maker-provided credentials，调用时会提示「先连接……打开连接管理器」：回到那个工具的 Additional details 改掉再试。
 
@@ -154,7 +162,10 @@ Save 后点 **New test session** 重跑第 1 句。**期望结果**：回答最�
 | 回答里出现「cite」之类的乱码 | 模型自带的引用标记，Studio 不渲染 | 指令里已要求改用 Markdown 链接；仍出现可在 Overview 换一个模型试试 |
 | 拿到的是别人的周报，或调用 404 | 挂成了同学的工具，或 openapi.yaml 的 host 没改 | Tools 里删掉，重新导入 host 和 title 都改过的 openapi.yaml |
 | Codespace 重建后连不上 | 新 Codespace 名字变了，host 和 API 密钥都跟着变 | `host:` 改成新的，`title` 后面加个「2」免得和旧的重名 → Tools 里删掉旧的 4 个工具 → 按 3.3、3.4 重新导入、新建连接（粘贴新 Codespace 的密钥）、改 Maker-provided credentials。新导入的是新连接器，旧连接用不上 |
-| 工具卡片 Failed：`connectorAuthorizationError`（HTTP 401） | 连接里的密钥不是这个 Codespace 的（每个 Codespace 的 `LAB_API_KEY` 都不同） | `grep LAB_API_KEY Lab-02-Knowledge-Summary/.env` 看当前值 → Power Automate → Connections → 你的连接 ⋯ → Edit → 粘贴 → Update |
+| 工具卡片 Failed：`connectorAuthorizationError`（HTTP 401） | ① 3000 端口变回了 Private（Codespace 重启后会这样）；② 连接里的密钥不是这个 Codespace 的（每个 Codespace 的 `LAB_API_KEY` 都不同），或复制时带上了前面的中文 | 先跑 smoke-test：公网那项没过就设回 Public；4 项都过再 `grep LAB_API_KEY Lab-02-Knowledge-Summary/.env` 看当前值 → Power Automate（右上角先切到和 Studio 同一个环境）→ Connections → 你的连接 ⋯ → Edit → 粘贴 → Update |
+| 工具卡片 Failed：`connectorRequestFailure`（HTTP 404），提示 `The connection … is not found` | 工具绑定的连接被删了（点过连接旁边的垃圾桶，或删掉重建过） | Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的名字」（没有就 Create new connection）→ Save → New test session |
+| Power Automate 的 Connections 里找不到你的连接 | Power Automate 和 Studio 不在同一个环境 | Power Automate 右上角 Environments 切到 Studio 用的那个环境（课程用讲师指定的 Trial 环境，如 Ontology-trial） |
+| 建连接时只有 Display name、没有 API 密钥输入框；工具提示 `We couldn't enable this connection` | 智能体建在了 Caldova (default)（Studio 打开时经常默认停在这里） | Studio 左下角切到 Trial 环境，从 3.1 重建智能体、导入工具、建连接；default 环境里建的留给讲师清理 |
 | 测试时提示「先连接……打开连接管理器」 | 工具的凭据还是 End user credentials | 工具详情 → Additional details → Credentials to use 改成 Maker-provided credentials → Save |
 | 进度页显示「无法列出模型」 | Codespace 里没有有效的 Copilot 令牌，或组织没开 Copilot CLI 策略 | 重新 `set-key.sh` 后重启 `npm run dev`；仍不行找讲师 |
 | Studio 调用超时、连不上 | Codespace 空闲超时被停了 | 回到 Codespace 让它恢复，`npm run dev` 重启服务、重新设 Public；到 <https://github.com/settings/codespaces> 把 Default idle timeout 调到 120 分钟 |

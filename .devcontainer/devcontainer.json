@@ -1,8 +1,8 @@
 // =============================================================================
 // 阿特拉斯中国 · Copilot 智能体工作坊 —— 统一开发环境
 //
-// 学员直接在本仓库上点 Code → Codespaces → Create codespace on main（不要先 fork：
-// 预构建跟着仓库走，fork 出来的仓库不继承）。本地 VS Code + Dev Containers 扩展也能用这一份。
+// 学员先 fork，再在自己的 fork 上点 Code → Codespaces → Create codespace on main
+// （预构建跟着本仓库走，fork 吃不到，第一次要现装 3~8 分钟）。本地 VS Code + Dev Containers 扩展也能用这一份。
 // =============================================================================
 {
   "name": "Copilot Agent Labs · Python 3.12 + Node 24",

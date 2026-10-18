@@ -4,14 +4,16 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Copilot 工作坊实操手册</title>
+  <!-- 字体不阻塞渲染：fonts.googleapis.com 打不开时（国内常见）直接用系统字体，页面不会一直白屏 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
   <style>
 /* ============================================================================
    埃知科技 · 上海埃知科技有限公司 — Brand Tokens (aizhi-html)
    Drop into any HTML page to get the canonical palette, fonts, motifs.
    Themes: <body class="theme-light"> (纸感) · <body class="theme-dark"> (墨紫)
    ============================================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
   /* --- Hue family: orchid (logo) · plum ink · ivory-pink paper --- */
@@ -365,6 +367,20 @@ figure.shot img { width: 100%; height: auto; display: block; border-radius: 8px;
 figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6px; text-align: center; }
 .shot-todo { border: 2px dashed var(--az-border-2); border-radius: 8px; padding: 18px; color: var(--az-ink-3); font-size: 14px; text-align: center; margin: 14px 0; }
 @media (max-width: 720px) { .step { grid-template-columns: 1fr; gap: 6px; } .toc ol { columns: 1; } }
+/* 一键复制：按钮由页尾脚本加到每个命令 / 提示词框和 code.copy 后面 */
+.copy-wrap { position: relative; margin: 10px 0; }
+.copy-wrap > pre.cmd, .copy-wrap > pre.prompt { margin: 0; padding-right: 64px; }
+.copy-btn { position: absolute; top: 7px; right: 7px; font-family: var(--font-cn); font-size: 12px; line-height: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--az-border-2); background: var(--az-surface); color: var(--az-orchid-deep); cursor: pointer; }
+.copy-btn.on-dark { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.3); color: #F7F2F6; }
+.copy-inline { font-family: var(--font-cn); font-size: 11px; line-height: 1; padding: 3px 6px; margin: 0 2px 0 4px; border-radius: 4px; border: 1px solid var(--az-border-2); background: var(--az-surface); color: var(--az-orchid-deep); cursor: pointer; vertical-align: 1px; }
+.copy-btn:hover, .copy-inline:hover { border-color: var(--az-orchid); }
+.copy-btn.done, .copy-inline.done { background: var(--az-orchid); border-color: var(--az-orchid); color: #fff; }
+@media print { .copy-btn, .copy-inline { display: none; } }
+/* 先看全局 */
+.goal-table tr.goal-group td { background: var(--az-orchid-mist); color: var(--az-orchid-deep); font-weight: 700; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 12px; }
+.gloss div { background: var(--az-surface); border: 1px solid var(--az-border); border-radius: 8px; padding: 10px 14px; font-size: 13.5px; line-height: 1.65; color: var(--az-ink-2); }
+.gloss b { color: var(--az-ink); }
 </style>
 </head>
 <body class="theme-light az-chevron-pattern">
@@ -378,7 +394,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
         <div class="sub">上海埃知科技有限公司</div>
       </span>
     </a>
-    <span class="deck-meta">实操手册 v1.3（fork 版 · 全程重跑）· 2026-10-17</span>
+    <span class="deck-meta">实操手册 v1.4（fork 版 · 全程重跑）· 2026-10-18</span>
   </header>
 
   <!-- ===== Hero ===== -->
@@ -402,6 +418,8 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
   <nav class="toc az-card">
     <div class="az-eyebrow">目录</div>
     <ol>
+      <li><a href="#big-picture">先看全局 · 每一步在做什么</a></li>
+      <li><a href="architecture.html">架构图 · 业务逻辑与代码怎么配合（单独页面）</a></li>
       <li><a href="#prep">课前准备</a></li>
       <li><a href="#s0">开场 · 打开 Codespace（20 分钟）</a></li>
       <li><a href="#warmup">热身 · Vibe coding（25 分钟）</a></li>
@@ -414,13 +432,82 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
     </ol>
   </nav>
 
+  <!-- ===== 先看全局 ===== -->
+  <section class="section" id="big-picture">
+    <div class="section-head">
+      <div class="az-eyebrow">先看全局 · 动手前花 3 分钟读一遍</div>
+      <h2 class="az-title">今天搭一条「自动出汇报」的流水线</h2>
+      <div class="az-rule"></div>
+      <p class="az-sub">一句话：每周自动收集行业新闻 → 整理成周报 → 一键做成汇报 PPT → 业务同事在 Copilot Studio 里问一句就能拿到。今天的每一步，要么是给这条流水线装一个零件，要么是把它改成你们团队想要的样子。</p>
+    </div>
+    <div class="map">
+      <div class="node"><div class="lab">原料</div><div class="nm">行业新闻</div><div class="ds">几十个行业媒体 + Google News，靠人看又慢又容易漏</div></div>
+      <div class="arrow">→</div>
+      <div class="node lit"><div class="lab">LAB-01</div><div class="nm">行业洞察智能体</div><div class="ds">按 focus.md 挑出和我们有关的热点，写成周报；放到 GitHub 上每周一自动跑</div></div>
+      <div class="arrow">→</div>
+      <div class="node lit"><div class="lab">LAB-02</div><div class="nm">知识总结智能体</div><div class="ds">按 SKILL.md 里的团队规范，把周报或网页做成可编辑的 PPT，还能当网页和 API 用</div></div>
+      <div class="arrow">→</div>
+      <div class="node lit2"><div class="lab">LAB-03</div><div class="nm">业务汇报助手</div><div class="ds">在 Copilot Studio 里把前两个串起来，业务同事说一句话就能用</div></div>
+    </div>
+    <p class="tip">想看每个代码文件之间怎么配合，打开 <a href="architecture.html">架构图（单独页面）</a>，讲师讲解时可以投屏用。</p>
+
+    <div class="az-card" style="padding:0; overflow:auto; margin-top:18px;">
+      <table class="az-table goal-table">
+        <thead><tr><th style="width:96px;">步骤</th><th>用大白话说：这一步在干什么</th><th>做完你手里多了什么</th><th>放在全局里看</th></tr></thead>
+        <tbody>
+          <tr class="goal-group"><td colspan="4">准备 · 搭工作台</td></tr>
+          <tr><td>课前准备</td><td>复制一份自己的项目（fork），办好一把「钥匙」（令牌）</td><td>自己的仓库、Codespace、令牌</td><td>后面所有操作都在你自己的副本上，互不影响，弄坏了也不怕</td></tr>
+          <tr><td>开场 0.1~0.4</td><td>打开浏览器里装好一切的 VS Code（Codespace），填令牌</td><td>能用 Copilot 的开发环境，外加一把 API 密钥</td><td>这是工作台；API 密钥是 Lab-03 里 Studio 调用你服务的「门禁卡」</td></tr>
+          <tr class="goal-group"><td colspan="4">热身 · 学会和 Copilot 配合</td></tr>
+          <tr><td>热身 1</td><td>让 Copilot 读整个项目，讲给你听</td><td>知道三个 Lab 怎么串起来</td><td>先认地图，再上路</td></tr>
+          <tr><td>热身 2</td><td>选中一段代码，让 Copilot 解释</td><td>看懂周报网页是怎么显示出来的</td><td>看不懂的代码，随时可以让它讲</td></tr>
+          <tr><td>热身 3</td><td>一句话让 Copilot 给网页加一个开关</td><td>周报网页多了「只看高影响」</td><td>体验 vibe coding：描述 → 生成 → 看效果 → 再描述</td></tr>
+          <tr><td>热身 4</td><td>把团队规矩写进 copilot-instructions.md</td><td>Copilot 写代码时会按你们的规矩来</td><td>规矩写一次全组生效，但结果还要自己验收</td></tr>
+          <tr class="goal-group"><td colspan="4">Lab-01 · 流水线第一段：新闻 → 周报</td></tr>
+          <tr><td>Lab-01 第 1 步</td><td>输入一个斜杠命令，让智能体抓新闻、写周报</td><td>一份本周行业洞察周报（网页）</td><td>第一段跑起来了</td></tr>
+          <tr><td>Lab-01 第 2 步</td><td>只改 focus.md，加一个你负责的行业</td><td>周报里多了你的行业</td><td>不改代码，智能体就会关注你关心的事</td></tr>
+          <tr><td>Lab-01 第 3 步</td><td>让 Copilot 写一个新工具「客户雷达」</td><td>智能体能按客户名查本周动态</td><td>给智能体加本事，就是写一个它能调用的函数</td></tr>
+          <tr><td>Lab-01 第 4 步</td><td>推到 GitHub，让它在云端自动跑一次</td><td>你 fork 里一个待审核的周报 PR</td><td>从「我自己用」变成「每周一自动给全组用」，结果经人审核才进主干</td></tr>
+          <tr class="goal-group"><td colspan="4">Lab-02 · 流水线第二段：周报 → PPT</td></tr>
+          <tr><td>Lab-02 第 1 步</td><td>在 Chat 里让 Copilot 按 Skill 把周报做成 PPT</td><td>一份可编辑的 .pptx</td><td>第二段跑起来了</td></tr>
+          <tr><td>Lab-02 第 2 步</td><td>把团队汇报规范写进 SKILL.md</td><td>之后每份 PPT 都带着这条规范</td><td>规范改一处，Chat、网页、API 同时生效</td></tr>
+          <tr><td>Lab-02 第 3 步</td><td>让 Copilot 给网页加「公司品牌风」</td><td>一种新的 PPT 风格</td><td>按你们公司的视觉出 PPT</td></tr>
+          <tr><td>Lab-02 第 4 步</td><td>启动网页服务，在网页上生成 PPT</td><td>一个网页 + 一套 API</td><td>有了 API，Studio 才能调用它，这是 Lab-03 的前提</td></tr>
+          <tr class="goal-group"><td colspan="4">Lab-03 · 交付给业务：一句话拿到洞察和 PPT</td></tr>
+          <tr><td>Lab-03 第 1 步</td><td>把服务端口设为公开，跑一次自检</td><td>一个公网地址，确认密钥能用</td><td>让微软云上的 Studio 能访问你的 Codespace</td></tr>
+          <tr><td>Lab-03 第 2 步</td><td>改 openapi.yaml 里的地址和名字</td><td>一份「你的服务在哪、有哪几个功能」的说明书</td><td>Studio 靠它知道能调用哪些功能</td></tr>
+          <tr><td>Lab-03 第 3 步</td><td>在 Studio 建智能体、粘贴指令</td><td>一个「业务汇报助手」</td><td>业务同事真正对话的入口</td></tr>
+          <tr><td>Lab-03 第 4 步</td><td>导入工具、建连接（填 API 密钥）</td><td>智能体能调用你的 4 个功能</td><td>把 Studio 和你的服务接上线</td></tr>
+          <tr><td>Lab-03 第 5 步</td><td>用几句话测试</td><td>洞察和 PPT 一次拿到</td><td>整条流水线跑通</td></tr>
+          <tr><td>Lab-03 第 6 步</td><td>改一句指令，看回答怎么变</td><td>回答多一行「由哪个团队跟进」</td><td>业务人员自己就能调智能体的行为</td></tr>
+          <tr class="goal-group"><td colspan="4">课后</td></tr>
+          <tr><td>课后清理</td><td>把公开的、花钱的、带权限的东西收掉</td><td>干净的账号</td><td>用完就关，是用云服务的好习惯</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="card-title" style="margin-top:22px;">几个词先认识一下</h3>
+    <div class="gloss">
+      <div><b>Codespace</b>：浏览器里的一台云电脑，VS Code 和所有依赖都装好了，关掉网页它还在。</div>
+      <div><b>Copilot Chat · Agent 模式</b>：右边的对话框。你说要什么，它自己读文件、改代码、跑命令，每次跑命令前都会问你同不同意。</div>
+      <div><b>Prompt 文件（斜杠命令）</b>：写好的工作说明书。输入 <code>/industry-insight</code>，它就照着干活。</div>
+      <div><b>MCP 工具</b>：给 AI 用的「插座」。我们把抓新闻、出周报写成函数，AI 读了说明就知道什么时候该调用。</div>
+      <div><b>gh-aw</b>：放在 GitHub 上、按时间表自动运行的智能体（这里是每周一早上 8 点）。</div>
+      <div><b>Skill</b>：写给 AI 的岗位手册（SKILL.md），规定做汇报 PPT 的步骤和团队规范。</div>
+      <div><b>Copilot SDK</b>：让我们自己写的程序（网页服务）也能调用 Copilot，用的是同一份 Skill。</div>
+      <div><b>API 和 x-api-key</b>：别的系统调用你服务的「窗口」和「门禁卡」。Studio 调用的接口没有门禁卡一律拒绝。</div>
+      <div><b>Copilot Studio</b>：微软的低代码智能体平台，业务同事在这里和「业务汇报助手」对话，不用碰代码。</div>
+      <div><b>连接器和连接</b>：连接器是 Studio 按 openapi.yaml 生成的「插头」，连接是插头里存的那把 API 密钥。</div>
+    </div>
+  </section>
+
   <!-- ===== 读图约定 ===== -->
   <section class="section">
     <div class="grid grid-3">
       <article class="az-card has-accent">
         <div class="card-no">读图</div>
         <h3 class="card-title">橙色框 = 你要看 / 要点的地方</h3>
-        <p class="card-desc">灰色块是打码的密钥或无关信息。截图里的文字和你屏幕上的不完全一样很正常：AI 每次生成的内容都会有差别。</p>
+        <p class="card-desc">灰色块是打码的密钥或无关信息。截图里的文字和你屏幕上的不完全一样很正常：AI 每次生成的内容都会有差别。命令框、提示词框右上角都有「复制」按钮，点一下就能去粘贴。</p>
       </article>
       <article class="az-card has-accent">
         <div class="card-no">确认</div>
@@ -547,7 +634,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
       <div class="step-no">2</div>
       <div class="step-body">
         <h3>读懂代码 · Inline Chat + /explain</h3>
-        <p class="do">打开 <code>Lab-01-Industry-Insight/frontend/main.js</code>（终端里 <code>code -g Lab-01-Industry-Insight/frontend/main.js:52</code>），选中 <code>renderMarkdown</code> 到 <code>loadReport</code> 那一段，按 <b>Cmd+I</b>（Windows：Ctrl+I），输入：</p>
+        <p class="do">打开 <code>Lab-01-Industry-Insight/frontend/main.js</code>（终端里 <code class="copy">code -g Lab-01-Industry-Insight/frontend/main.js:52</code>），选中 <code>renderMarkdown</code> 到 <code>loadReport</code> 那一段，按 <b>Cmd+I</b>（Windows：Ctrl+I），输入：</p>
         <pre class="prompt">/explain 用中文解释：周报是怎么从 report.md 变成网页的？</pre>
         <figure class="shot"><img src="img/06-inline-explain-ask.jpg" alt="Inline Chat 输入 /explain" loading="lazy"></figure>
         <figure class="shot"><img src="img/07-inline-explain-answer.jpg" alt="Inline Chat 解释结果" loading="lazy"></figure>
@@ -630,7 +717,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
         <figure class="shot"><img src="img/24-lab01-report-page.jpg" alt="周报页面" loading="lazy"></figure>
         <p class="see"><b>验收</b>：页头生成时间是刚才，<b>模式：智能体研判</b>（不是 fallback）。</p>
         <p class="tip">注意：重新生成后，热点的影响等级可能和热身时不一样；如果这期没有「高」，热身做的开关打开后会是空的，这是数据决定的，不是 bug。</p>
-        <p class="tip">预览页打不开了（比如 Codespace 重启过，或者热身时起预览服务的那个终端关了）：新开一个终端运行 <code>python -m http.server 8080 --directory Lab-01-Industry-Insight/frontend</code>，会自动在新标签页打开；被浏览器拦了就到 Ports 面板「Lab-01 周报网页预览」8080 那一行点地球图标。</p>
+        <p class="tip">预览页打不开了（比如 Codespace 重启过，或者热身时起预览服务的那个终端关了）：新开一个终端运行 <code class="copy">python -m http.server 8080 --directory Lab-01-Industry-Insight/frontend</code>，会自动在新标签页打开；被浏览器拦了就到 Ports 面板「Lab-01 周报网页预览」8080 那一行点地球图标。</p>
       </div>
     </div>
 
@@ -649,7 +736,8 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
         <p class="do">保存，新开对话再跑一次 <code>/industry-insight</code>，刷新周报页：</p>
         <figure class="shot"><img src="img/26-lab01-new-industry.jpg" alt="周报出现新行业" loading="lazy"></figure>
         <p class="see"><b>验收</b>：周报里多了「食品饮料」，每个热点都带「来源」链接，「对我们的影响」落到具体设备（实测抓到「东鹏饮料郑州基地规划年产 37 万吨」，影响写到食品级无油压缩空气和真空包装）。没改一行代码。</p>
-        <p class="tip">不会写搜索词？问 Copilot：<code>我负责食品饮料行业的空压机销售，参照 #file:Lab-01-Industry-Insight/focus.md 的格式帮我写一段「## 食品饮料」</code></p>
+        <p class="tip">不会写搜索词？新开对话问 Copilot：</p>
+        <pre class="prompt">我负责食品饮料行业的空压机销售，参照 #file:Lab-01-Industry-Insight/focus.md 的格式帮我写一段「## 食品饮料」</pre>
       </div>
     </div>
 
@@ -677,7 +765,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
       <div class="step-no">4</div>
       <div class="step-body">
         <h3>上云 · 推到自己的 fork，让 gh-aw 在 GitHub 上跑</h3>
-        <p class="do">先读懂 <code>.github/workflows/industry-insight.md</code> 的四块配置：</p>
+        <p class="do">先读懂 <code>.github/workflows/industry-insight.md</code> 的四块配置。<b>这一步只读、不用改</b>：你新加的行业走 Google News，域名已经在白名单里；客户雷达工具周报用不到，云端照常跑。</p>
         <div class="az-card" style="padding:0; overflow:auto; margin:10px 0 16px;">
           <table class="az-table">
             <thead><tr><th style="width:150px;">配置</th><th>意思</th></tr></thead>
@@ -689,7 +777,22 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
             </tbody>
           </table>
         </div>
-        <p class="tip">改了 <code>industry-insight.md</code> 本身，要运行 <code>gh aw compile industry-insight</code> 生成 Actions 真正运行的 <code>.lock.yml</code>。本步只改了 focus.md 和工具代码，不用编译。</p>
+        <details class="az-card" style="padding:12px 18px; margin:6px 0 16px;">
+          <summary><b>想改配置怎么改（可选，课上不做）</b>：你改的是 <code>.md</code>，GitHub 真正运行的是编译出来的 <code>.lock.yml</code>，所以改完要编译，两个文件一起提交</summary>
+          <p class="do">例：把定时从「每周一」改成「每天」北京时间 8 点。打开 <code>.github/workflows/industry-insight.md</code>，把这一行：</p>
+          <pre class="cmd">    - cron: "0 0 * * 1"</pre>
+          <p class="do">改成下面这样（GitHub 用 UTC 时间，北京时间减 8 小时；最后一位 <code>1</code> 是周一，<code>*</code> 是每天）：</p>
+          <pre class="cmd">    - cron: "0 0 * * *"</pre>
+          <p class="do">保存后在终端依次运行：确认编译器版本（应显示 v0.92.0，和仓库里的 .lock.yml 一致）→ 编译 → 两个文件一起提交、推送：</p>
+          <pre class="cmd">gh aw version
+gh aw compile industry-insight
+git add .github/workflows/industry-insight.md .github/workflows/industry-insight.lock.yml
+git commit -m "改 gh-aw 定时"
+git push</pre>
+          <p class="tip">编译输出里的 Tip 和 ⚠ 提示不影响，看到 <code>✓ .github/workflows/industry-insight.md</code> 就算成功（2026-10-18 本机实测）。<code>gh aw version</code> 报 unknown command 或版本不是 v0.92.0，先运行 <code class="copy">gh extension remove gh-aw; gh extension install github/gh-aw --pin v0.92.0</code>。
+            <code>git push</code> 如果报 <code>refusing to allow … workflow</code>，是 Codespace 自带的令牌不能改工作流文件：在装了 gh 和 gh-aw 的本机上做这几步，或者课后请讲师代改。
+            给 <code>input/sources.json</code> 加新的 RSS 源时，要同时把它的域名加到 <code>network.allowed</code> 下面，再按上面的步骤编译，提交时把 sources.json 一起加上。</p>
+        </details>
         <p class="do">在终端把 Lab-01 的改动提交并推到你 fork 的 main（Codespace 建在你自己的仓库上，<code>origin</code> 就是你的 fork）：</p>
         <pre class="cmd">git add Lab-01-Industry-Insight/focus.md Lab-01-Industry-Insight/mcp_server Lab-01-Industry-Insight/tests
 git commit -m "Lab-01: 加食品饮料行业 + 客户雷达工具"
@@ -726,8 +829,10 @@ git push</pre>
       <div class="step-no">1</div>
       <div class="step-body">
         <h3>用起来 · 在 Chat 里用 Skill</h3>
-        <p class="do">新开对话，输入（也可以换成任意一篇文章：<code>把这篇文章总结成 6 页汇报 PPT，风格用咨询风：url=https://…</code>）：</p>
+        <p class="do">新开对话，输入：</p>
         <pre class="prompt">把 #file:Lab-01-Industry-Insight/frontend/report.md 里「新能源汽车」和「锂电」两部分总结成 6 页汇报 PPT，风格用咨询风。</pre>
+        <p class="tip">也可以换成任意一篇文章（复制后把 url 换成文章地址）：</p>
+        <pre class="prompt">把这篇文章总结成 6 页汇报 PPT，风格用咨询风：url=https://…</pre>
         <figure class="shot"><img src="img/34-lab02-skill-picked.jpg" alt="自动选中 knowledge2ppt skill" loading="lazy"></figure>
         <p class="see"><b>应该看到</b>：「Read skill · knowledge2ppt」：你没有点名，Copilot 根据 Skill 的描述自己选中了它。</p>
         <figure class="shot"><img src="img/35-lab02-skill-steps.jpg" alt="Skill 工作流程" loading="lazy"></figure>
@@ -770,7 +875,8 @@ git push</pre>
         <figure class="shot"><img src="img/40-lab02-npm-dev.jpg" alt="npm run dev" loading="lazy"></figure>
         <p class="do">看到「✓ Ready」和右下角「Your application … running on port 3000 is available」的提示后，点 <b>Open in Browser</b>（先别点旁边的 Make Public，Lab-03 再设）。素材来源选 <b>本周行业洞察周报</b>，「只看某个行业」填你在 Lab-01 加的行业（如 <code>食品饮料</code>），风格选 <b>公司品牌风</b>，点 <b>开始生成 PPT</b>：</p>
         <figure class="shot"><img src="img/41-lab02-brand-card.jpg" alt="选择公司品牌风" loading="lazy"></figure>
-        <p class="see">等待的 3~5 分钟里，让 Copilot 带你读代码：<code>Lab-02-Knowledge-Summary/lib/copilot.ts 里 Copilot SDK 是在哪里加载 skill 的？</code>（看 <code>skillDirectories</code>）</p>
+        <p class="see">等待的 3~5 分钟里，新开对话让 Copilot 带你读代码（答案在 <code>skillDirectories</code> 那几行）：</p>
+        <pre class="prompt">Lab-02-Knowledge-Summary/lib/copilot.ts 里 Copilot SDK 是在哪里加载 skill 的？只回答，不要改任何文件。</pre>
         <figure class="shot"><img src="img/42-lab02-web-done.jpg" alt="网页生成完成" loading="lazy"></figure>
         <figure class="shot"><img src="img/43-lab02-brand-ppt.jpg" alt="品牌风 PPT" loading="lazy"><figcaption>网页生成的 PPT：每页右上角都有「仅供内部讨论」（第 2 步改的 SKILL.md）、深蓝品牌色（第 3 步加的风格）、内容是 Lab-01 新加的食品饮料行业</figcaption></figure>
         <p class="see"><b>验收</b>：点「下载 …pptx」能拿到文件；三处改动（focus.md、SKILL.md、styles.ts）同时体现在一份 PPT 里。</p>
@@ -803,11 +909,11 @@ git push</pre>
         <h3>暴露服务 · 端口 3000 设为 Public</h3>
         <p class="do">底部面板 <b>Ports</b> 页签（看不到就点面板标题栏的 <b>…</b> → Ports）→ 右键「Lab-02 知识总结智能体 · Web/API」那一行（3000）→ <b>Port Visibility</b> → <b>Public</b>。不要选 Private to Organization：Copilot Studio 不在你的 GitHub 组织里，访问不到。</p>
         <figure class="shot"><img src="img/50-lab03-port-public.jpg" alt="端口设为 Public" loading="lazy"></figure>
-        <p class="warn">Codespace 每次重启后端口都会被改回 Private，要重新设一次。服务的所有接口都要求 <code>x-api-key</code>，公开端口不等于谁都能调用。</p>
+        <p class="warn">Codespace 每次重启后端口都会被改回 Private，要重新设一次。Studio 调用的 4 个接口都要求 <code>x-api-key</code>，但网页本身（首页、周报页、进度页、下载链接）不用密钥就能打开，首页还能直接生成 PPT、花你的 Copilot 额度：端口公开期间别把地址发给别人，下课按「课后清理」改回 Private。</p>
         <p class="do">点终端右上角 <b>+</b> 新开一个终端（npm 那个终端要一直开着），运行连通自检：</p>
         <pre class="cmd">bash Lab-03-Copilot-Studio/smoke-test.sh</pre>
         <figure class="shot"><img src="img/51-lab03-smoke.jpg" alt="smoke test 通过" loading="lazy"><figcaption>截图里的密钥已打码</figcaption></figure>
-        <p class="see"><b>验收</b>：4 项全部打勾，最后一行「全部通过（4 项）」。第一行打印的 <b>host</b> 下一步要填；第二行的 <b>API 密钥</b>建连接时要填。</p>
+        <p class="see"><b>验收</b>：4 项全部打勾，最后一行「全部通过（4 项）」。第一行打印的 <b>host</b> 下一步要填；第二行的 <b>API 密钥</b>建连接时要填（双击冒号后面那一串就能整串选中，别带上前面的中文）。</p>
         <p class="warn">API 密钥是<b>这个 Codespace</b> 的：每个新 Codespace 第一次运行 <code>set-key.sh</code> 都会生成一把新的。以前记下的密钥（比如课前建的、删掉重建前的）在这里都会被拒绝，Studio 里表现为 401。</p>
       </div>
     </div>
@@ -816,7 +922,7 @@ git push</pre>
       <div class="step-no">2</div>
       <div class="step-body">
         <h3>改连接器定义 · openapi.yaml 改两处</h3>
-        <p class="do">在 Codespace 里打开 <code>Lab-03-Copilot-Studio/openapi.yaml</code>，改两处后保存：<code>host:</code> 换成 smoke-test 打印的 host（形如 <code>xxx-3000.app.github.dev</code>，不带 https://）；<code>title:</code> 改成 <code>Atlas Agent Labs · 你的名字</code>。然后在资源管理器里右键这个文件 → <b>Download</b>，下一步要上传。</p>
+        <p class="do">在 Codespace 里打开 <code>Lab-03-Copilot-Studio/openapi.yaml</code>，改两处后保存：<code>host:</code> 换成 smoke-test 打印的 host（形如 <code>xxx-3000.app.github.dev</code>，不带 https://）；<code>title:</code> 改成 <code class="copy">Atlas Agent Labs · 你的名字</code>。然后在资源管理器里右键这个文件 → <b>Download</b>，下一步要上传。</p>
         <figure class="shot"><img src="img/51b-lab03-openapi-edit.jpg" alt="openapi.yaml 改 host 和 title" loading="lazy"></figure>
         <p class="see"><b>为什么改 title</b>：全班在同一个 Studio 环境里各自导入，title 会变成工具组的名字，不改就会出现几十个同名的「Atlas Agent Labs」，分不清哪个是自己的。</p>
       </div>
@@ -826,11 +932,15 @@ git push</pre>
       <div class="step-no">3</div>
       <div class="step-body">
         <h3>建智能体 · 起名、粘贴指令、关掉联网搜索</h3>
-        <p class="do">用演示租户账号登录 <a href="https://copilotstudio.microsoft.com">Copilot Studio</a>，左下角切到讲师指定的 <b>Trial</b> 环境。<b>Agents → New agent 旁的下拉箭头 → Agent（Standard）</b>：</p>
+        <p class="do">用演示租户账号登录 <a href="https://copilotstudio.microsoft.com">Copilot Studio</a>，<b>先切环境</b>：左下角地球图标 → 选讲师指定的 <b>Trial</b> 环境（本次演示租户里叫 Ontology-trial）。Studio 打开时经常停在 Caldova (default)，2026-10-18 在那里建的智能体，建连接时没有 API 密钥输入框、工具一直提示 We couldn't enable this connection。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境，不同环境的连接互相看不到。然后 <b>Agents → New agent 旁的下拉箭头 → Agent（Standard）</b>：</p>
         <figure class="shot"><img src="img/55b-studio-new-agent-menu.jpg" alt="New agent 下拉菜单" loading="lazy"><figcaption>选下面「Other ways to build」里的 Agent（Standard）。上面带 GitHub Copilot 标记的是让 AI 帮你搭，会消耗额度，步骤也不可复现</figcaption></figure>
-        <p class="do">名称填 <code>业务汇报助手 你的名字</code>；展开 <b>Agent settings</b>：Language 选 <b>Chinese (Simplified)</b>；Solution 保持默认的 Common Data Services Default Solution；<b>Schema name</b> 填英文（如 <code>bizreportzhang</code>）→ <b>Create</b>，等到绿条「Your agent has been provisioned」。</p>
+        <p class="do">名称填 <code class="copy">业务汇报助手 你的名字</code>；展开 <b>Agent settings</b>：Language 选 <b>Chinese (Simplified)</b>；Solution 保持默认的 Common Data Services Default Solution；<b>Schema name</b> 填英文（如 <code>bizreportzhang</code>）→ <b>Create</b>，等到绿条「Your agent has been provisioned」。</p>
         <figure class="shot"><img src="img/56-studio-new-agent.jpg" alt="Name your agent 对话框" loading="lazy"></figure>
-        <p class="do"><b>Overview → Instructions → Edit</b>，粘贴 <a href="https://github.com/atlascopco-Lab/atlas-copilot-agent-labs/blob/main/Lab-03-Copilot-Studio/README.md#智能体指令">Lab-03 README 里的「智能体指令」</a>整段 → <b>Save</b>。</p>
+        <p class="do"><b>Overview → Instructions → Edit</b>，把下面整段粘贴进去 → <b>Save</b>（点框右上角「复制」；和 Lab-03 README 里的「智能体指令」是同一段）：</p>
+        <pre class="prompt">你是阿特拉斯中国的「业务汇报助手」，服务销售、产品、市场同事。你有两项能力：
+1. 行业洞察：用户问某个行业本周有什么变化、对我们有什么影响时，调用「查询本周行业洞察」，topic 填用户提到的行业，没指定行业就填「全部」。回答时先给 2~3 句结论，再列影响等级为「高」的事件和对业务的影响，最后附上 reportPageUrl。只根据工具返回的内容回答，不要补充工具没给的事实。不要在回答里写信号编号（如 S024），也不要输出 cite 之类的引用标记；需要注明来源时，用 Markdown 链接写成「来源：[媒体名](链接)」。如果 mode 是 fallback，提醒用户这期周报未经智能体研判。
+2. 生成汇报：用户要把行业洞察「整理成汇报」或「做成 PPT」时，调用「把行业洞察做成汇报 PPT」，topic 沿用刚才的行业；用户给了网页链接要做汇报时，调用「把网页做成汇报 PPT」。用户没说页数就填 6，没说风格就填 consulting。提交后立刻回复：「汇报 PPT 正在生成（约 2~5 分钟），可以在这个页面查看进度并下载」，并附上 progressPageUrl。用户之后问「好了吗」，用同一个 jobId 调用「查询 PPT 生成进度」，成功就给出 downloadUrl。
+用户一句话里同时要洞察和汇报时，先调用「查询本周行业洞察」回答洞察，再调用「把行业洞察做成汇报 PPT」生成汇报。</pre>
         <figure class="shot"><img src="img/52-studio-overview.jpg" alt="指令保存后" loading="lazy"><figcaption>指令保存后的样子；右侧是 Test your agent 窗格</figcaption></figure>
         <p class="warn">编辑框里输入 <code>/</code> 会弹出插入菜单（编辑框里就写着「Use / to add tools…」），斜杠后面的字会被吞掉。指令已经避开了斜杠，自己改时也别用。</p>
         <p class="do">同一页往下 <b>Knowledge → Web Search</b> 关掉（显示 Disabled），让智能体只按工具返回的内容回答。</p>
@@ -848,7 +958,7 @@ git push</pre>
           <li><b>Upload specification</b>：上传第 2 步下载的 openapi.yaml → Next。</li>
           <li><b>API plugin details</b>：Tool name、Description 自动带出（应该是你改过的「Atlas Agent Labs · 你的名字」）；Solution 留空（会自动建一个）→ Next。
             <figure class="shot"><img src="img/57-studio-import-own.jpg" alt="自动带出自己的工具名" loading="lazy"></figure></li>
-          <li><b>Authentication</b>：Studio 不读 openapi 里的密钥配置，要手动选：<b>API key</b>；Parameter label 随意（如 <code>API 密钥（LAB_API_KEY）</code>，建连接时会显示成输入框的标题）；<b>Parameter name 填 <code>x-api-key</code></b>；Parameter location 保持 <b>Header</b> → Next。
+          <li><b>Authentication</b>：Studio 不读 openapi 里的密钥配置，要手动选：<b>API key</b>；Parameter label 随意（如 <code class="copy">API 密钥（LAB_API_KEY）</code>，建连接时会显示成输入框的标题）；<b>Parameter name 填 <code class="copy">x-api-key</code></b>；Parameter location 保持 <b>Header</b> → Next。
             <figure class="shot"><img src="img/57b-studio-auth.jpg" alt="Authentication 设置" loading="lazy"></figure></li>
           <li><b>Select Tools</b>：列出 4 个操作。逐个点开 → Next（Configure tool）→ Next（Select tool parameters，描述都已写在 openapi 里，不用改），4 个都选上后 → Next → <b>Review</b> → Next，看到「Your tool is now published」→ 点 <b>Create connection</b>（它会回到 Add tool 对话框，不是直接弹出连接窗口）。
             <figure class="shot"><img src="img/57c-studio-tool-params.jpg" alt="工具参数描述已预填" loading="lazy"></figure>
@@ -856,7 +966,9 @@ git push</pre>
         </ol>
         <p class="do">回到 Add tool 对话框，搜索框里输入<b>你的名字</b>（不要只搜 Atlas，全班的都会出来），在「Atlas Agent Labs 你的名字」下面点第一个工具「查询本周行业洞察」：</p>
         <figure class="shot"><img src="img/58-studio-pick-own-tool.jpg" alt="搜自己的名字" loading="lazy"><figcaption>Studio 会去掉名字里的「·」；认准带你名字的那一组 4 个工具</figcaption></figure>
-        <p class="do">Connection 显示 Not connected → 点下拉 → <b>Create new connection</b> → Display name 填 <code>Atlas · 你的名字</code>（不填会叫「Connect to …」，和别人的重名）→ 下面的「API 密钥」粘贴第 1 步 smoke-test 打印的密钥 → <b>Create</b>。Connection 变成绿色对勾后点 <b>Add and configure</b>。</p>
+        <p class="do">Connection 显示 Not connected → 点下拉 → <b>Create new connection</b> → Display name 填 <code class="copy">Atlas · 你的名字</code>（不填会叫「Connect to …」，和别人的重名）→ 下面的「API 密钥」粘贴第 1 步 smoke-test 第二行冒号后面那一串 → <b>Create</b>。Connection 变成绿色对勾后点 <b>Add and configure</b>。</p>
+        <p class="warn">建连接的对话框里<b>必须有「API 密钥」输入框</b>（见上图）。只有 Display name、没有密钥框，多半是环境不对（停在了 Caldova (default)）：点 Cancel，不要建，回第 3 步切到 Trial 环境重建智能体。<br>
+          Connection 下拉列表里，连接名右边的<b>垃圾桶</b>会直接删掉这个连接，所有用它的工具都会断开（测试时报 404「The connection … is not found」）。想换密钥不要删连接，按第 5 步下面 401 那条改。</p>
         <div class="grid grid-2">
           <figure class="shot"><img src="img/58b-studio-new-connection.jpg" alt="新建连接" loading="lazy"><figcaption>起个带名字的显示名，粘贴密钥</figcaption></figure>
           <figure class="shot"><img src="img/58c-studio-connected.jpg" alt="连接已建好" loading="lazy"><figcaption>连接变成绿色对勾，再点 Add and configure</figcaption></figure>
@@ -864,7 +976,7 @@ git push</pre>
         <p class="do">进入工具详情页，展开 <b>Additional details</b> → <b>Credentials to use</b> 从 End user credentials 改成 <b>Maker-provided credentials</b> → 右上角 <b>Save</b>。</p>
         <figure class="shot"><img src="img/58d-studio-maker-credentials.jpg" alt="改用 Maker-provided credentials" loading="lazy"></figure>
         <p class="see"><b>为什么改凭据</b>：默认的 End user credentials 要求每个使用者自己授权一次连接，测试时会反复弹「先连接……打开连接管理器」。改成创建者凭据后，工具直接用你建的这个连接，2026-10-17 实测不再弹任何提示。</p>
-        <p class="do">其余 3 个工具照做：Add a tool → 搜你的名字 → 点工具（连接会自动选上你刚建的那个）→ Add and configure → Additional details 改成 Maker-provided credentials → Save。</p>
+        <p class="do">其余 3 个工具照做：Add a tool → 搜你的名字 → 点工具（连接会自动选上你刚建的那个）→ Add and configure → Additional details 改成 Maker-provided credentials → Save。每个工具保存前看一眼 Connection：显示「Atlas · 你的名字」才对，显示 <b>Not connected</b> 就在下拉里选上它再 Save。</p>
         <p class="see"><b>验收</b>：Tools 页 4 个工具都是 <b>On</b>、Trigger 是 <b>By agent</b>。</p>
         <figure class="shot"><img src="img/53-studio-tools.jpg" alt="Tools 页 4 个工具" loading="lazy"></figure>
         <p class="tip">Overview 上 Agent status 会显示「3 Warnings」，点 Review 能看到：用了创建者凭据（分享给别人时别人也用你的连接）、还没跑过评估、用了高级功能（发布需要付费许可）。本课只在测试窗格里用、不发布，这三条都不影响。</p>
@@ -881,11 +993,11 @@ git push</pre>
           <table class="az-table">
             <thead><tr><th style="width:40px;">#</th><th>输入</th><th>应该看到（2026-10-17 实测）</th></tr></thead>
             <tbody>
-              <tr><td>1</td><td><code>本周新能源汽车装配行业有什么变化？对我们有什么影响？</code></td><td>调用「查询本周行业洞察」（约 2 秒），行业=新能源汽车装配；回答先给结论，再列高影响事件、来源链接，最后附周报链接</td></tr>
-              <tr><td>2</td><td><code>把这些整理成 6 页汇报 PPT</code></td><td>调用「把行业洞察做成汇报 PPT」，风格=consulting、行业沿用上一句、页数=6；回复进度页链接</td></tr>
-              <tr><td>3</td><td><code>PPT 做好了吗？</code></td><td>调用「查询 PPT 生成进度」，任务号沿用上一句；生成完了就给出下载链接（实测约 4 分钟出 PPT）</td></tr>
-              <tr><td>4</td><td><code>把这篇文章做成 5 页汇报：https://semiengineering.com/</code></td><td>调用「把网页做成汇报 PPT」，网页地址=这个链接、页数=5；同样回复进度页链接</td></tr>
-              <tr><td>5</td><td><code>看看本周食品饮料行业有什么变化，整理成汇报</code></td><td>一句话里先后调用两个工具：先洞察、再提交 PPT（行业=食品饮料）。用的是你 Lab-01 加的行业，生成的 PPT 带着你 Lab-02 改的规范</td></tr>
+              <tr><td>1</td><td><code class="copy">本周新能源汽车装配行业有什么变化？对我们有什么影响？</code></td><td>调用「查询本周行业洞察」（约 2 秒），行业=新能源汽车装配；回答先给结论，再列高影响事件、来源链接，最后附周报链接</td></tr>
+              <tr><td>2</td><td><code class="copy">把这些整理成 6 页汇报 PPT</code></td><td>调用「把行业洞察做成汇报 PPT」，风格=consulting、行业沿用上一句、页数=6；回复进度页链接</td></tr>
+              <tr><td>3</td><td><code class="copy">PPT 做好了吗？</code></td><td>调用「查询 PPT 生成进度」，任务号沿用上一句；生成完了就给出下载链接（实测约 4 分钟出 PPT）</td></tr>
+              <tr><td>4</td><td><code class="copy">把这篇文章做成 5 页汇报：https://semiengineering.com/</code></td><td>调用「把网页做成汇报 PPT」，网页地址=这个链接、页数=5；同样回复进度页链接</td></tr>
+              <tr><td>5</td><td><code class="copy">看看本周食品饮料行业有什么变化，整理成汇报</code></td><td>一句话里先后调用两个工具：先洞察、再提交 PPT（行业=食品饮料）。用的是你 Lab-01 加的行业，生成的 PPT 带着你 Lab-02 改的规范</td></tr>
             </tbody>
           </table>
         </div>
@@ -897,7 +1009,15 @@ git push</pre>
         </div>
         <figure class="shot"><img src="img/55-studio-status.jpg" alt="第 3 句" loading="lazy"><figcaption>第 3 句：「查询 PPT 生成进度」用的是第 2 句返回的任务号</figcaption></figure>
         <figure class="shot"><img src="img/55b-studio-test4.jpg" alt="第 5 句" loading="lazy"><figcaption>第 5 句：一句话里先查洞察、再生成 PPT</figcaption></figure>
-        <p class="warn">工具卡片显示 Failed、提示 <code>connectorAuthorizationError … HTTP 401</code>：连接里的密钥不是这个 Codespace 的（最常见是用了以前记下的密钥）。到 <a href="https://make.powerautomate.com">Power Automate</a> → 左侧 Connections → 你的「Atlas · 名字」→ <b>⋯ → Edit</b> → 粘贴第 1 步 smoke-test 打印的密钥 → <b>Update</b>，回来直接重试，不用删连接、也不用重新挂工具。</p>
+        <div class="warn">
+          <p style="margin:0 0 6px;"><b>工具卡片显示 Failed：先看错误里是 401 还是 404，两种处理不一样</b></p>
+          <ol class="plain" style="margin:0;">
+            <li><code>connectorAuthorizationError</code> … <b>HTTP 401</b>：你的服务拒绝了这次请求。先在 Codespace 新开终端运行 <code class="copy">bash Lab-03-Copilot-Studio/smoke-test.sh</code>：
+              <br>「公网地址可访问」没过 → 3000 端口变回了 Private（Codespace 重启过、第二天再打开都会这样），按第 1 步设回 Public，回来直接重试；
+              <br>4 项都过 → 才是连接里的密钥不对（用了以前记下的，或复制时带上了前面的中文）。打开 <a href="https://make.powerautomate.com">Power Automate</a>，<b>先把右上角 Environments 切到和 Studio 同一个环境</b>（不切就找不到你的连接）→ 左侧 Connections → 你的「Atlas · 名字」→ <b>⋯ → Edit</b> → 粘贴 smoke-test 第二行冒号后面那一串 → <b>Update</b>，回来重试。不用删连接，也不用重新挂工具。</li>
+            <li><code>connectorRequestFailure</code> … <b>HTTP 404</b> … <code>The connection … is not found</code>：工具绑定的连接已经被删了（比如点了连接旁边的垃圾桶，或者删掉重建过），工具详情里 Connection 显示 <b>Not connected</b>。到 Tools 页逐个打开 4 个工具 → <b>Connection</b> 下拉选「Atlas · 你的名字」（列表里没有就点 Create new connection 再建一个）→ 右上角 <b>Save</b>；4 个都改完，点 <b>New test session</b> 再试。</li>
+          </ol>
+        </div>
         <p class="tip">如果某个工具忘了改成 Maker-provided credentials，调用时会提示「先连接……打开连接管理器」：回到那个工具的 Additional details 改掉再试，比在连接管理器里授权省事。测完想回看，到顶部 <b>Activity</b> 页打开这次会话即可。</p>
       </div>
     </div>
@@ -944,8 +1064,9 @@ git push</pre>
           <tr><td>斜杠命令回车后没发出去</td><td>第一次回车是选中了补全建议</td><td>再按一次回车</td></tr>
           <tr><td>新加的 MCP 工具智能体不调用</td><td>MCP 服务器没重启</td><td>mcp.json 里点 Restart，确认「5 tools」</td></tr>
           <tr><td>周报页头写「模式：fallback」</td><td>研判结果没通过校验（引用了不存在的信号 ID 等）</td><td>看 Chat 里 build_weekly_report 返回的 warnings，让智能体按提示修正重试</td></tr>
-          <tr><td>热身 / Lab-01 的周报预览页打不开</td><td>预览服务停了（Codespace 重启过，或关了起服务的那个终端）</td><td>新开终端运行 <code>python -m http.server 8080 --directory Lab-01-Industry-Insight/frontend</code>，在 Ports 面板 8080 那一行点地球图标</td></tr>
-          <tr><td>Lab-02 进度页「无法列出模型」</td><td>没有有效的 Copilot 令牌</td><td>重新 <code>bash .devcontainer/set-key.sh</code>（API 密钥保持不变，Studio 的连接不用改），Ctrl+C 停掉再 <code>npm run dev</code></td></tr>
+          <tr><td>热身 / Lab-01 的周报预览页打不开</td><td>预览服务停了（Codespace 重启过，或关了起服务的那个终端）</td><td>新开终端运行 <code class="copy">python -m http.server 8080 --directory Lab-01-Industry-Insight/frontend</code>，在 Ports 面板 8080 那一行点地球图标</td></tr>
+          <tr><td>Lab-02 进度页「无法列出模型」</td><td>没有有效的 Copilot 令牌</td><td>重新 <code class="copy">bash .devcontainer/set-key.sh</code>（API 密钥保持不变，Studio 的连接不用改），Ctrl+C 停掉再 <code class="copy">npm run dev</code></td></tr>
+          <tr><td>Lab-02 网页生成 PPT 失败，进度页 / 终端里有 <code>Tool failed: unexpected user permission response</code></td><td>你 fork 里 Lab-02 的代码是 2026-10-18 修复之前的版本，和新版 Copilot CLI 对「同意执行」的回复写法对不上</td><td>GitHub 上打开你的 fork → <b>Sync fork</b> → <b>Update branch</b>（别点 Discard commits）；回到 Codespace 运行 <code class="copy">git pull</code>；npm 那个终端（在 Lab-02-Knowledge-Summary 目录里）Ctrl+C 停掉，再运行 <code class="copy">npm ci &amp;&amp; npm run dev</code>（npm ci 按锁文件装上对应版本的 Copilot CLI）</td></tr>
           <tr><td>fork 的 Actions 页没有 Industry Insight Weekly / 没有 Run workflow</td><td>fork 上的 Actions 默认关闭，定时工作流还要单独启用</td><td>Actions 页签点「I understand my workflows, go ahead and enable them」；再点左侧 Industry Insight Weekly → 黄条上的 <b>Enable workflow</b>（课前准备第 6 项）</td></tr>
           <tr><td>gh-aw 运行失败</td><td>点开这次运行看哪个阶段变红（fork 默认关了 Issues，不会有「[aw] …」Issue）；日志里报 401（认证失败）表示你 fork 的 Actions secret 没设或令牌过期</td><td>你的 fork → Settings → Secrets and variables → Actions → 更新 <code>COPILOT_GITHUB_TOKEN</code> 后重跑</td></tr>
           <tr><td>gh-aw 跑完了但 fork 里没有 PR</td><td>fork 没允许 Actions 建 PR（fork 关了 Issues，也不会有说明原因的 Issue）</td><td>Settings → Actions → General → 勾选 Allow GitHub Actions to create and approve pull requests → Save，再 Run workflow 重跑；fork 首页如果出现了 gh-aw 推上来的分支提示，也可以直接点 <b>Compare &amp; pull request</b> 手动开 PR</td></tr>
@@ -955,7 +1076,10 @@ git commit -m "周报以 PR 为准"
 git pull --no-rebase --no-edit
 git push</pre></td></tr>
           <tr><td>smoke-test「公网地址可访问」失败（302 / 401）</td><td>端口 3000 是 Private（重启后会变回去）</td><td>Ports 面板右键 3000 → Port Visibility → Public</td></tr>
-          <tr><td>Studio 工具卡片 Failed：<code>connectorAuthorizationError</code>（HTTP 401）</td><td>连接里的密钥不是这个 Codespace 的。每个 Codespace 的 LAB_API_KEY 都不同，以前记下的用不了</td><td>终端 <code>grep LAB_API_KEY Lab-02-Knowledge-Summary/.env</code> 看当前值 → Power Automate → Connections → 你的连接 ⋯ → Edit → 粘贴 → Update，回来重试</td></tr>
+          <tr><td>Studio 工具卡片 Failed：<code>connectorAuthorizationError</code>（HTTP 401）</td><td>① 3000 端口变回了 Private（Codespace 重启后会这样）；② 连接里的密钥不是这个 Codespace 的（每个 Codespace 的 LAB_API_KEY 都不同），或复制时带上了前面的中文</td><td>先跑 <code class="copy">bash Lab-03-Copilot-Studio/smoke-test.sh</code>：公网那项没过就把端口设回 Public；4 项都过再改密钥：<code class="copy">grep LAB_API_KEY Lab-02-Knowledge-Summary/.env</code> 看当前值 → Power Automate（右上角先切到和 Studio 同一个环境）→ Connections → 你的连接 ⋯ → Edit → 粘贴 → Update，回来重试</td></tr>
+          <tr><td>Studio 工具卡片 Failed：<code>connectorRequestFailure</code>（HTTP 404），提示 <code>The connection … is not found</code></td><td>工具绑定的连接被删了（点过连接旁边的垃圾桶，或删掉重建过），工具详情里 Connection 显示 Not connected</td><td>Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的名字」（没有就 Create new connection）→ Save → New test session 重试</td></tr>
+          <tr><td>Power Automate 的 Connections 里找不到「Atlas · 你的名字」</td><td>Power Automate 和 Studio 不在同一个环境（Power Automate 右上角 Environments 和 Studio 左下角显示的不一样）</td><td>Power Automate 右上角 Environments 切到 Studio 用的那个环境（课程用讲师指定的 Trial 环境，如 Ontology-trial），再看 Connections</td></tr>
+          <tr><td>建连接时只有 Display name、没有 API 密钥输入框；工具提示 <code>We couldn't enable this connection</code></td><td>智能体建在了 Caldova (default) 环境（Studio 打开时经常默认停在这里），不是讲师指定的 Trial 环境</td><td>Studio 左下角切到 Trial 环境（如 Ontology-trial），从第 3 步重建智能体、导入工具、建连接；default 环境里建的东西留给讲师课后清理</td></tr>
           <tr><td>测试时提示「先连接……打开连接管理器」</td><td>工具的凭据还是 End user credentials</td><td>工具详情 → Additional details → Credentials to use 改成 Maker-provided credentials → Save</td></tr>
           <tr><td>Studio 工具调用返回 404 / 连不上，或拿到的是别人的周报</td><td>挂错了工具（别人名字的那一个），或 openapi.yaml 的 host 没改</td><td>Tools 里删掉错的，重新导入 host 和 title 都改成自己的 openapi.yaml</td></tr>
           <tr><td>Codespace 重建后 Studio 连不上</td><td>新 Codespace 名字变了，host 和 API 密钥都跟着变</td><td>openapi.yaml 改成新的 host，title 后面加个「2」免得和旧的重名 → Studio 的 Tools 里删掉旧的 4 个工具 → 按 Lab-03 第 4 步重新导入、新建连接（粘贴新 Codespace 的密钥）、改 Maker-provided credentials。新导入的是新连接器，旧连接用不上</td></tr>
@@ -997,7 +1121,8 @@ git fetch upstream</pre>
         <h3 class="card-title">想先看看答案改了什么</h3>
         <p class="card-desc">每个参考答案分支都只比 main 多一个提交，不覆盖文件、直接看这个提交改了什么（按 <code>q</code> 退出）：</p>
         <pre class="cmd">git show origin/answer/lab01</pre>
-        <p class="card-desc">或者直接问 Copilot：「对比我的 search_signals 和 origin/answer/lab01 上的版本，我的为什么跑不通？只回答，不要改文件。」</p>
+        <p class="card-desc">或者直接问 Copilot：</p>
+        <pre class="prompt">对比我的 search_signals 和 origin/answer/lab01 上的版本，我的为什么跑不通？只回答，不要改文件。</pre>
       </article>
     </div>
     <figure class="shot"><img src="img/60-stuck-restore.jpg" alt="git restore 参考答案" loading="lazy"><figcaption>实测：恢复 Lab-02 参考答案后，git status 只显示这两个文件被改动</figcaption></figure>
@@ -1051,9 +1176,69 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
 
   <footer class="az-footer">
     <span>埃知科技 · 上海埃知科技有限公司</span>
-    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.3（fork 版 · 全程重跑）· 2026-10-17</span>
+    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.4（fork 版 · 全程重跑）· 2026-10-18</span>
   </footer>
 
 </div>
+<script>
+// 给每个命令框、提示词框和 code.copy 加「复制」按钮。file:// 打开或非 https 时 clipboard API 不可用，退回 execCommand。
+(function () {
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('copy failed'));
+    });
+  }
+
+  function addButton(target, className, label, getText) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = className;
+    btn.textContent = '复制';
+    btn.setAttribute('aria-label', label);
+    btn.addEventListener('click', function () {
+      copyText(getText()).then(function () {
+        btn.textContent = '已复制';
+        btn.classList.add('done');
+      }, function () {
+        btn.textContent = '请手动复制';
+      }).then(function () {
+        setTimeout(function () { btn.textContent = '复制'; btn.classList.remove('done'); }, 1500);
+      });
+    });
+    target.appendChild(btn);
+  }
+
+  document.querySelectorAll('pre.cmd, pre.prompt').forEach(function (pre) {
+    var wrap = document.createElement('div');
+    wrap.className = 'copy-wrap';
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(pre);
+    var isCmd = pre.classList.contains('cmd');
+    addButton(wrap, isCmd ? 'copy-btn on-dark' : 'copy-btn', isCmd ? '复制命令' : '复制提示词', function () {
+      return pre.textContent.replace(/\n+$/, '');
+    });
+  });
+
+  document.querySelectorAll('code.copy').forEach(function (code) {
+    var holder = document.createElement('span');
+    code.parentNode.insertBefore(holder, code.nextSibling);
+    addButton(holder, 'copy-inline', '复制', function () { return code.textContent; });
+    holder.replaceWith(holder.firstChild);
+  });
+})();
+</script>
 </body>
 </html>

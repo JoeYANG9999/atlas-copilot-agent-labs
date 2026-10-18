@@ -95,7 +95,8 @@
 | `GET /api/jobs/{jobId}` | 查进度，成功后返回 `downloadUrl` |
 | `/jobs/{jobId}` | 进度页（网页），完成后可直接下载 |
 
-`.env` 里设置了 `LAB_API_KEY` 时，除进度页和下载链接外都要带请求头 `x-api-key`。本机调试示例：
+`.env` 里设置了 `LAB_API_KEY` 时，上表的 `/api/insight/latest` 和 `/api/jobs…` 接口都要带请求头 `x-api-key`。
+网页本身不检查密钥：首页（以及它用的 `/api/generate/stream`）、`/insight`、进度页和下载链接都能直接打开，首页还能直接生成 PPT、花你的 Copilot 额度，所以端口设成 Public 期间别把地址外传，用完改回 Private。本机调试示例：
 
 ```bash
 KEY=$(sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env)
@@ -108,7 +109,7 @@ curl -s -X POST localhost:3000/api/jobs/insight -H "x-api-key: $KEY" -H 'content
 | 现象 | 处理 |
 |---|---|
 | 「无法列出模型，请确认环境变量已配置」 | 令牌没填或无效：重新运行 `bash .devcontainer/set-key.sh`，然后重启 `npm run dev`；令牌正确仍报错，多半是组织没开 Copilot CLI 策略，找讲师 |
-| 网页生成失败，日志里 `Tool failed: unexpected user permission response` | fork 里是 2026-10-18 修复之前的代码（Copilot CLI 1.0.43 起「同意执行」的回复要写 `approve-once`）：GitHub 上你的 fork → **Sync fork** → **Update branch**（别点 Discard commits），Codespace 里 `git pull`，再重启 `npm run dev` |
+| 网页生成失败，日志里 `Tool failed: unexpected user permission response` | fork 里是 2026-10-18 修复之前的代码（Copilot CLI 1.0.43 起「同意执行」的回复要写 `approve-once`）：GitHub 上你的 fork → **Sync fork** → **Update branch**（别点 Discard commits），Codespace 里 `git pull`，再在 `Lab-02-Knowledge-Summary` 里 `npm ci && npm run dev`（npm ci 按锁文件装上对应版本的 Copilot CLI） |
 | 生成到一半报找不到 `playwright` / `pptxgenjs` | 终端运行 `echo $NODE_PATH`，应指向 `Lab-02-Knowledge-Summary/node_modules`；不对就重建 Codespace |
 | 报 Chromium 缺失 | `cd Lab-02-Knowledge-Summary && npx playwright install --with-deps chromium` |
 | 「还没有行业洞察周报」 | 先完成 Lab-01，或确认 `Lab-01-Industry-Insight/frontend/report.json` 存在 |
