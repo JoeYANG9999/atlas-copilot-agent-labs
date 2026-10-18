@@ -67,7 +67,8 @@
 
 1. **先切环境**：左下角 **环境切换** → 选讲师指定的 **Trial** 环境（本次演示租户里叫 Ontology-trial）。
    > ⚠️ Studio 打开时经常默认停在 Caldova (default)。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境。
-2. **Agents → New agent 旁的下拉箭头 → Agent（Standard）**（在下拉菜单下半部分「Other ways to build」里）。
+2. 新建 **Agent（Standard）**：新版首页点最下面的 **Other ways to build → Agent（Standard）**；旧版界面是 **Agents → New agent 旁的下拉箭头 → Agent（Standard）**（下拉菜单下半部分「Other ways to build」里）。
+   首页上面三张大卡片（Agent / AI workflow / App，带「GitHub Copilot」标记）都不要点。
    > 不要选上半部分带「GitHub Copilot」标记的 Agent：那是让 AI 帮你搭建，会消耗 Copilot Credits，步骤也不可复现。
 3. 名称填 `业务汇报助手 你的账号`（如 `业务汇报助手 user01`；全班在同一个环境里，带账号才分得清）；展开 **Agent settings**：
    - Language 选 **Chinese (Simplified)**；
@@ -95,6 +96,7 @@
 ### 3.4 把工具挂到智能体上
 
 1. 点 **Create connection**，会回到 Add tool 对话框。搜索框里输入**你的账号**（只搜 `Atlas` 会出来全班的），在「Atlas Agent Labs 你的账号」（Studio 会去掉「·」）下面能看到 4 个工具，别挂成同学的。
+   搜不到时点搜索框下面的 **REST API** 筛选：新版 Add tool 默认停在 Connector 筛选，导入的 REST API 工具不显示（2026-10-19 实测）。
 2. 点第一个「查询本周行业洞察」→ Connection 显示 Not connected → 下拉 → **Create new connection**：
    - Display name 填 `Atlas · 你的账号`（不填会叫「Connect to …」，和别人的、自己以前的重名，分不清）；
    - 「API 密钥（LAB_API_KEY）」粘贴第 1 步 smoke-test 第二行冒号后面那一串（别带上前面的中文）→ **Create**；
@@ -102,7 +104,7 @@
    > ⚠️ Connection 下拉列表里，连接名右边的**垃圾桶**会直接删掉这个连接，所有用它的工具都会断开（测试时报 404「The connection … is not found」）。想换密钥不要删连接，按第 4 步下面 401 那条改。
 3. 进入工具详情页：展开 **Additional details** → **Credentials to use** 从 End user credentials 改成 **Maker-provided credentials** → 右上角 **Save**。
    > 默认的 End user credentials 要求每个使用者自己授权一次连接，测试时会反复弹「先连接……打开连接管理器」。改成创建者凭据后工具直接用你建的连接，2026-10-17 实测不再弹任何提示。
-4. 其余 3 个照做：Add a tool → 搜你的账号 → 点工具（连接会自动选上）→ **Add and configure** → Additional details 改成 Maker-provided credentials → Save。
+4. 其余 3 个照做：Add a tool → 搜你的账号（或点 **REST API** 筛选）→ 点工具（连接会自动选上）→ **Add and configure** → Additional details 改成 Maker-provided credentials → Save。
    每个工具保存前看一眼 Connection：显示「Atlas · 你的账号」才对，显示 **Not connected** 就在下拉里选上它再 Save。
 5. 回到 **Tools** 页，确认 4 个工具都是 **On**、Trigger 是 **By agent**。
 

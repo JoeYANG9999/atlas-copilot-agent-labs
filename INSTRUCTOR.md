@@ -99,6 +99,8 @@
 | 学员 gh-aw 报 401 | 学员 fork 没设 Actions secret 或令牌过期 | fork → Settings → Secrets and variables → Actions → `COPILOT_GITHUB_TOKEN` |
 | 学员 `git restore --source origin/answer/...` 报 invalid reference | fork 时只复制了 main | `git remote add upstream <本仓库地址> && git fetch upstream`，改用 `upstream/answer/...` |
 | Studio 里一堆同名「Atlas Agent Labs」 | 学员没改 openapi.yaml 的 title | 让学员把 title 改成「Atlas Agent Labs · 账号」（如 `Atlas Agent Labs · user01`）重新导入，删掉自己旧的那个 |
+| 导入 REST API 后在 Add tool 里找不到自己的工具，以为没建成、又导入一遍 | 新版 Add tool 默认停在 Connector 筛选，REST API 工具不显示 | 点搜索框下面的 **REST API** 筛选；多导入的那份课后按「课后」清理（2026-10-19 实测） |
+| 首页找不到 Agent（Standard） | 新版首页三张大卡片都是 GitHub Copilot 搭建方式 | 首页最下面 **Other ways to build → Agent（Standard）** |
 | 学员在 Studio 里建不了智能体（没有新建按钮，或提示没权限） | 账号在 Ontology-trial 里没有 Environment Maker（非默认环境不会自动给） | 租户管理员：Power Platform 管理中心 → 环境 → Ontology-trial → 设置 → 用户 + 权限 → 用户 → 选中学员 → 管理安全角色 → 勾 Environment Maker |
 | 首次登录要求改密码，或要求注册 Microsoft Authenticator | 正常的首次登录流程（批量建的账号多半强制改密码；租户开着安全默认值时必须注册多重验证） | 让学员按提示完成、记住新密码；忘了密码由租户管理员在 M365 管理中心重置 |
 | Studio 工具卡片 `connectorAuthorizationError`（HTTP 401） | ① 3000 端口变回了 Private（Codespace 重启后）；② 连接里的密钥不是学员当前 Codespace 的（每个 Codespace 的 LAB_API_KEY 都不同，课前建过、重建过的最容易错），或复制时少了一位（密钥应是 32 位）、带上了「填：」 | 先让学员跑 smoke-test：公网那项没过就设回 Public；都过再用 `sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env` 打印纯密钥 → Power Automate（右上角切到和 Studio 同一个环境）→ 左侧 More → Connections → 学员的连接 ⋯ → Edit → 粘贴密钥 → Update，不用删连接（2026-10-18 遇到过少复制一位） |

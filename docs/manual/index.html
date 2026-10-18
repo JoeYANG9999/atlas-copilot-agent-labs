@@ -415,7 +415,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
         <div class="wm">微钉科技</div>
       </span>
     </a>
-    <span class="deck-meta">实操手册 v1.6（fork 版 · 全程重跑）· 2026-10-18</span>
+    <span class="deck-meta">实操手册 v1.7（fork 版 · 全程重跑）· 2026-10-19</span>
   </header>
 
   <!-- ===== Hero ===== -->
@@ -954,7 +954,7 @@ git push</pre>
       <div class="step-body">
         <h3>建智能体 · 起名、粘贴指令、关掉联网搜索</h3>
         <p class="do">用讲师发的课堂账号（卡片上的 <code>user01</code> 这类）登录 <a href="https://copilotstudio.microsoft.com">Copilot Studio</a>（首次登录如果要求改密码或注册验证器，按提示完成，记住新密码），<b>先切环境</b>（Studio 打开时经常停在 Caldova (default)）：左下角地球图标 → 选讲师指定的 <b>Trial</b> 环境（本次演示租户里叫 Ontology-trial）。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境，不同环境的连接互相看不到。然后 <b>Agents → New agent 旁的下拉箭头 → Agent（Standard）</b>：</p>
-        <figure class="shot"><img src="img/55b-studio-new-agent-menu.jpg" alt="New agent 下拉菜单" loading="lazy"><figcaption>选下面「Other ways to build」里的 Agent（Standard）。上面带 GitHub Copilot 标记的是让 AI 帮你搭，会消耗额度，步骤也不可复现</figcaption></figure>
+        <figure class="shot"><img src="img/55b-studio-new-agent-menu.jpg" alt="New agent 下拉菜单" loading="lazy"><figcaption>选下面「Other ways to build」里的 Agent（Standard）。新版首页没有这个下拉：直接点首页最下面的 Other ways to build → Agent（Standard）。带 GitHub Copilot 标记的大卡片是让 AI 帮你搭，会消耗额度，步骤也不可复现，不要点</figcaption></figure>
         <p class="do">名称填 <code class="copy">业务汇报助手 你的账号</code>（如 业务汇报助手 user01）；展开 <b>Agent settings</b>：Language 选 <b>Chinese (Simplified)</b>；Solution 保持默认的 Common Data Services Default Solution；<b>Schema name</b> 填英文（如 <code>bizreportuser01</code>）→ <b>Create</b>，等到绿条「Your agent has been provisioned」。</p>
         <figure class="shot"><img src="img/56-studio-new-agent.jpg" alt="Name your agent 对话框" loading="lazy"></figure>
         <p class="do"><b>Overview → Instructions → Edit</b>，把下面整段粘贴进去 → <b>Save</b>（点框右上角「复制」；和 Lab-03 README 里的「智能体指令」是同一段）：</p>
@@ -985,7 +985,7 @@ git push</pre>
             <figure class="shot"><img src="img/57c-studio-tool-params.jpg" alt="工具参数描述已预填" loading="lazy"></figure>
             <figure class="shot"><img src="img/57d-studio-tool-published.jpg" alt="工具发布成功" loading="lazy"></figure></li>
         </ol>
-        <p class="do">回到 Add tool 对话框，搜索框里输入<b>你的账号</b>（不要只搜 Atlas，全班的都会出来），在「Atlas Agent Labs 你的账号」下面点第一个工具「查询本周行业洞察」：</p>
+        <p class="do">回到 Add tool 对话框，搜索框里输入<b>你的账号</b>（不要只搜 Atlas，全班的都会出来），在「Atlas Agent Labs 你的账号」下面点第一个工具「查询本周行业洞察」。搜不到就点搜索框下面的 <b>REST API</b> 筛选：新版 Add tool 默认停在 Connector 筛选，导入的工具不显示。</p>
         <figure class="shot"><img src="img/58-studio-pick-own-tool.jpg" alt="搜自己的名字" loading="lazy"><figcaption>Studio 会去掉名字里的「·」；认准带你名字的那一组 4 个工具</figcaption></figure>
         <p class="do">Connection 显示 Not connected → 点下拉 → <b>Create new connection</b> → Display name 填 <code class="copy">Atlas · 你的账号</code>（不填会叫「Connect to …」，和别人的重名）→ 下面的「API 密钥」粘贴第 1 步 smoke-test 第二行冒号后面那一串 → <b>Create</b>。Connection 变成绿色对勾后点 <b>Add and configure</b>。</p>
         <p class="warn">建连接的对话框里<b>必须有「API 密钥」输入框</b>（见下图）。只有 Display name、没有密钥框，是上面 Authentication 那步的 Parameter label 空着：点 Cancel，不要建；打开 <a href="https://make.powerautomate.com">Power Automate</a>（右上角 Environments 先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → <b>Custom connectors</b> → 你的连接器右边的铅笔（编辑）→ <b>2. Security</b> → API Key 下点 <b>Edit</b> → 填上 Parameter label → <b>Update connector</b>，回到 Studio 再点 Create new connection，就有密钥框了。<br>
@@ -997,7 +997,7 @@ git push</pre>
         <p class="do">进入工具详情页，展开 <b>Additional details</b> → <b>Credentials to use</b> 从 End user credentials 改成 <b>Maker-provided credentials</b> → 右上角 <b>Save</b>。</p>
         <figure class="shot"><img src="img/58d-studio-maker-credentials.jpg" alt="改用 Maker-provided credentials" loading="lazy"></figure>
         <p class="see"><b>为什么改凭据</b>：默认的 End user credentials 要求每个使用者自己授权一次连接，测试时会反复弹「先连接……打开连接管理器」。改成创建者凭据后，工具直接用你建的这个连接，2026-10-17 实测不再弹任何提示。</p>
-        <p class="do">其余 3 个工具照做：Add a tool → 搜你的账号 → 点工具（连接会自动选上你刚建的那个）→ Add and configure → Additional details 改成 Maker-provided credentials → Save。每个工具保存前看一眼 Connection：显示「Atlas · 你的账号」才对，显示 <b>Not connected</b> 就在下拉里选上它再 Save。</p>
+        <p class="do">其余 3 个工具照做：Add a tool → 搜你的账号（或点 REST API 筛选）→ 点工具（连接会自动选上你刚建的那个）→ Add and configure → Additional details 改成 Maker-provided credentials → Save。每个工具保存前看一眼 Connection：显示「Atlas · 你的账号」才对，显示 <b>Not connected</b> 就在下拉里选上它再 Save。</p>
         <p class="see"><b>验收</b>：Tools 页 4 个工具都是 <b>On</b>、Trigger 是 <b>By agent</b>。</p>
         <figure class="shot"><img src="img/53-studio-tools.jpg" alt="Tools 页 4 个工具" loading="lazy"></figure>
         <p class="tip">Overview 上 Agent status 会显示「3 Warnings」，点 Review 能看到：用了创建者凭据（分享给别人时别人也用你的连接）、还没跑过评估、用了高级功能（发布需要付费许可）。本课只在测试窗格里用、不发布，这三条都不影响。</p>
@@ -1203,7 +1203,7 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
 
   <footer class="az-footer">
     <span>微钉科技</span>
-    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.6（fork 版 · 全程重跑）· 2026-10-18</span>
+    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.7（fork 版 · 全程重跑）· 2026-10-19</span>
   </footer>
 
 </div>
