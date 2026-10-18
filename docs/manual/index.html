@@ -381,6 +381,28 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
 .gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 12px; }
 .gloss div { background: var(--az-surface); border: 1px solid var(--az-border); border-radius: 8px; padding: 10px 14px; font-size: 13.5px; line-height: 1.65; color: var(--az-ink-2); }
 .gloss b { color: var(--az-ink); }
+/* 左侧目录：页尾脚本按章节和步骤生成。宽屏常驻左侧，窄屏用右下角「目录」按钮打开 */
+.side-toc { position: fixed; top: 0; bottom: 0; left: 0; width: 260px; overflow-y: auto; padding: 22px 12px 32px 16px; background: var(--az-surface); border-right: 1px solid var(--az-border); z-index: 40; font-size: 13.5px; line-height: 1.45; }
+.side-toc .side-title { display: flex; justify-content: space-between; align-items: center; margin: 0 0 10px 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .18em; color: var(--az-orchid-deep); }
+.side-toc .side-close { display: none; border: 0; background: none; font-size: 18px; line-height: 1; color: var(--az-ink-3); cursor: pointer; }
+.side-toc ol { list-style: none; margin: 0; padding: 0; }
+.side-toc li { margin: 1px 0; }
+.side-toc a { display: block; padding: 5px 8px; border-left: 2px solid transparent; border-radius: 0 6px 6px 0; color: var(--az-ink-2); text-decoration: none; }
+.side-toc a:hover { background: var(--az-orchid-mist); color: var(--az-ink); }
+.side-toc a.sec { margin-top: 8px; font-weight: 700; color: var(--az-ink); }
+.side-toc ol ol a { padding: 3px 8px 3px 20px; font-size: 12.5px; color: var(--az-ink-3); }
+.side-toc a.in { color: var(--az-orchid-deep); }
+.side-toc a.active { border-left-color: var(--az-orchid); background: var(--az-orchid-tint); color: var(--az-orchid-deep); }
+.toc-toggle { display: none; }
+.section[id], .step[id] { scroll-margin-top: 16px; }
+@media (min-width: 1200px) { body.has-side-toc { padding-left: 260px; } }
+@media (max-width: 1199px) {
+  .side-toc { transform: translateX(-100%); transition: transform .2s ease; box-shadow: var(--az-shadow-lg); }
+  .side-toc.open { transform: none; }
+  .side-toc .side-close { display: block; }
+  .toc-toggle { display: block; position: fixed; right: 16px; bottom: 16px; z-index: 41; padding: 10px 18px; border: 0; border-radius: 999px; background: var(--az-orchid-deep); color: #fff; font-family: var(--font-cn); font-size: 14px; box-shadow: var(--az-shadow-lg); cursor: pointer; }
+}
+@media print { .side-toc, .toc-toggle { display: none; } body.has-side-toc { padding-left: 0; } }
 </style>
 </head>
 <body class="theme-light az-chevron-pattern">
@@ -394,7 +416,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
         <div class="sub">上海埃知科技有限公司</div>
       </span>
     </a>
-    <span class="deck-meta">实操手册 v1.4（fork 版 · 全程重跑）· 2026-10-18</span>
+    <span class="deck-meta">实操手册 v1.5（fork 版 · 全程重跑）· 2026-10-18</span>
   </header>
 
   <!-- ===== Hero ===== -->
@@ -1182,7 +1204,7 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
 
   <footer class="az-footer">
     <span>埃知科技 · 上海埃知科技有限公司</span>
-    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.4（fork 版 · 全程重跑）· 2026-10-18</span>
+    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.5（fork 版 · 全程重跑）· 2026-10-18</span>
   </footer>
 
 </div>
@@ -1244,6 +1266,94 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
     addButton(holder, 'copy-inline', '复制', function () { return code.textContent; });
     holder.replaceWith(holder.firstChild);
   });
+})();
+</script>
+<script>
+// 左侧目录：章节名取自顶部目录，每个章节里的 .step 列为子项；滚动时高亮当前位置。没有 JS 时顶部目录照常可用。
+(function () {
+  var topToc = document.querySelector('nav.toc ol');
+  if (!topToc) return;
+
+  var side = document.createElement('nav');
+  side.className = 'side-toc';
+  side.setAttribute('aria-label', '目录');
+  side.innerHTML = '<div class="side-title"><span>目录</span><button type="button" class="side-close" aria-label="关闭目录">✕</button></div>';
+  var list = document.createElement('ol');
+  var targets = [];
+
+  topToc.querySelectorAll('a').forEach(function (a) {
+    var href = a.getAttribute('href');
+    var li = document.createElement('li');
+    var secLink = document.createElement('a');
+    secLink.href = href;
+    secLink.className = 'sec';
+    secLink.textContent = a.textContent.replace(/（\d+ 分钟）$/, '');
+    li.appendChild(secLink);
+    var sec = href.charAt(0) === '#' ? document.getElementById(href.slice(1)) : null;
+    if (sec) {
+      targets.push({ el: sec, link: secLink, secLink: secLink });
+      var sub = document.createElement('ol');
+      sec.querySelectorAll('.step').forEach(function (step) {
+        var no = step.querySelector('.step-no');
+        var title = step.querySelector('h3');
+        if (!no || !title) return;
+        if (!step.id) step.id = sec.id + '-' + no.textContent.trim().replace(/\./g, '-');
+        var stepLink = document.createElement('a');
+        stepLink.href = '#' + step.id;
+        stepLink.textContent = no.textContent.trim() + ' · ' + title.textContent.trim();
+        var stepItem = document.createElement('li');
+        stepItem.appendChild(stepLink);
+        sub.appendChild(stepItem);
+        targets.push({ el: step, link: stepLink, secLink: secLink });
+      });
+      if (sub.children.length) li.appendChild(sub);
+    }
+    list.appendChild(li);
+  });
+  side.appendChild(list);
+  document.body.appendChild(side);
+  document.body.classList.add('has-side-toc');
+
+  var toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'toc-toggle';
+  toggle.textContent = '目录';
+  toggle.setAttribute('aria-expanded', 'false');
+  document.body.appendChild(toggle);
+  function setOpen(open) {
+    side.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  toggle.addEventListener('click', function () { setOpen(!side.classList.contains('open')); });
+  side.querySelector('.side-close').addEventListener('click', function () { setOpen(false); });
+  side.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+
+  // targets 按文档顺序排列（章节在前、它的步骤在后），最后一个越过视口上方 1/4 的就是当前位置
+  var current = null;
+  function update() {
+    var line = window.innerHeight * 0.25;
+    var hit = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].el.getBoundingClientRect().top <= line) hit = targets[i];
+    }
+    if (hit === current) return;
+    current = hit;
+    side.querySelectorAll('a.active, a.in').forEach(function (a) { a.classList.remove('active', 'in'); });
+    if (!hit) return;
+    hit.link.classList.add('active');
+    if (hit.secLink !== hit.link) hit.secLink.classList.add('in');
+    var r = hit.link.getBoundingClientRect();
+    var s = side.getBoundingClientRect();
+    if (r.top < s.top + 40 || r.bottom > s.bottom - 40) side.scrollTop += r.top - s.top - s.height / 3;
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; update(); });
+  }, { passive: true });
+  update();
 })();
 </script>
 </body>
