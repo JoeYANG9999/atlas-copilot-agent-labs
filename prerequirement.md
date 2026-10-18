@@ -11,7 +11,7 @@
 | 自己的 fork | Fork 课程仓库到个人账号，**不要只复制 main**；启用 fork 的 Actions，并允许 Actions 建 PR | 全部、Lab-01 云端版 |
 | Fine-grained PAT | Resource owner 选个人账号，权限 **Account → Copilot Requests = Read**；存成个人 Codespaces secret 和 fork 的 Actions secret `COPILOT_GITHUB_TOKEN`（步骤见 [docs/codespaces.md](docs/codespaces.md)） | Lab-01 云端版、Lab-02、Lab-03 |
 | 已建好的 Codespace | 在自己的 fork 上建一次（没有预构建，第一次 5~8 分钟），用个人账号的免费额度 | 全部 |
-| Copilot Studio 账号 | 讲师提供的演示租户账号，能登录 copilotstudio.microsoft.com | Lab-03 |
+| Copilot Studio 账号 | 不用提前准备：Lab-03 开始时讲师发课堂账号卡片（`user01` 这类）；首次登录可能要求改密码，或用手机装 Microsoft Authenticator 验证，请带手机 | Lab-03 |
 
 ## 网络（需放通）
 

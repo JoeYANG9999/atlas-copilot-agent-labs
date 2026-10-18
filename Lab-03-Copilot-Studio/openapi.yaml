@@ -5,7 +5,7 @@
 #   1. host 换成你自己的 Codespace 公网地址（不带 https://），
 #      例如 fluffy-space-robot-x5g7-3000.app.github.dev；
 #      在 Codespace 终端运行 bash Lab-03-Copilot-Studio/smoke-test.sh 会打印你的 host。
-#   2. info.title 改成「Atlas Agent Labs · 你的名字」，全班在同一个 Studio 环境里，靠它区分各自的连接器。
+#   2. info.title 改成「Atlas Agent Labs · 你的账号」（如 Atlas Agent Labs · user01），全班在同一个 Studio 环境里，靠它区分各自的连接器。
 swagger: '2.0'
 info:
   title: Atlas Agent Labs

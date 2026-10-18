@@ -55,13 +55,13 @@
 打开 [openapi.yaml](openapi.yaml)，改两处，保存：
 
 - `host:` 换成自检脚本打印的 host（不带 `https://`；要整串复制，Codespace 名字后面那串随机字符不能丢，丢了 Studio 调用会报 404）；
-- `info.title:` 改成 `Atlas Agent Labs · 你的名字`。全班在同一个 Trial 环境里各自导入，名字不改就会出现几十个同名连接器，分不清哪个是自己的。
+- `info.title:` 改成 `Atlas Agent Labs · 你的账号`（如 `Atlas Agent Labs · user01`，账号见讲师发的卡片）。全班在同一个 Trial 环境里各自导入，不改就会出现几十个同名连接器，分不清哪个是自己的。
 
 在资源管理器里右键 `openapi.yaml` → **下载**，第 3 步要上传它。
 
 ## 第 3 步：在 Copilot Studio 建智能体（20 分钟）
 
-用讲师发的演示租户账号登录 <https://copilotstudio.microsoft.com>。
+用讲师发的课堂账号（卡片上的 `user01` 这类）登录 <https://copilotstudio.microsoft.com>。首次登录如果要求改密码或注册验证器，按提示完成，记住新密码。
 
 ### 3.1 新建智能体
 
@@ -69,10 +69,10 @@
    > ⚠️ Studio 打开时经常默认停在 Caldova (default)。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境。
 2. **Agents → New agent 旁的下拉箭头 → Agent（Standard）**（在下拉菜单下半部分「Other ways to build」里）。
    > 不要选上半部分带「GitHub Copilot」标记的 Agent：那是让 AI 帮你搭建，会消耗 Copilot Credits，步骤也不可复现。
-3. 名称填 `业务汇报助手 你的名字`（全班在同一个环境里，带名字才分得清）；展开 **Agent settings**：
+3. 名称填 `业务汇报助手 你的账号`（如 `业务汇报助手 user01`；全班在同一个环境里，带账号才分得清）；展开 **Agent settings**：
    - Language 选 **Chinese (Simplified)**；
    - **Solution** 是必填项，保持默认的 Common Data Services Default Solution；
-   - **Schema name** 填英文，例如在前缀后填 `bizreportzhang`（中文名生成不了）。
+   - **Schema name** 填英文，例如在前缀后填 `bizreportuser01`（中文名生成不了）。
 4. 点 **Create**，等出现绿条「Your agent has been provisioned」。
 
 ### 3.2 写指令、关掉联网搜索
@@ -85,7 +85,7 @@
 
 1. **Tools → Add tool → Create new 区域右上角点 See all → REST API**。
 2. **Upload specification**：上传第 2 步改好的 `openapi.yaml` → Next。
-3. **API plugin details**：Tool name 和 Description 会自动带出（应该是你改过的「Atlas Agent Labs · 你的名字」）；Solution 留空（会自动建一个）→ Next（第一次保存约 30 秒）。
+3. **API plugin details**：Tool name 和 Description 会自动带出（应该是你改过的「Atlas Agent Labs · 你的账号」）；Solution 留空（会自动建一个）→ Next（第一次保存约 30 秒）。
 4. **Authentication**：Studio 不会自动读 openapi 里的密钥配置，要手动设：
    - 认证方式选 **API key**；
    - **Parameter label 必填**（如 `API 密钥（LAB_API_KEY）`，建连接时它是密钥输入框的标题；空着向导也能过，但建连接的对话框里就没有密钥框），**Parameter name 填 `x-api-key`**，Parameter location 保持 **Header**。
@@ -94,16 +94,16 @@
 
 ### 3.4 把工具挂到智能体上
 
-1. 点 **Create connection**，会回到 Add tool 对话框。搜索框里输入**你的名字**（只搜 `Atlas` 会出来全班的），在「Atlas Agent Labs 你的名字」（Studio 会去掉「·」）下面能看到 4 个工具，别挂成同学的。
+1. 点 **Create connection**，会回到 Add tool 对话框。搜索框里输入**你的账号**（只搜 `Atlas` 会出来全班的），在「Atlas Agent Labs 你的账号」（Studio 会去掉「·」）下面能看到 4 个工具，别挂成同学的。
 2. 点第一个「查询本周行业洞察」→ Connection 显示 Not connected → 下拉 → **Create new connection**：
-   - Display name 填 `Atlas · 你的名字`（不填会叫「Connect to …」，和别人的、自己以前的重名，分不清）；
+   - Display name 填 `Atlas · 你的账号`（不填会叫「Connect to …」，和别人的、自己以前的重名，分不清）；
    - 「API 密钥（LAB_API_KEY）」粘贴第 1 步 smoke-test 第二行冒号后面那一串（别带上前面的中文）→ **Create**；
    - Connection 变成绿色对勾后点 **Add and configure**。
    > ⚠️ Connection 下拉列表里，连接名右边的**垃圾桶**会直接删掉这个连接，所有用它的工具都会断开（测试时报 404「The connection … is not found」）。想换密钥不要删连接，按第 4 步下面 401 那条改。
 3. 进入工具详情页：展开 **Additional details** → **Credentials to use** 从 End user credentials 改成 **Maker-provided credentials** → 右上角 **Save**。
    > 默认的 End user credentials 要求每个使用者自己授权一次连接，测试时会反复弹「先连接……打开连接管理器」。改成创建者凭据后工具直接用你建的连接，2026-10-17 实测不再弹任何提示。
-4. 其余 3 个照做：Add a tool → 搜你的名字 → 点工具（连接会自动选上）→ **Add and configure** → Additional details 改成 Maker-provided credentials → Save。
-   每个工具保存前看一眼 Connection：显示「Atlas · 你的名字」才对，显示 **Not connected** 就在下拉里选上它再 Save。
+4. 其余 3 个照做：Add a tool → 搜你的账号 → 点工具（连接会自动选上）→ **Add and configure** → Additional details 改成 Maker-provided credentials → Save。
+   每个工具保存前看一眼 Connection：显示「Atlas · 你的账号」才对，显示 **Not connected** 就在下拉里选上它再 Save。
 5. 回到 **Tools** 页，确认 4 个工具都是 **On**、Trigger 是 **By agent**。
 
 > Overview 上 Agent status 会显示「3 Warnings」：用了创建者凭据（分享给别人时别人也用你的连接）、还没跑过评估、用了高级功能（发布需要付费许可）。本课只在测试窗格里用、不发布，三条都不影响。
@@ -134,9 +134,9 @@
 > - `connectorAuthorizationError … HTTP 401`：服务拒绝了请求。先跑一次 `bash Lab-03-Copilot-Studio/smoke-test.sh`：
 >   「公网地址可访问」没过 = 3000 端口变回了 Private（Codespace 重启过、第二天再打开都会这样），设回 Public 再试；
 >   4 项都过 = 连接里的密钥不对（用了以前记下的、少复制了一位，或带上了前面的中文）。密钥是 32 位，`sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env` 只打印密钥本身，从这里复制最稳 →
->   Power Automate（**右上角 Environments 先切到和 Studio 同一个环境**）→ 左侧 More → Connections → 你的「Atlas · 名字」→ **⋯ → Edit** → 粘贴密钥 → **Update**，回来直接重试，不用删连接、也不用重新挂工具。
+>   Power Automate（**右上角 Environments 先切到和 Studio 同一个环境**）→ 左侧 More → Connections → 你的「Atlas · 账号」→ **⋯ → Edit** → 粘贴密钥 → **Update**，回来直接重试，不用删连接、也不用重新挂工具。
 > - `connectorRequestFailure … HTTP 404 … The connection … is not found`：工具绑定的连接被删了，工具详情里 Connection 显示 Not connected。
->   Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的名字」（没有就 Create new connection）→ Save，再点 New test session 重试。
+>   Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的账号」（没有就 Create new connection）→ Save，再点 New test session 重试。
 > - `connectorRequestFailure … HTTP 404`（没有 The connection … is not found 字样）：请求没到你的服务。① **Codespace 停了**（空闲 30 分钟自动停，<https://github.com/codespaces> 里显示 Shutdown）→ 打开它，重新 `cd Lab-02-Knowledge-Summary && npm run dev`、3000 设回 Public、跑 smoke-test；
 >   ② **连接器的 host 写错了**（比如漏了 Codespace 名字后面的随机串）→ 按下面「常见问题」在 Power Automate 直接改 Host，不用重新导入。
 > - `connectorPowerFxError … '<' is an invalid start of a value`：服务返回的是网页不是 JSON，几乎都是 **3000 端口还是 Private**（GitHub 跳转到了登录页）→ 设回 Public 再试。
@@ -168,7 +168,7 @@ Save 后点 **New test session** 重跑第 1 句。**期望结果**：回答最�
 | 工具卡片 Failed：`connectorRequestFailure`（HTTP 404，不带 `The connection … is not found`），或拿到的是别人的周报 | 连接器的 host 不对（openapi.yaml 的 host 没改，或漏抄了 Codespace 名字后面的随机字符）；或挂成了同学的工具 | host 不对：Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 你的连接器右边的铅笔（编辑）→ 1. General → Host 改成 smoke-test 第一行打印的完整 host → Update connector，回来重试，不用重新导入（2026-10-18 实测）。挂成了同学的工具：Tools 里删掉，按 3.4 挂上自己名字的那一组 |
 | Codespace 重建后连不上 | 新 Codespace 名字变了，host 和 API 密钥都跟着变 | 不用重新导入：Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 你的连接器的铅笔 → 1. General → Host 改成新 Codespace 的完整 host → Update connector；再 左侧 More → Connections → 你的连接 ⋯ → Edit → 粘贴新密钥 → Update（这两步 2026-10-18 都实测过） |
 | 工具卡片 Failed：`connectorAuthorizationError`（HTTP 401） | ① 3000 端口变回了 Private（Codespace 重启后会这样）；② 连接里的密钥不是这个 Codespace 的（每个 Codespace 的 `LAB_API_KEY` 都不同），或复制时少了一位、带上了前面的中文 | 先跑 smoke-test：公网那项没过就设回 Public；4 项都过再用 `sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env` 打印当前密钥（应该是 32 位）→ Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Connections → 你的连接 ⋯ → Edit → 粘贴 → Update |
-| 工具卡片 Failed：`connectorRequestFailure`（HTTP 404），提示 `The connection … is not found` | 工具绑定的连接被删了（点过连接旁边的垃圾桶，或删掉重建过） | Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的名字」（没有就 Create new connection）→ Save → New test session |
+| 工具卡片 Failed：`connectorRequestFailure`（HTTP 404），提示 `The connection … is not found` | 工具绑定的连接被删了（点过连接旁边的垃圾桶，或删掉重建过） | Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的账号」（没有就 Create new connection）→ Save → New test session |
 | Power Automate 的 Connections 里找不到你的连接 | Power Automate 和 Studio 不在同一个环境 | Power Automate 右上角 Environments 切到 Studio 用的那个环境（课程用讲师指定的 Trial 环境，如 Ontology-trial） |
 | 建连接时只有 Display name、没有 API 密钥输入框；建出来的连接旁有红色「!」，工具提示 `We couldn't enable this connection` | 3.3 导入时 Authentication 的 Parameter label 空着，建连接就不显示密钥框；Power Automate 的 Connections 里这个连接的状态是 `Parameter value missing` | Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 你的连接器右边的铅笔（编辑）→ 2. Security → API Key 下点 Edit → 填上 Parameter label → Update connector。已经建了的连接：左侧 More → Connections → 你的连接 ⋯ → Edit → 粘贴密钥 → Update，状态变成 Connected；还没建的回 Studio 重新 Create new connection，就有密钥框了。不用重新导入（2026-10-18 实测） |
 | 测试时提示「先连接……打开连接管理器」 | 工具的凭据还是 End user credentials | 工具详情 → Additional details → Credentials to use 改成 Maker-provided credentials → Save |

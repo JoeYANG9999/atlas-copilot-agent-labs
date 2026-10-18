@@ -6,12 +6,12 @@
 
 | 环节 | 内容 | 时长 |
 |---|---|---|
-| 01 | 开场：项目地图与功能地图、GitHub Copilot app 演示；打开 Codespace、信任文件夹、`set-key.sh` | 20 分钟 |
+| 01 | 开场：讲开场 PPT（讲师自备，8 页带讲者备注：要想的事、两件工具、业务场景、技术架构、工作方法、路线图），不演示 app；第一分钟先让学员打开 Codespace，讲完一起信任文件夹、跑 `set-key.sh` | 20 分钟 |
 | 02 | 热身 · Vibe coding：读懂项目、`/explain`、一句话给周报网页加开关、自定义指令 | 25 分钟 |
 | 03 | Lab-01 行业洞察智能体 · MCP + gh-aw：Prompt 文件 + MCP 工具、改 focus.md、加「客户雷达」工具、推到学员自己的 fork 手动跑 gh-aw | 45 分钟 |
+| — | 休息与答疑（放在 Lab-01 第 4 步触发 gh-aw 之后，回来正好看 PR） | 30 分钟 |
 | 04 | Lab-02 知识总结智能体 · Skills + SDK：Chat 里用 Skill（实测约 20 分钟，建议讲师演示、学员边看边等）、改 SKILL.md、加「公司品牌风」、用 Copilot SDK 跑网页服务 | 45 分钟 |
-| 05 | Lab-03 Copilot Studio 串起来 | 45 分钟 |
-| — | 休息与答疑（建议放在 Lab-01 第 4 步触发 gh-aw 之后，回来正好看 PR） | 30 分钟 |
+| 05 | Lab-03 Copilot Studio 串起来（开始时发课堂账号卡片） | 45 分钟 |
 
 ## T-7 天 · 只有你能推动的事
 
@@ -38,11 +38,20 @@
      「not authorized to use this Copilot feature」，页面显示「无法列出模型」；
    - 确认允许学员创建 Fine-grained PAT 且不需审批（学员把 Resource owner 选为个人账号）。
 5. **Copilot Studio 演示租户**：
-   - 为每位学员开好 M365 账号 + Copilot Studio 授权（试用许可即可）；
+   - **课堂账号**：每位学员一个，`user01`、`user02`……（显示名同账号）。账号、域名和初始密码只记在讲师自留的账号表里，
+     **不要写进本仓库**（仓库是公开的）；打印的账号卡片 Lab-03 开始时发。
+     - 要由租户管理员来建（用户管理员 + 许可证管理员角色）。讲师的演示账号不一定有权限，2026-10-18 实测没有。
+     - 顺序：① Entra 管理中心 → 用户 → 所有用户 → 批量操作 → 批量创建（微软 2026-10 改过模板，用现下载的）；
+       ② M365 管理中心给这批账号分配 Copilot Studio 许可（试用许可即可，本课只在测试窗格里用、不发布）；
+       ③ Power Platform 管理中心 → 环境 → Ontology-trial → 设置 → 用户 + 权限 → 用户 → 添加用户，逐个勾 **Environment Maker**
+       （非默认环境不会自动给，没有它建不了智能体；环境设了安全组的，先把账号加进安全组）。
+     - 先只配一个账号，按下面「完整走一遍」走通再配其余的。只有 Environment Maker 能不能导入 REST API 工具，微软文档没写清，必须实测。
+     - 首次登录多半要求改密码；租户开着安全默认值的话，还要用手机装 Microsoft Authenticator 注册（2024-07 起不能跳过）。课前确认，并提前通知学员带手机。
+     - 测试窗格也消耗租户的 Copilot Credits，几十人一起测之前看一眼余量。
    - Power Platform 管理中心的 **DLP 策略允许自定义连接器**访问 `*.app.github.dev`；
    - 确认学员用哪个环境：2026-10-16 实测演示租户的 Default 环境新建智能体会一直转圈，**Trial 环境（Ontology-trial）正常**；
      Studio 打开时默认停在 Caldova (default)，课前通知和 Lab-03 开始时都要提醒学员先切到 Ontology-trial；课后清理两个环境都要查；
-   - 自己用一个学员账号把 Lab-03 完整走一遍（[Lab-03 README](Lab-03-Copilot-Studio/README.md) 已按 2026-10-17 重跑写成，含所有坑）；
+   - **完整走一遍**：自己用一个课堂账号把 Lab-03 从头做一遍（[Lab-03 README](Lab-03-Copilot-Studio/README.md) 已按 2026-10-18 重跑更新，含所有坑）；
    - 学员的 4 个工具都要改成 **Maker-provided credentials**（工具详情 → Additional details → Credentials to use），否则测试时会反复弹「先连接……打开连接管理器」。Agent status 因此会多一条「使用作者凭据」的提醒，本课不发布智能体，可以忽略；
    - 每个学员导入一次 REST API 工具，租户里就会多出：1 个 Solution（「<title> Solution」）、1 个自定义连接器、1 个 AIPlugin + 4 个 AIPluginOperation、1 个连接。课后清理见下文「课后」。
 6. **网络**：场地网络要能访问 `github.com`、`*.github.dev`、`*.githubcopilot.com`、`news.google.com`、
@@ -50,11 +59,11 @@
 
 ## T-2 天 · 预检
 
-- 用一个学员账号从零开一次 Codespace，跑通三个 Lab，记下每步耗时。
+- 用一个学员账号从零开一次 Codespace、用一个课堂账号登录 Studio，跑通三个 Lab，记下每步耗时。
 - 手动触发一次 gh-aw 周报：`gh workflow run industry-insight.lock.yml`，合并 PR，确认 Pages 上的周报是本周的。
   这份周报是学员 Lab-02 / Lab-03 的兜底素材（学员自己没跑出来 Lab-01 时也能继续）。
 - 用一个学员账号走一遍 fork 流程：fork（不只复制 main）→ 两处 Secret → 启用 Actions → 在 fork 上手动触发 gh-aw，确认 fork 里出现周报 PR。
-- 学员回执（T-1）：fork 地址、Codespace 已建好、Actions 已启用、Studio 账号能登录。
+- 学员回执（T-1）：fork 地址、Codespace 已建好、Actions 已启用（Studio 账号上课才发，不在回执里）。
 
 ## gh-aw 每周定时（本仓库定时 + 学员在各自 fork 上手动跑）
 
@@ -74,11 +83,11 @@
 
 | 环节 | 全员达到才往下讲 |
 |---|---|
-| 01 | `set-key.sh` 打印出 `LAB_API_KEY` |
-| 02 | 周报网页页头显示「模式：智能体研判」 |
-| 03 | 下载到一份 PPT，标题是结论句 |
-| 04 | 网页上用「本周行业洞察周报」生成出 PPT |
-| 05 | `smoke-test.sh` 全部通过，Studio 测试窗格能返回进度页链接 |
+| 01 开场 | `set-key.sh` 打印出 `LAB_API_KEY` |
+| 02 热身 | 周报网页打开「只看高影响」后只剩「·高」的热点 |
+| 03 Lab-01 | 周报网页页头显示「模式：智能体研判」；休息回来时 fork 里有周报 PR |
+| 04 Lab-02 | Chat 生成的 PPT 每页标题都是结论句；网页上用「本周行业洞察周报」生成出 PPT 并能下载 |
+| 05 Lab-03 | `smoke-test.sh` 全部通过，Studio 测试窗格能返回进度页链接 |
 
 ## 现场排障速查
 
@@ -89,9 +98,11 @@
 | 有 Industry Insight Weekly 但没有 Run workflow | 定时工作流在 fork 上要单独启用 | 点进去 → 黄条上的 Enable workflow |
 | 学员 gh-aw 报 401 | 学员 fork 没设 Actions secret 或令牌过期 | fork → Settings → Secrets and variables → Actions → `COPILOT_GITHUB_TOKEN` |
 | 学员 `git restore --source origin/answer/...` 报 invalid reference | fork 时只复制了 main | `git remote add upstream <本仓库地址> && git fetch upstream`，改用 `upstream/answer/...` |
-| Studio 里一堆同名「Atlas Agent Labs」 | 学员没改 openapi.yaml 的 title | 让学员把 title 改成「Atlas Agent Labs · 名字」重新导入，删掉自己旧的那个 |
+| Studio 里一堆同名「Atlas Agent Labs」 | 学员没改 openapi.yaml 的 title | 让学员把 title 改成「Atlas Agent Labs · 账号」（如 `Atlas Agent Labs · user01`）重新导入，删掉自己旧的那个 |
+| 学员在 Studio 里建不了智能体（没有新建按钮，或提示没权限） | 账号在 Ontology-trial 里没有 Environment Maker（非默认环境不会自动给） | 租户管理员：Power Platform 管理中心 → 环境 → Ontology-trial → 设置 → 用户 + 权限 → 用户 → 选中学员 → 管理安全角色 → 勾 Environment Maker |
+| 首次登录要求改密码，或要求注册 Microsoft Authenticator | 正常的首次登录流程（批量建的账号多半强制改密码；租户开着安全默认值时必须注册多重验证） | 让学员按提示完成、记住新密码；忘了密码由租户管理员在 M365 管理中心重置 |
 | Studio 工具卡片 `connectorAuthorizationError`（HTTP 401） | ① 3000 端口变回了 Private（Codespace 重启后）；② 连接里的密钥不是学员当前 Codespace 的（每个 Codespace 的 LAB_API_KEY 都不同，课前建过、重建过的最容易错），或复制时少了一位（密钥应是 32 位）、带上了「填：」 | 先让学员跑 smoke-test：公网那项没过就设回 Public；都过再用 `sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env` 打印纯密钥 → Power Automate（右上角切到和 Studio 同一个环境）→ 左侧 More → Connections → 学员的连接 ⋯ → Edit → 粘贴密钥 → Update，不用删连接（2026-10-18 遇到过少复制一位） |
-| Studio 工具卡片 `connectorRequestFailure`（HTTP 404）`The connection … is not found` | 工具绑定的连接被删了（学员点了连接下拉里的垃圾桶，或删掉重建过），工具详情 Connection 显示 Not connected | 4 个工具逐个打开 → Connection 下拉选学员的「Atlas · 名字」（没有就 Create new connection）→ Save → New test session（2026-10-18 讲师重跑时遇到） |
+| Studio 工具卡片 `connectorRequestFailure`（HTTP 404）`The connection … is not found` | 工具绑定的连接被删了（学员点了连接下拉里的垃圾桶，或删掉重建过），工具详情 Connection 显示 Not connected | 4 个工具逐个打开 → Connection 下拉选学员的「Atlas · 账号」（没有就 Create new connection）→ Save → New test session（2026-10-18 讲师重跑时遇到） |
 | Studio 工具卡片 `connectorRequestFailure`（HTTP 404），不带 `The connection … is not found` | 连接器的 host 不对：学员没改 openapi.yaml 的 host，或漏抄了 Codespace 名字后面的随机字符 | Power Automate（右上角切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 学员连接器的铅笔（编辑）→ 1. General → Host 改成 smoke-test 第一行打印的完整 host → Update connector，不用重新导入（2026-10-18 讲师重跑时遇到并实测） |
 | 学员在 Power Automate 里找不到自己的连接 | Power Automate 和 Studio 不在同一个环境（演示租户有 Caldova (default) 和 Ontology-trial 两个） | Power Automate 右上角 Environments 切到 Studio 左下角显示的那个环境 |
 | 建连接没有 API 密钥输入框（只有 Display name）、连接旁有红色「!」、工具提示 `We couldn't enable this connection` | 学员导入 REST API 时 Authentication 的 Parameter label 空着，建连接就不显示密钥框；Power Automate 里这个连接的状态是 `Parameter value missing` | Power Automate（右上角切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 学员连接器的铅笔（编辑）→ 2. Security → API Key 下点 Edit → 填 Parameter label → Update connector；已经建了的连接：左侧 More → Connections → ⋯ → Edit → 粘贴密钥 → Update，变成 Connected；还没建的回 Studio 重新建连接就有密钥框。不用重新导入（2026-10-18 讲师重跑时遇到并实测） |
@@ -117,5 +128,6 @@
   3. [Power Automate](https://make.powerautomate.com) → Connections：删掉「Atlas · …」「Connect to Atlas Agent Labs …」等连接；
   4. Solutions 列表里删掉导入时自动生成的「Atlas Agent Labs … Solution」（只是空容器）；
   5. Connection references 里的 Content Conversion、Dataverse 是 SYSTEM 托管的，不要动。
+- 讲师：课堂账号请租户管理员删除（M365 管理中心 → 活跃用户 → 勾选后删除），或者阻止登录、重置密码留到下次用；收回、销毁打印的账号表和卡片。
 - 讲师：按需更新或删除本仓库的 `COPILOT_GITHUB_TOKEN`。
 - 学员想继续用：fork 留着即可，课前启用的定时工作流每周一会自动跑，换一个长期令牌即可；不想要就在 fork 的 Actions → Industry Insight Weekly → ⋯ → Disable workflow。

@@ -415,7 +415,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
         <div class="wm">微钉科技</div>
       </span>
     </a>
-    <span class="deck-meta">实操手册 v1.5（fork 版 · 全程重跑）· 2026-10-18</span>
+    <span class="deck-meta">实操手册 v1.6（fork 版 · 全程重跑）· 2026-10-18</span>
   </header>
 
   <!-- ===== Hero ===== -->
@@ -562,7 +562,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
           <tr><td>5. 存成仓库 Actions secret（Lab-01 第 4 步用）</td><td>你的 fork → Settings → Secrets and variables → <b>Actions</b> → New repository secret：Name 同样是 <code>COPILOT_GITHUB_TOKEN</code>，Value 同一个令牌。云端的 gh-aw 智能体用它调用 Copilot。</td></tr>
           <tr><td>6. 打开 fork 的 Actions</td><td>你的 fork → <b>Actions</b> 页签 → 点「I understand my workflows, go ahead and enable them」；接着点左侧 <b>Industry Insight Weekly</b>（标着 Disabled）→ 黄条右边 <b>Enable workflow</b>，出现绿色 <b>Run workflow</b> 按钮才算好（fork 上的定时工作流要单独启用，不启用就没有 Run workflow）。再到 Settings → Actions → General → 最下面 Workflow permissions 勾选 <b>Allow GitHub Actions to create and approve pull requests</b> → Save。</td></tr>
           <tr><td>7. 先建好 Codespace</td><td>按 <a href="#s0">开场 0.1</a> 在自己的 fork 上建一次，等到 VS Code 出现后可以关掉页面，上课时直接打开。</td></tr>
-          <tr><td>8. Copilot Studio 演示账号</td><td>能登录 <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a>（Lab-03 用，讲师发账号）</td></tr>
+          <tr><td>8. Copilot Studio 账号</td><td>不用提前准备：Lab-03 开始时讲师发账号卡片（<code>user01</code> 这类课堂账号）</td></tr>
         </tbody>
       </table>
     </div>
@@ -579,7 +579,7 @@ figure.shot figcaption { font-size: 13px; color: var(--az-ink-3); margin-top: 6p
       <div class="az-eyebrow">开场 · 20 分钟</div>
       <h2 class="az-title">在浏览器里打开一个装好一切的开发环境</h2>
       <div class="az-rule"></div>
-      <p class="az-sub">讲师先讲项目地图和功能地图，再用 GitHub Copilot app 演示 3 分钟；然后大家一起开 Codespace</p>
+      <p class="az-sub">先把 Codespace 打开（课前没建好的要装 3~8 分钟），一边听讲师讲开场；讲完一起信任文件夹、填令牌</p>
     </div>
 
     <div class="step">
@@ -943,7 +943,7 @@ git push</pre>
       <div class="step-no">2</div>
       <div class="step-body">
         <h3>改连接器定义 · openapi.yaml 改两处</h3>
-        <p class="do">在 Codespace 里打开 <code>Lab-03-Copilot-Studio/openapi.yaml</code>，改两处后保存：<code>host:</code> 换成 smoke-test 打印的 host（形如 <code>xxx-3000.app.github.dev</code>，不带 https://；要整串复制，Codespace 名字后面那串随机字符不能丢，丢了 Studio 调用会报 404）；<code>title:</code> 改成 <code class="copy">Atlas Agent Labs · 你的名字</code>。然后在资源管理器里右键这个文件 → <b>Download</b>，下一步要上传。</p>
+        <p class="do">在 Codespace 里打开 <code>Lab-03-Copilot-Studio/openapi.yaml</code>，改两处后保存：<code>host:</code> 换成 smoke-test 打印的 host（形如 <code>xxx-3000.app.github.dev</code>，不带 https://；要整串复制，Codespace 名字后面那串随机字符不能丢，丢了 Studio 调用会报 404）；<code>title:</code> 改成 <code class="copy">Atlas Agent Labs · 你的账号</code>（如 <code>Atlas Agent Labs · user01</code>，账号见讲师发的卡片）。然后在资源管理器里右键这个文件 → <b>Download</b>，下一步要上传。</p>
         <figure class="shot"><img src="img/51b-lab03-openapi-edit.jpg" alt="openapi.yaml 改 host 和 title" loading="lazy"></figure>
         <p class="see"><b>为什么改 title</b>：全班在同一个 Studio 环境里各自导入，title 会变成工具组的名字，不改就会出现几十个同名的「Atlas Agent Labs」，分不清哪个是自己的。</p>
       </div>
@@ -953,9 +953,9 @@ git push</pre>
       <div class="step-no">3</div>
       <div class="step-body">
         <h3>建智能体 · 起名、粘贴指令、关掉联网搜索</h3>
-        <p class="do">用演示租户账号登录 <a href="https://copilotstudio.microsoft.com">Copilot Studio</a>，<b>先切环境</b>（Studio 打开时经常停在 Caldova (default)）：左下角地球图标 → 选讲师指定的 <b>Trial</b> 环境（本次演示租户里叫 Ontology-trial）。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境，不同环境的连接互相看不到。然后 <b>Agents → New agent 旁的下拉箭头 → Agent（Standard）</b>：</p>
+        <p class="do">用讲师发的课堂账号（卡片上的 <code>user01</code> 这类）登录 <a href="https://copilotstudio.microsoft.com">Copilot Studio</a>（首次登录如果要求改密码或注册验证器，按提示完成，记住新密码），<b>先切环境</b>（Studio 打开时经常停在 Caldova (default)）：左下角地球图标 → 选讲师指定的 <b>Trial</b> 环境（本次演示租户里叫 Ontology-trial）。后面去 Power Automate 找连接时，右上角 Environments 也要切到同一个环境，不同环境的连接互相看不到。然后 <b>Agents → New agent 旁的下拉箭头 → Agent（Standard）</b>：</p>
         <figure class="shot"><img src="img/55b-studio-new-agent-menu.jpg" alt="New agent 下拉菜单" loading="lazy"><figcaption>选下面「Other ways to build」里的 Agent（Standard）。上面带 GitHub Copilot 标记的是让 AI 帮你搭，会消耗额度，步骤也不可复现</figcaption></figure>
-        <p class="do">名称填 <code class="copy">业务汇报助手 你的名字</code>；展开 <b>Agent settings</b>：Language 选 <b>Chinese (Simplified)</b>；Solution 保持默认的 Common Data Services Default Solution；<b>Schema name</b> 填英文（如 <code>bizreportzhang</code>）→ <b>Create</b>，等到绿条「Your agent has been provisioned」。</p>
+        <p class="do">名称填 <code class="copy">业务汇报助手 你的账号</code>（如 业务汇报助手 user01）；展开 <b>Agent settings</b>：Language 选 <b>Chinese (Simplified)</b>；Solution 保持默认的 Common Data Services Default Solution；<b>Schema name</b> 填英文（如 <code>bizreportuser01</code>）→ <b>Create</b>，等到绿条「Your agent has been provisioned」。</p>
         <figure class="shot"><img src="img/56-studio-new-agent.jpg" alt="Name your agent 对话框" loading="lazy"></figure>
         <p class="do"><b>Overview → Instructions → Edit</b>，把下面整段粘贴进去 → <b>Save</b>（点框右上角「复制」；和 Lab-03 README 里的「智能体指令」是同一段）：</p>
         <pre class="prompt">你是阿特拉斯中国的「业务汇报助手」，服务销售、产品、市场同事。你有两项能力：
@@ -977,7 +977,7 @@ git push</pre>
         <figure class="shot"><img src="img/56b-studio-add-rest-api.jpg" alt="Add tool 里的 REST API" loading="lazy"></figure>
         <ol class="plain">
           <li><b>Upload specification</b>：上传第 2 步下载的 openapi.yaml → Next。</li>
-          <li><b>API plugin details</b>：Tool name、Description 自动带出（应该是你改过的「Atlas Agent Labs · 你的名字」）；Solution 留空（会自动建一个）→ Next。
+          <li><b>API plugin details</b>：Tool name、Description 自动带出（应该是你改过的「Atlas Agent Labs · 你的账号」）；Solution 留空（会自动建一个）→ Next。
             <figure class="shot"><img src="img/57-studio-import-own.jpg" alt="自动带出自己的工具名" loading="lazy"></figure></li>
           <li><b>Authentication</b>：Studio 不读 openapi 里的密钥配置，要手动选：<b>API key</b>；<b>Parameter label 必填</b>（如 <code class="copy">API 密钥（LAB_API_KEY）</code>，建连接时它是密钥输入框的标题；空着向导也能过，但建连接的对话框里就没有密钥框）；<b>Parameter name 填 <code class="copy">x-api-key</code></b>；Parameter location 保持 <b>Header</b> → Next。
             <figure class="shot"><img src="img/57b-studio-auth.jpg" alt="Authentication 设置" loading="lazy"></figure></li>
@@ -985,9 +985,9 @@ git push</pre>
             <figure class="shot"><img src="img/57c-studio-tool-params.jpg" alt="工具参数描述已预填" loading="lazy"></figure>
             <figure class="shot"><img src="img/57d-studio-tool-published.jpg" alt="工具发布成功" loading="lazy"></figure></li>
         </ol>
-        <p class="do">回到 Add tool 对话框，搜索框里输入<b>你的名字</b>（不要只搜 Atlas，全班的都会出来），在「Atlas Agent Labs 你的名字」下面点第一个工具「查询本周行业洞察」：</p>
+        <p class="do">回到 Add tool 对话框，搜索框里输入<b>你的账号</b>（不要只搜 Atlas，全班的都会出来），在「Atlas Agent Labs 你的账号」下面点第一个工具「查询本周行业洞察」：</p>
         <figure class="shot"><img src="img/58-studio-pick-own-tool.jpg" alt="搜自己的名字" loading="lazy"><figcaption>Studio 会去掉名字里的「·」；认准带你名字的那一组 4 个工具</figcaption></figure>
-        <p class="do">Connection 显示 Not connected → 点下拉 → <b>Create new connection</b> → Display name 填 <code class="copy">Atlas · 你的名字</code>（不填会叫「Connect to …」，和别人的重名）→ 下面的「API 密钥」粘贴第 1 步 smoke-test 第二行冒号后面那一串 → <b>Create</b>。Connection 变成绿色对勾后点 <b>Add and configure</b>。</p>
+        <p class="do">Connection 显示 Not connected → 点下拉 → <b>Create new connection</b> → Display name 填 <code class="copy">Atlas · 你的账号</code>（不填会叫「Connect to …」，和别人的重名）→ 下面的「API 密钥」粘贴第 1 步 smoke-test 第二行冒号后面那一串 → <b>Create</b>。Connection 变成绿色对勾后点 <b>Add and configure</b>。</p>
         <p class="warn">建连接的对话框里<b>必须有「API 密钥」输入框</b>（见下图）。只有 Display name、没有密钥框，是上面 Authentication 那步的 Parameter label 空着：点 Cancel，不要建；打开 <a href="https://make.powerautomate.com">Power Automate</a>（右上角 Environments 先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → <b>Custom connectors</b> → 你的连接器右边的铅笔（编辑）→ <b>2. Security</b> → API Key 下点 <b>Edit</b> → 填上 Parameter label → <b>Update connector</b>，回到 Studio 再点 Create new connection，就有密钥框了。<br>
           Connection 下拉列表里，连接名右边的<b>垃圾桶</b>会直接删掉这个连接，所有用它的工具都会断开（测试时报 404「The connection … is not found」）。想换密钥不要删连接，按第 5 步下面 401 那条改。</p>
         <div class="grid grid-2">
@@ -997,7 +997,7 @@ git push</pre>
         <p class="do">进入工具详情页，展开 <b>Additional details</b> → <b>Credentials to use</b> 从 End user credentials 改成 <b>Maker-provided credentials</b> → 右上角 <b>Save</b>。</p>
         <figure class="shot"><img src="img/58d-studio-maker-credentials.jpg" alt="改用 Maker-provided credentials" loading="lazy"></figure>
         <p class="see"><b>为什么改凭据</b>：默认的 End user credentials 要求每个使用者自己授权一次连接，测试时会反复弹「先连接……打开连接管理器」。改成创建者凭据后，工具直接用你建的这个连接，2026-10-17 实测不再弹任何提示。</p>
-        <p class="do">其余 3 个工具照做：Add a tool → 搜你的名字 → 点工具（连接会自动选上你刚建的那个）→ Add and configure → Additional details 改成 Maker-provided credentials → Save。每个工具保存前看一眼 Connection：显示「Atlas · 你的名字」才对，显示 <b>Not connected</b> 就在下拉里选上它再 Save。</p>
+        <p class="do">其余 3 个工具照做：Add a tool → 搜你的账号 → 点工具（连接会自动选上你刚建的那个）→ Add and configure → Additional details 改成 Maker-provided credentials → Save。每个工具保存前看一眼 Connection：显示「Atlas · 你的账号」才对，显示 <b>Not connected</b> 就在下拉里选上它再 Save。</p>
         <p class="see"><b>验收</b>：Tools 页 4 个工具都是 <b>On</b>、Trigger 是 <b>By agent</b>。</p>
         <figure class="shot"><img src="img/53-studio-tools.jpg" alt="Tools 页 4 个工具" loading="lazy"></figure>
         <p class="tip">Overview 上 Agent status 会显示「3 Warnings」，点 Review 能看到：用了创建者凭据（分享给别人时别人也用你的连接）、还没跑过评估、用了高级功能（发布需要付费许可）。本课只在测试窗格里用、不发布，这三条都不影响。</p>
@@ -1035,8 +1035,8 @@ git push</pre>
           <ol class="plain" style="margin:0;">
             <li><code>connectorAuthorizationError</code> … <b>HTTP 401</b>：你的服务拒绝了这次请求。先在 Codespace 新开终端运行 <code class="copy">bash Lab-03-Copilot-Studio/smoke-test.sh</code>：
               <br>「公网地址可访问」没过 → 3000 端口变回了 Private（Codespace 重启过、第二天再打开都会这样），按第 1 步设回 Public，回来直接重试；
-              <br>4 项都过 → 才是连接里的密钥不对（用了以前记下的、少复制了一位，或带上了前面的中文）。密钥是 32 位，在终端运行 <code class="copy">sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env</code> 只打印密钥本身，从这里复制最稳。打开 <a href="https://make.powerautomate.com">Power Automate</a>，<b>先把右上角 Environments 切到和 Studio 同一个环境</b>（不切就找不到你的连接）→ 左侧 More → Connections → 你的「Atlas · 名字」→ <b>⋯ → Edit</b> → 粘贴密钥 → <b>Update</b>，回来重试。不用删连接，也不用重新挂工具。</li>
-            <li><code>connectorRequestFailure</code> … <b>HTTP 404</b> … <code>The connection … is not found</code>：工具绑定的连接已经被删了（比如点了连接旁边的垃圾桶，或者删掉重建过），工具详情里 Connection 显示 <b>Not connected</b>。到 Tools 页逐个打开 4 个工具 → <b>Connection</b> 下拉选「Atlas · 你的名字」（列表里没有就点 Create new connection 再建一个）→ 右上角 <b>Save</b>；4 个都改完，点 <b>New test session</b> 再试。</li>
+              <br>4 项都过 → 才是连接里的密钥不对（用了以前记下的、少复制了一位，或带上了前面的中文）。密钥是 32 位，在终端运行 <code class="copy">sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env</code> 只打印密钥本身，从这里复制最稳。打开 <a href="https://make.powerautomate.com">Power Automate</a>，<b>先把右上角 Environments 切到和 Studio 同一个环境</b>（不切就找不到你的连接）→ 左侧 More → Connections → 你的「Atlas · 账号」→ <b>⋯ → Edit</b> → 粘贴密钥 → <b>Update</b>，回来重试。不用删连接，也不用重新挂工具。</li>
+            <li><code>connectorRequestFailure</code> … <b>HTTP 404</b> … <code>The connection … is not found</code>：工具绑定的连接已经被删了（比如点了连接旁边的垃圾桶，或者删掉重建过），工具详情里 Connection 显示 <b>Not connected</b>。到 Tools 页逐个打开 4 个工具 → <b>Connection</b> 下拉选「Atlas · 你的账号」（列表里没有就点 Create new connection 再建一个）→ 右上角 <b>Save</b>；4 个都改完，点 <b>New test session</b> 再试。</li>
             <li><code>connectorRequestFailure</code> … <b>HTTP 404</b>（没有 The connection … is not found 字样）：请求根本没到你的服务。两种情况：① <b>Codespace 停了</b>（空闲 30 分钟会自动停，<a href="https://github.com/codespaces">github.com/codespaces</a> 里显示 Shutdown）→ 打开它，终端重新 <code class="copy">cd Lab-02-Knowledge-Summary &amp;&amp; npm run dev</code>，3000 设回 Public，跑一遍 smoke-test；② <b>连接器的 host 写错了</b>（比如漏了 Codespace 名字后面的随机串）→ 按下面「遇到问题」表里的办法在 Power Automate 直接改 Host，不用重新导入。</li>
             <li><code>connectorPowerFxError</code> … <code>'&lt;' is an invalid start of a value</code>：服务返回的是网页不是 JSON，几乎都是 <b>3000 端口还是 Private</b>（GitHub 把请求跳转到了登录页）→ 按第 1 步设回 Public 再试。</li>
             <li>回答 <code>Content was filtered</code>（ContentFiltered）：Studio 自带的内容安全过滤拦下了这一轮，不是你服务的问题。点 New test session，把要求一句话说全再问（行业或网址、页数、风格都写上）。2026-10-18 遇到过：智能体反问风格，回答 geek 之后被拦。</li>
@@ -1101,8 +1101,8 @@ git pull --no-rebase --no-edit
 git push</pre></td></tr>
           <tr><td>smoke-test「公网地址可访问」失败（302 / 401）</td><td>端口 3000 是 Private（重启后会变回去）</td><td>Ports 面板右键 3000 → Port Visibility → Public</td></tr>
           <tr><td>Studio 工具卡片 Failed：<code>connectorAuthorizationError</code>（HTTP 401）</td><td>① 3000 端口变回了 Private（Codespace 重启后会这样）；② 连接里的密钥不是这个 Codespace 的（每个 Codespace 的 LAB_API_KEY 都不同），或复制时少了一位、带上了前面的中文</td><td>先跑 <code class="copy">bash Lab-03-Copilot-Studio/smoke-test.sh</code>：公网那项没过就把端口设回 Public；4 项都过再改密钥：<code class="copy">sed -n 's/^LAB_API_KEY=//p' Lab-02-Knowledge-Summary/.env</code> 打印当前密钥（应该是 32 位）→ Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Connections → 你的连接 ⋯ → Edit → 粘贴 → Update，回来重试</td></tr>
-          <tr><td>Studio 工具卡片 Failed：<code>connectorRequestFailure</code>（HTTP 404），提示 <code>The connection … is not found</code></td><td>工具绑定的连接被删了（点过连接旁边的垃圾桶，或删掉重建过），工具详情里 Connection 显示 Not connected</td><td>Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的名字」（没有就 Create new connection）→ Save → New test session 重试</td></tr>
-          <tr><td>Power Automate 的 Connections 里找不到「Atlas · 你的名字」</td><td>Power Automate 和 Studio 不在同一个环境（Power Automate 右上角 Environments 和 Studio 左下角显示的不一样）</td><td>Power Automate 右上角 Environments 切到 Studio 用的那个环境（课程用讲师指定的 Trial 环境，如 Ontology-trial），再看 Connections</td></tr>
+          <tr><td>Studio 工具卡片 Failed：<code>connectorRequestFailure</code>（HTTP 404），提示 <code>The connection … is not found</code></td><td>工具绑定的连接被删了（点过连接旁边的垃圾桶，或删掉重建过），工具详情里 Connection 显示 Not connected</td><td>Tools 页逐个打开 4 个工具 → Connection 下拉选「Atlas · 你的账号」（没有就 Create new connection）→ Save → New test session 重试</td></tr>
+          <tr><td>Power Automate 的 Connections 里找不到「Atlas · 你的账号」</td><td>Power Automate 和 Studio 不在同一个环境（Power Automate 右上角 Environments 和 Studio 左下角显示的不一样）</td><td>Power Automate 右上角 Environments 切到 Studio 用的那个环境（课程用讲师指定的 Trial 环境，如 Ontology-trial），再看 Connections</td></tr>
           <tr><td>建连接时只有 Display name、没有 API 密钥输入框；建出来的连接旁有红色「!」，工具提示 <code>We couldn't enable this connection</code></td><td>导入工具时 Authentication 那步的 Parameter label 空着，建连接就不显示密钥框；Power Automate 的 Connections 里这个连接的状态是 <code>Parameter value missing</code></td><td>Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 你的连接器右边的铅笔（编辑）→ 2. Security → API Key 下点 Edit → 填上 Parameter label → Update connector。已经建了的连接：左侧 More → Connections → 你的连接 ⋯ → Edit → 粘贴密钥 → Update，状态变成 Connected；还没建的回 Studio 重新 Create new connection，就有密钥框了。不用重新导入（2026-10-18 实测）</td></tr>
           <tr><td>测试时提示「先连接……打开连接管理器」</td><td>工具的凭据还是 End user credentials</td><td>工具详情 → Additional details → Credentials to use 改成 Maker-provided credentials → Save</td></tr>
           <tr><td>Studio 工具卡片 Failed：<code>connectorRequestFailure</code>（HTTP 404，不带 <code>The connection … is not found</code>），或拿到的是别人的周报</td><td>连接器的 host 不对（openapi.yaml 的 host 没改，或漏抄了 Codespace 名字后面的随机字符）；或挂错了工具（别人名字的那一组）</td><td>host 不对：Power Automate（右上角先切到和 Studio 同一个环境）→ 左侧 More → Discover all → Data → Custom connectors → 你的连接器右边的铅笔（编辑）→ 1. General → Host 改成 smoke-test 第一行打印的完整 host → Update connector，回来重试，不用重新导入（2026-10-18 实测）。挂错了工具：Tools 里删掉别人的，按 Lab-03 第 4 步挂上自己名字的那一组</td></tr>
@@ -1191,7 +1191,7 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
       <article class="az-card has-accent">
         <div class="card-no">5 · 当天</div>
         <h3 class="card-title">删掉 Studio 里你建的东西</h3>
-        <p class="card-desc">Copilot Studio：Agents 里删「业务汇报助手 你的名字」（⋯ → Delete）；<a href="https://make.powerautomate.com">Power Automate</a>（右上角切到同一个环境）→ 左侧 More → Connections 里删你的「Atlas · 你的名字」连接。导入时自动生成的连接器和工具定义由讲师课后统一清理。演示租户是共用的，留着会让下一批同学搜到一堆同名工具。</p>
+        <p class="card-desc">Copilot Studio：Agents 里删「业务汇报助手 你的账号」（⋯ → Delete）；<a href="https://make.powerautomate.com">Power Automate</a>（右上角切到同一个环境）→ 左侧 More → Connections 里删你的「Atlas · 你的账号」连接。导入时自动生成的连接器和工具定义由讲师课后统一清理。演示租户是共用的，留着会让下一批同学搜到一堆同名工具。</p>
       </article>
       <article class="az-card is-orchid">
         <div class="card-no" style="color:#F3DDEE;">可选</div>
@@ -1203,7 +1203,7 @@ git add -A &amp;&amp; git commit -m "课堂练习" &amp;&amp; git push</pre>
 
   <footer class="az-footer">
     <span>微钉科技</span>
-    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.5（fork 版 · 全程重跑）· 2026-10-18</span>
+    <span>阿特拉斯中国 Copilot 智能体工作坊 · 实操手册 v1.6（fork 版 · 全程重跑）· 2026-10-18</span>
   </footer>
 
 </div>

@@ -13,7 +13,7 @@
       再点左侧 **Industry Insight Weekly**（标着 Disabled）→ 黄条上的 **Enable workflow**，看到 **Run workflow** 按钮才算好；
       Settings → Actions → General → Workflow permissions 勾选 **Allow GitHub Actions to create and approve pull requests** → Save
 - [ ] 按第 1 节在你的 fork 上建好 Codespace（第一次要现装依赖，3~8 分钟）
-- [ ] 讲师发给你的 Copilot Studio 演示账号能登录 <https://copilotstudio.microsoft.com>（Lab-03 要用）
+- Copilot Studio 账号不用提前准备：Lab-03 开始时讲师发账号卡片（`user01` 这类课堂账号）
 
 ### 准备 Copilot 令牌（Fine-grained PAT）
 
@@ -80,7 +80,7 @@
 
 ## 4. Lab-03 · Copilot Studio 串起来（45 分钟）
 
-按 [Lab-03 README](../Lab-03-Copilot-Studio/README.md) 操作。关键是把端口 3000 设为 **Public**、跑自检，再把 `openapi.yaml` 的 `host` 和 `title`（`Atlas Agent Labs · 你的名字`）改成你自己的，导入 Studio：
+按 [Lab-03 README](../Lab-03-Copilot-Studio/README.md) 操作。关键是把端口 3000 设为 **Public**、跑自检，再把 `openapi.yaml` 的 `host` 和 `title`（`Atlas Agent Labs · 你的账号`，如 `Atlas Agent Labs · user01`）改成你自己的，导入 Studio：
 
 ```bash
 bash Lab-03-Copilot-Studio/smoke-test.sh
@@ -118,7 +118,7 @@ bash Lab-03-Copilot-Studio/smoke-test.sh
 3. 删除 Codespace：<https://github.com/codespaces> → 你的 Codespace → **Delete**（停止后仍按存储计费）。
 4. 删除令牌和 Secret：<https://github.com/settings/personal-access-tokens> 删 PAT；
    <https://github.com/settings/codespaces> 删 `COPILOT_GITHUB_TOKEN`；fork 的 Settings → Secrets and variables → Actions 删同名 Secret。
-5. Copilot Studio：Agents 里删掉你建的「业务汇报助手 你的名字」；Power Automate → Connections 里删掉你的「Atlas · 你的名字」连接。导入时自动生成的连接器和工具定义由讲师课后统一清理。
+5. Copilot Studio：Agents 里删掉你建的「业务汇报助手 你的账号」；Power Automate → Connections 里删掉你的「Atlas · 你的账号」连接。导入时自动生成的连接器和工具定义由讲师课后统一清理。
 6. fork 可以留着课后继续改；课前启用的 Industry Insight Weekly 每周一会自动跑，删了令牌或不想要就在 fork 的
    Actions → Industry Insight Weekly → **⋯** → **Disable workflow**。fork 不要了就 Settings → 最下面 **Delete this repository**。
 
