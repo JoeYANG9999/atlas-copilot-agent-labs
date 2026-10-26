@@ -1,113 +1,111 @@
 {
-  "title": "行业洞察周报 · 2026-W42",
+  "title": "行业洞察周报 · 2026-W44",
   "period": {
-    "week": "2026-W42",
+    "week": "2026-W44",
     "days": 7,
-    "start": "2026-10-09",
-    "end": "2026-10-16"
+    "start": "2026-10-19",
+    "end": "2026-10-26"
   },
-  "generated_at": "2026-10-16T01:59:32Z",
+  "generated_at": "2026-10-26T02:38:14Z",
   "mode": "llm",
   "summary": [
-    "GlobalFoundries 获日本最高 210 亿美元投资，在纽约新建两座晶圆厂，海外半导体扩产带来真空与洁净压缩空气需求（S078、S102、S106）",
-    "SEMI 预测 2029 年全球 300mm 晶圆厂设备支出达 2270 亿美元，半导体设备投资长期向上（S109、S101）",
-    "长安与 CATL 扩大合资，规划 75GWh 电池产线并推进固态与钠电，国轩摩洛哥 13 亿美元超级工厂确定投产时间（S024、S073）",
-    "上海发布节能降碳「十五五」规划、广东启动节能降碳三年攻坚覆盖十大行业，高能效空压站改造需求有望提升（S141、S138）",
-    "本周未抓到空压机、真空泵头部竞品的实质性新品或价格动作，竞品动态存在数据缺口（S123、S120）"
+    "工信部印发《工业和信息化领域碳排放双控工作体系实施方案（2026—2030年）》，工业节能降碳进入量化考核，高能效空压机/真空设备的改造需求有望上升（S136、S138、S140、S142）。",
+    "半导体封测与晶圆厂建设持续推进：华天南京30亿封测项目、日月新封测厂主体封顶、台积电新3nm厂、GlobalFoundries两座新厂，工艺真空与洁净压缩空气机会增多（S097、S104、S115、S113）。",
+    "海外锂电/动力电池产能分化：Leapmotor欧洲建厂、GM关闭底特律电池装配厂、GM转向LMR电芯，海外订单需按项目逐个判断（S045、S046、S048、S076）。",
+    "超长期特别国债收官，万亿级资金支持“两重”“两新”，设备更新资金面利好（S150）。",
+    "竞品侧本周缺少有效信号（Compressed Air Best Practices 抓取失败），竞品动态判断为数据缺口。"
   ],
   "topics": [
     {
       "name": "新能源汽车",
       "hotspots": [
         {
-          "title": "长安与 CATL 扩大合资，规划 75GWh 电池产线",
-          "what_happened": "长安与 CATL 扩大合资公司 Times Changan，计划建设 75GWh 电池产线，并合作固态电池和钠离子电池。",
-          "impact": "电池包装配及电芯制造新产能涉及压缩空气、装配拧紧设备，可跟进合资公司的设备采购；具体项目地点和节奏影响待评估。",
-          "impact_area": "销售机会",
-          "level": "高",
-          "references": [
-            {
-              "id": "S024",
-              "title": "Changan and CATL to collaborate on 1,500 km solid state cells, establish 75 GWh battery lines",
-              "url": "https://carnewschina.com/2026/10/14/changan-and-catl-to-collaborate-on-1500-km-solid-state-cells-establish-75-gwh-battery-lines/",
-              "source": "CarNewsChina",
-              "published_at": "2026-10-14T09:13:57Z"
-            }
-          ]
-        },
-        {
-          "title": "宝马在沈阳启动第六代电池国产化生产",
-          "what_happened": "宝马在中国启动 Gen6 电池生产，用于 Neue Klasse 车型。",
-          "impact": "外资整车厂本地电池产线是装配拧紧与压缩空气的存量与增量客户，设备需求影响待评估。",
+          "title": "零跑欧洲7个月建成工厂，开始在欧洲造车和电池",
+          "what_happened": "零跑在西班牙建厂用时约7个月，已开始在欧洲生产整车和电池。",
+          "impact": "中国整车厂海外建厂提速，带来海外总装/电池装配线的压缩空气与拧紧设备机会；具体采购方与设备范围影响待评估。",
           "impact_area": "销售机会",
           "level": "中",
           "references": [
             {
-              "id": "S015",
-              "title": "BMW starts Gen 6 battery production in China as Neue Klasse i3 covers 1,213 km without recharging in test",
-              "url": "https://cnevpost.com/2026/10/15/bmw-starts-gen-6-battery-production-china/",
-              "source": "CnEVPost",
-              "published_at": "2026-10-15T09:02:14Z"
+              "id": "S031",
+              "title": "零跑七个月的西班牙造车记",
+              "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE45THEwZm1RTWhzNjZYaVdGLVZ4MXU0S0hzd0k5aVZKMUVjaTJPTEZSUDg4U09KU1JpRnRIa0RaaUFYX0dwVFpFTVM4a204SjJBUWtMQW5YeXc5R3VEekZuSl9sZFI1QkNnYmlBTTVIMF8?oc=5",
+              "source": "手机新浪网",
+              "published_at": "2026-10-24T16:04:00Z"
             },
-            {
-              "id": "S034",
-              "title": "BMW Starts Gen6 Battery Production in China for Neue Klasse EVs",
-              "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOdmZrU3AtWlBGWDVESGFKdkZqU2VUbE1YaTRYVkxqVE0zN3pmc1ZrbUlWelQ4MVVUQkZPWjctMmtSaldPb1g2X1dBaTdWRUtDSXVyekcwc1dFeXpZb2RFVm44WFAtQWVTSHhDd1U1Yk1sM3BJSkFZWTZtY2VZbHpSaF9GaFFiYzlPNUtOTnd3?oc=5",
-              "source": "Electric Cars Report",
-              "published_at": "2026-10-15T10:51:02Z"
-            },
-            {
-              "id": "S035",
-              "title": "BMW Starts Gen6 Battery Production in Shenyang",
-              "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1MUUpMYUE1c2t4eDVUSUtqUGNmVVZ5OEo3M0dHaXJZSnQ2QUgyVkMydUloRnp1WGZfR29BbjZmRUR4R2NGVV9mMmlpdWpPQlVsMHpDTkU2NXFoWThMeEFmZDlJc2E4VmpNS2d1WDZyTXNnZU4wNUE?oc=5",
-              "source": "The EV Report",
-              "published_at": "2026-10-15T10:34:45Z"
-            }
-          ]
-        },
-        {
-          "title": "东风一体化压铸技术获奖，奇瑞青岛设销售公司",
-          "what_happened": "东风一体化压铸技术获国际奖项；奇瑞在青岛超级工厂同址设新销售公司。",
-          "impact": "一体化压铸对压缩空气稳定性与能效要求较高，属于产线自动化升级趋势；对我们的具体订单影响待评估。",
-          "impact_area": "产品",
-          "level": "中",
-          "references": [
             {
               "id": "S045",
-              "title": "东风汽车一体化压铸技术获国际权威大奖",
-              "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9YSEZGbllCVVRJVWN1VGdET3dGVWhxcFp5aUpTejJZUjdNZC1vblprWWtEcVg2RTR1V0ZFeVc5dFdhUjZuS2thdTFFSDNDa19mZlhlUTBWQ2xRRjNoQTFPZ2NWWW0?oc=5",
-              "source": "长江网",
-              "published_at": "2026-10-13T02:09:00Z"
+              "title": "欧洲建厂只要 7 个月？零跑给行业打了个样",
+              "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE1obDQyT19LaTN0dGY3TzRKX3E0b2tucjl3X2Z2ZEh5eEF2N3N1eG8yYTM2Sk9LN2VhV2ZCdHlRamdGMmJGb1d6d2QzdUpnN3JrRENV?oc=5",
+              "source": "电子工程专辑",
+              "published_at": "2026-10-21T00:00:00Z"
             },
             {
-              "id": "S041",
-              "title": "与超级工厂“同址办公”，奇瑞汽车青岛落子新销售公司",
-              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE81dnl4S0VOVmRDNC13Y3UyTk5jNko5UUhzbGJMdnZKNEh6T2NiQ3lDeks4aEtjdURXZGhKaDZnVHEzVjB5Q2VGWXQ3YUNWNGhiNzM0emM2dkR2aE5CTE9LWg?oc=5",
-              "source": "同花顺财经",
-              "published_at": "2026-10-14T00:02:52Z"
+              "id": "S048",
+              "title": "GM closes EV battery plant, Leapmotor starts building EVs and batteries in Europe",
+              "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOV1MwT25aSUFyajFjSmZDQlEyWXFJU0VSd2dYNHdjVzFINzRVNUhpaG9PbGNRYzFtMnpDTzQ0U0gxUzFDeGlvdTBlWXhjbmZmTjVCbzhGaFZGblRWX1pVUmV6VGpXNmxNMkVRREZqMFprRWM1bnNzZGZ6TVdweTcwTVZYa05keU9pem5kRFR6TTJIdkdx?oc=5",
+              "source": "Automotive News",
+              "published_at": "2026-10-20T19:00:00Z"
             }
           ]
         },
         {
-          "title": "9月国内动力电池装车量 87.2GWh，增速连续两月放缓",
-          "what_happened": "动力电池装车量同比增长 14.7%，CATL 份额 40.92%，BYD 21.09%。",
-          "impact": "整体需求仍在增长但增速放缓，电池厂扩产节奏可能趋于谨慎，影响待评估。",
+          "title": "GM关闭底特律电池装配厂，收缩EV投资",
+          "what_happened": "GM关闭底特律EV电池装配厂，并退出两座EV/氢燃料电池相关工厂。",
+          "impact": "北美EV产线投资收缩，相关客户设备需求存在下行风险；对我们存量客户的影响待评估。",
           "impact_area": "风险",
+          "level": "中",
+          "references": [
+            {
+              "id": "S046",
+              "title": "GM to close Detroit battery-assembly plant, but not for reasons you might think",
+              "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOYW1Cak5hWEJKSG4xazZGUW1Oc1huS2xxMksxWjAwNk5hbksxTlpSRHY4Z0lDRGdHTU9iWGFpVGpYUXMzQTFQWWsxaXM0ZzZJM09WNkNoNDNVSE9ySHhlZHNwVjdRR2RiTUcyYkZpTU04MmxFT1VnZnEyRnVrQ3RLWFpueTdtQ0hQeVdtbXBSTlVHS2RacWRvWFduSkRET24xZVpiSjMyRHc5SWVRalVrWUJaRQ?oc=5",
+              "source": "TechCrunch",
+              "published_at": "2026-10-20T19:32:43Z"
+            },
+            {
+              "id": "S047",
+              "title": "GM Is Moving On from Two EV and Hydrogen Fuel Cell-Focused Plants",
+              "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxObC15QzJHbTl5ZFJhV3d3OTVaSkVvQVV4N0hkdFZDQVNSazdsQWdIVUJiMzVCZ3ZIeU9wbEswZEFib3ZIbkd6WjlyWmV2TlRfVEZCLUdVY2pldEd4aVNNUWRKSlMwaVJKLS1xdXB5SUpNSTFteWdOeXpSOXg1VHJtY1pFajE2YVhuTkNwVldQc2lWS1JwdUMyY1BDSWU?oc=5",
+              "source": "Car and Driver",
+              "published_at": "2026-10-20T19:00:22Z"
+            },
+            {
+              "id": "S050",
+              "title": "GM’s Ongoing EV Pullback Has Claimed a Battery Plant: TDS",
+              "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOS2xNRkl2Y29fNW94NEJlcGtDdHJ2bHQ4ZzBlTWMzY1J0SGdkSXR6bkxXTGY0WEhMdnZRR0w2Z0xVVDdBaEUtMlo0NXhLUG82QnV2cUxhVkJWVzdyamJ5Z09LcHlqZVE5V2IzTEVQZk45N0hyMUNtV0ZLWTRVelA4d0RreHVnZlFycld4ZkdR?oc=5",
+              "source": "The Drive",
+              "published_at": "2026-10-20T14:03:10Z"
+            },
+            {
+              "id": "S051",
+              "title": "GM Is Closing Its Detroit EV Battery Plant",
+              "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBXYzIxLXRYcVY5YVRtSm1PUFNCRF9xa2J1TDZFYno1aFVYb0VfU2JVYlh4V2Y3SWdab21rYW9xekl4Qm4xUHV2bjB1YjQybkI1aElmdFYxZXRhOFRfaHFxU2NWQnMzMVdxWkdMeldCdGhuUVMtOVBHaE9FYng1UQ?oc=5",
+              "source": "InsideEVs",
+              "published_at": "2026-10-20T12:29:00Z"
+            }
+          ]
+        },
+        {
+          "title": "东风一体化压铸技术获国际奖，奇瑞评估加拿大本地化生产",
+          "what_happened": "东风一体化压铸技术获国际权威奖项；奇瑞评估利用闲置产能在加拿大本地生产，2027年启动销售。",
+          "impact": "一体化压铸和新海外产能均涉及压缩空气与装配设备需求，但均未披露具体投资规模，影响待评估。",
+          "impact_area": "市场",
           "level": "低",
           "references": [
             {
-              "id": "S018",
-              "title": "China EV battery installations reach 87.2 GWh in September, setting fresh high for year",
-              "url": "https://cnevpost.com/2026/10/15/china-ev-battery-installations-sept-2026/",
-              "source": "CnEVPost",
-              "published_at": "2026-10-15T07:03:23Z"
+              "id": "S039",
+              "title": "从跟跑到领跑！东风汽车一体化压铸技术赢得国际权威大奖认可",
+              "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5xd2J3U01BUHgtOThDWXQ3Q0M2SWhkT2hDT2lWS0djcVk2Z1VIYjEteUkyYnB5MDBZUHhpY29malJaMklKU3FzUjJFdU5waTlkVUVWdzlVaEh1OUk?oc=5",
+              "source": "汽车之家",
+              "published_at": "2026-10-22T00:19:25Z"
             },
             {
-              "id": "S016",
-              "title": "Top EV battery makers' market share in China in September 2026: CATL 40.92%, BYD 21.09%",
-              "url": "https://cnevpost.com/2026/10/15/top-ev-battery-makers-share-china-sept-2026/",
+              "id": "S024",
+              "title": "Chery considers local production in Canada, plans sales launch in 2027",
+              "url": "https://cnevpost.com/2026/10/23/chery-considers-local-production-canada/",
               "source": "CnEVPost",
-              "published_at": "2026-10-15T07:27:47Z"
+              "published_at": "2026-10-23T10:07:04Z"
             }
           ]
         }
@@ -117,87 +115,78 @@
       "name": "锂电",
       "hotspots": [
         {
-          "title": "国轩高科摩洛哥 13 亿美元超级工厂确定投产时间",
-          "what_happened": "国轩高科摩洛哥工厂确定投产日期，面向非洲、欧洲和美国市场。",
-          "impact": "海外电芯厂建设涉及干燥房、注液工艺对干燥压缩空气和真空的需求，可关注当地配套机会。",
+          "title": "海外电池工厂建设与产能爬坡：国轩伊利诺伊40GWh、NextStar温莎、GM LMR电芯田纳西",
+          "what_happened": "国轩伊利诺伊40GWh超级工厂建成经验披露；NextStar温莎工厂达成1000万电芯；Ultium Cells将在田纳西生产LMR方形电芯。",
+          "impact": "电芯工厂的干燥房与注液工艺依赖干燥压缩空气和真空，海外电池工厂是潜在项目线索；具体客户采购情况影响待评估。",
           "impact_area": "销售机会",
           "level": "中",
           "references": [
-            {
-              "id": "S073",
-              "title": "China’s Gotion sets commissioning date for $1.3 billion Africa’s first gigafactory in Morocco targeting Africa, Europe and the US",
-              "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPa1ZKSTdEWjBLSGlER0NaUUdqdzFtNG1BTWRDWHZxeGRveHMxNnU1Y3pEdTRTSXVybEZ2ZWE1WVA3SVUtallEdloyanVUUkl2d1I1cDZxUWNsQ1MwOVdlbXJGX3d6VDd1TWRlR2xEajFMM09xX0w4Q3NnUk5aR28xTGJlWV9SM19vYWlQaEVwOF9tV0N4WFVxbHEwYjZtMGFydEpmNDkzX05GSTJlQzFFbU9iakdITm1CLXlhME5WaVdzbU5iLUF4QmZvMFJ1SXlxbDI4ZVgzem4?oc=5",
-              "source": "Business Insider Africa",
-              "published_at": "2026-10-13T10:20:29Z"
-            }
-          ]
-        },
-        {
-          "title": "广州吉瓦时级全固态电池产线投产，GBT 开始固态电芯量产",
-          "what_happened": "国内和海外企业分别启动固态电池产线与量产。",
-          "impact": "固态工艺对干燥环境和真空要求更高，设备规格影响待评估。",
-          "impact_area": "产品",
-          "level": "中",
-          "references": [
-            {
-              "id": "S069",
-              "title": "广州一企业实现吉瓦时级全固态电池产线投产",
-              "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPVmJWZG5yRnlpTktXcUlzTnJJQm9JZ0Uwc3EyVE1OVS1CZlZOVmFGRWRPay1GdmJ0Szg4ckpFR2M5WE04aWVGQUM2eFpEMW1mZFIyYlM1dFVkVzNGMThKeGxwR21VOTJQa1g4ckNpUjNzMTdkTTUtQXcxMkFuelNQN292OVdLNDAxNmdJT2prUQ?oc=5",
-              "source": "21财经",
-              "published_at": "2026-10-14T10:19:00Z"
-            },
             {
               "id": "S068",
-              "title": "GBT begins series production of solid-state battery cells",
-              "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOMDdVTVF3UmFmSHJPbjFqZm1yQUY0Uy1pMUx1NGxnMzlWZk5JZlVqTEZmS2RmVjhtRzBYUHRJZ0pmVVd3bkFCVkZIMkVlbS1lOWZFdy1UbTVwWkt1MXljWXhEVVZEb2JhSzhZSS1JWjVLUFUwdThVZldIaC0wclVLRy1NM1VreWd6Y2szX3ZmU18tcmlPc1M2Qm51SQ?oc=5",
-              "source": "electrive.com",
-              "published_at": "2026-10-14T13:30:00Z"
+              "title": "How Gotion Built Its 40 GWh Gigafactory in Illinois",
+              "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQSElqT1E2Y3NiRnVDOG85Nl9rZ3VoWEhMUUdoVHFxNURUSElfNUpPa1JSZ0xzSXYyZzlieWhJWngxSVlBY3pSMzlWYmw0cWpWSTJscEEyOV8yR1BNeWlxekFsbjN4UzZzb1B3SExkQWNSa2l4VGFYOUJGYThyVkhJTGFxekFWTS1ad2dlOHlfZ1dIcGF6djlqdnNZZi1KTzZBcElWV1lobHdndw?oc=5",
+              "source": "Battery Technology",
+              "published_at": "2026-10-23T18:11:35Z"
+            },
+            {
+              "id": "S072",
+              "title": "NextStar says 10 million-cell milestone puts Windsor plant on global stage",
+              "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQT2lBa2ZVVlZ6TkVCNG1la2k4S2N5TU84QTQ0dGNDaGhycmhnMEhGbWRpZzlZc2NVOWptWGdzNE5RcE5KQ3Q2cmQ5V2lwMXJ3RlczVy1QbGJyZXZ1cDNJYjR2ejBCWUpvV203NURrUXlzb1M1cDFzTnptUDBNT04xc3poSk0zSlpNUjgwNWpvaFh6S1FTWHlZR2lsYVNuSzVWOU9peTAwcjByZw?oc=5",
+              "source": "AM 800 CKLW",
+              "published_at": "2026-10-22T10:18:31Z"
+            },
+            {
+              "id": "S076",
+              "title": "Ultium Cells to Bring LMR Prismatic Battery Cell Production to Tennessee for Future GM EVs",
+              "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQQ3NOUkU0dFBIZGU3eHhtaE0tWjFNeE05eXlZcUVJR2txTGFiRWJDcDViV3dHY1ZubjhyMU5fZHN5SWtMZlJTZEl5eU4zZkE1N0lFNWZ1YWRrWElJWGdGYWJ1eVRVbU5fSlEtVVdtOEs2U2I2UzZJSlNqZXFNNUV6QjNDa0ExSjQtT0tkaDB1UHRJUEp2M0NJQkRmSW04QXI0WUhPd3o3eFhpcWJpYVNBLXhPVjZGcGhUMTUxaU1QblhOLU9kcnBF?oc=5",
+              "source": "CleanTechnica",
+              "published_at": "2026-10-19T22:38:19Z"
             }
           ]
         },
         {
-          "title": "国内锂电新增产能项目：茂名 1.25GWh、百翼时代备案 1.2 亿元",
-          "what_happened": "茂名电白锂电池基地产能 1.25GWh；百翼时代项目备案通过，总投资 1.2 亿元。",
-          "impact": "中小规模新项目，可作为区域销售线索跟进，影响待评估。",
-          "impact_area": "销售机会",
+          "title": "清陶固态电池扩产50亿，国内锂电投资调整节奏",
+          "what_happened": "清陶宣布固态电池扩产50亿元，但三年亏损31亿；财新报道锂电投资调节奏。",
+          "impact": "新工艺产线带来新的干燥/真空需求，但行业整体投资趋于谨慎，需按客户项目验证。",
+          "impact_area": "风险",
           "level": "低",
           "references": [
             {
               "id": "S070",
-              "title": "加码锂电制造！茂名电白迎来锂电池生产基地，产能1.25GWh",
-              "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE80QUdHdlNmVmo4UHZaeU5UQTdHS2NSUEZqNXpyNDdoWkt5WlZMOHIzTEp5S3R1alVmdnhLSGNCTGNLdVlhWkQ1S0ZJb3JRRlA1UldESWg5ZTBweEtwU1JF?oc=5",
-              "source": "碳索储能网",
-              "published_at": "2026-10-14T00:53:07Z"
+              "title": "扩产 50 亿、三年亏 31 亿，清陶的固态电池赌局有多大？",
+              "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE43UmhOWmlhS1VOUEoxXzlfZ0h0WThKUlh1b2NVZUdDLWY5Z2ZXZnFBRnV2OFpyYXJOaVhYclNGd2ZnRnBzTUl5N3pCYmJ2aVV2eTN3?oc=5",
+              "source": "电子工程专辑",
+              "published_at": "2026-10-23T00:00:00Z"
             },
             {
-              "id": "S074",
-              "title": "百翼时代锂电池生产基地项目备案通过 总投资1.2亿元",
-              "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9waWZlUVVWeExrZHRJWTBtdGRQZFB5bVVaai1GSXpnaVdiYkhnZThCZUFHbzc3SmJoNHg4THZjSTlYUThhd1dhWDUxNFhBUQ?oc=5",
-              "source": "观点网",
-              "published_at": "2026-10-13T05:31:51Z"
+              "id": "S079",
+              "title": "锂电投资调节奏",
+              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9COFZPUE5kem9udF84V1REdVZlSnJRWkRUY1FESUVwTEpoMXA1SXZrYi1fdW9aWnFDMHZmek5OSWo3TUw1RnNqUi1UVEZtbGFNYlFuZncwUzNySl9rRGs1cQ?oc=5",
+              "source": "财新周刊",
+              "published_at": "2026-10-19T07:00:00Z"
             }
           ]
         },
         {
-          "title": "储能装机高增长但产能红利收窄",
-          "what_happened": "9 月全球电网级储能新增 20.4GWh，同比增长 61%；国内百 GWh 厂商争抢长时储能市场。",
-          "impact": "储能电池需求持续，但厂商竞争加剧，扩产节奏存在不确定性。",
+          "title": "储能需求高增长：BNEF预测2026年全球储能部署增长45%",
+          "what_happened": "BNEF预测2026年储能部署同比增长45%；Tesla Q3储能部署13.7GWh。",
+          "impact": "储能电池需求支撑储能电池厂扩产，间接拉动干燥压缩空气与真空设备，影响待评估。",
           "impact_area": "市场",
           "level": "中",
           "references": [
             {
-              "id": "S056",
-              "title": "20.4GWh grid-scale BESS deployed globally in September, up 61%; YTD installs up 43%",
-              "url": "https://www.energy-storage.news/20-4gwh-grid-scale-bess-deployed-globally-in-september-up-61-ytd-installs-up-43/",
+              "id": "S062",
+              "title": "Global energy storage deployments will see 45% year-on-year ‘growth surge’ in 2026: BloombergNEF",
+              "url": "https://www.energy-storage.news/global-energy-storage-deployments-will-see-45-year-on-year-growth-surge-in-2026-bloombergnef/",
               "source": "Energy-Storage.news",
-              "published_at": "2026-10-15T14:54:32Z"
+              "published_at": "2026-10-22T14:17:03Z"
             },
             {
-              "id": "S064",
-              "title": "储能产能红利收窄，百GWh厂商争抢长时市场",
-              "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBtaXhxbzJiYlAxS1AzNjFERTlyakpfeDBZaWE0OTZvd1V3WmZRMURudl8tamY5UkFBYlpSbTN4VThoTTduaTZ4Q1pPbFp2Q3VOTFQw?oc=5",
-              "source": "华尔街见闻",
-              "published_at": "2026-10-15T13:35:01Z"
+              "id": "S057",
+              "title": "Tesla Q3 2026 energy storage revenues fall despite second-highest quarterly deployments",
+              "url": "https://www.energy-storage.news/tesla-q3-2026-energy-storage-revenues-fall-despite-second-highest-quarterly-deployments/",
+              "source": "Energy-Storage.news",
+              "published_at": "2026-10-23T11:25:17Z"
             }
           ]
         }
@@ -207,136 +196,71 @@
       "name": "半导体",
       "hotspots": [
         {
-          "title": "日本投资最高 210 亿美元，GlobalFoundries 在纽约新建两座晶圆厂",
-          "what_happened": "GlobalFoundries 被选定在纽约运营两座新晶圆厂，将使美国芯片产能提升约 10%。",
-          "impact": "大型新建晶圆厂对工艺真空和高洁净压缩空气有长期需求；主要在北美，需评估全球客户项目协同。",
+          "title": "国内封测项目密集推进：华天南京30亿、日月新封测厂封顶",
+          "what_happened": "华天科技南京30亿封测项目预计2028年5月投产；日月新高端封测厂主体结构封顶，总投资约15亿元。",
+          "impact": "封测厂洁净压缩空气和工艺真空需求，是销售跟进线索，设备选型阶段需跟踪。",
           "impact_area": "销售机会",
           "level": "高",
           "references": [
             {
-              "id": "S078",
-              "title": "Japan Offers GlobalFoundries $21B for U.S. Fab Expansion",
-              "url": "https://www.eetimes.com/japan-offers-globalfoundries-21b-for-u-s-fab-expansion/",
-              "source": "EE Times",
-              "published_at": "2026-10-15T19:00:00Z"
-            },
-            {
-              "id": "S102",
-              "title": "GlobalFoundries selected to operate two new semiconductor fabs in New York under landmark U.S.-Japan initiative",
-              "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQVW9mTXJLZWtuSlVKNGw4bTZ1aTJuXzZ4UGZkcW14SFpXVjc5eDFsQUo5eldnMFo1a1NBNFpvTnhVSm5qRHAxbzE3Nl95cU9OMkhFLWMyamdST2ljcTl3NnhndjJzRnNnR3BwSWtiNTA5TWl2Vkx4YVBIVE1rZC1haFNDZjhUQUNXanlGZUFVN3NFT3Bzckp4UFRXaXRWbEZtYV9GbjBlakNXazBkSEtoSDJUbWJLTTFwOFZBMm1oWnN4T2dnSjIyY2laazlNLUxZQ3NrZWswMUY0M0Z6RWZn?oc=5",
-              "source": "GlobalFoundries",
-              "published_at": "2026-10-14T17:32:00Z"
-            },
-            {
-              "id": "S103",
-              "title": "GlobalFoundries building $21B New York fabs under US-Japan trade deal",
-              "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQVzRrdUR0TUFWdmMtVlg2WkJBT2dDMlJ4aERac1RBa0NnQTlUMWo0Q1BEVEFCX1JrZEhnZ1NMSjBCTHZPMTBrd0owRXVFRUFMb2hTLU1BYW9mUXZOV0RmTzZvSnJFeEhZSW84X3Z6V1Q4SVpaMnRDYnJLNkNMemhEYVVIUTE5dFoyV0IxQUJZdV9ZLXpWbi1ZZEY4WUdOckRGWTF2am1zYnhReElL?oc=5",
-              "source": "Manufacturing Dive",
-              "published_at": "2026-10-14T16:41:26Z"
+              "id": "S097",
+              "title": "华天科技10月24日回应半导体封测话题：南京30亿封测项目预计2028年5月投产_公司新闻",
+              "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBjbUZKMEVuTEtMS2RXMi1Uc3EweW1YbGIxZUNPSWZla2Y1SUZNdHNHT045UlJzNGR1cVFzR0lkYWxja1RFMDNVa01NS1N4Q1ZNSHlYb28zbmdodndhTkduZ0t3?oc=5",
+              "source": "证券之星",
+              "published_at": "2026-10-24T23:00:46Z"
             },
             {
               "id": "S104",
-              "title": "Japan selects GlobalFoundries to construct 2 semiconductor fabs in Malta",
-              "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQTXZmdGhqT1R2c3R1ZFJ5RzVEUlBvUXF5RFRiOXM5d0xwalZjNm1LYXFuM3hybzVDZjl3NTdobnpxRjhzQ1BlNjh3bjc4eElDSTRXVzdWRmtfNTJiTEpFQ1Y5WFFUTXl5WnBkSzA0UXM5Ml96SmNoSmJSUS11TkcxMjEtMEQ4WHE2UTZNX2xaZnctOW5EYzRaa29icS1lblh4Z0ZwR255ZHpEai1YNlhFcHd6a0tZTExwb0tWWm1WbkJOYlJLTkJWb2YybFFxcUJBbUFRc1VHVWs?oc=5",
-              "source": "Spectrum News",
-              "published_at": "2026-10-14T15:35:00Z"
-            },
-            {
-              "id": "S105",
-              "title": "GlobalFoundries To Operate Two New York Semiconductor Fabs Under Up To $21 Billion U.S.-Japan Initiative",
-              "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNLWpCQmV3dXc5M3lvZ2NrWmdweFRsWTlWWjhkc2RvcXoxREdhRlVKdE12WjZUU3Z6SEdqM05XRjF4ZFZVQmZ0aTItakUySDlrQ3JqMllzZ3FUTWdha0xlc1F5bWE2WDdlNXFDYkJoTlBvUDJGbkxPZU44SFJpZURkMGlHNmhNcDJxS1ZfaVJEcnhqUUtRZEtUZHJmQnI2LWY3T3V3Y3I2STJ5Z1pQQ2tQcmdLSTlfdHlIczlYT19QZw?oc=5",
-              "source": "Pulse 2.0",
-              "published_at": "2026-10-14T14:59:10Z"
-            },
-            {
-              "id": "S106",
-              "title": "Japan to invest up to $21 billion in two GlobalFoundries chip factories in New York",
-              "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPZjM3SC1iaHFNLTdkS2N5U3JVS3lMR0p4Q1ZTclVOa2RDbFpzR2E3R2I5UlFlYWlsWHJfeGlKSEpockRseEpCTGpsNFAzanBPUkVVa3FiUFNVeVZ3S0daZ2JRWGc3Zy04RmFSbFRHeU5kRy1HaGJ2ZmViUHlfYk5CN0xYMEhXb250eE41clpvVHF1RDhIRWF4Z1p0NS1rQmVtbjFNc2FjMzVTaTlvM24weWtzS1V4M1RVdHpXWVNCU2REdDVkd2FwZWQ1V1kxZUZU?oc=5",
-              "source": "Reuters",
-              "published_at": "2026-10-14T12:30:00Z"
+              "title": "日月新高端封测厂项目主体结构封顶 总投资约15亿元",
+              "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFAzQkIyMFR3dmhJaUR1M05DeE52M0M3VVh4LW5iZjFJc1A1SVZNLVFZelpyREx3UDM2cFB5czE5cEtabGh1OEhGaVNCQ2E2QQ?oc=5",
+              "source": "观点网",
+              "published_at": "2026-10-22T01:36:15Z"
             }
           ]
         },
         {
-          "title": "SEMI：2029 年 300mm 晶圆厂设备支出将达 2270 亿美元",
-          "what_happened": "SEMI 预测随着建设提速，设备支出持续增长；美洲 2029 年翻倍至 406 亿美元。",
-          "impact": "半导体设备投资长期向好，利好真空设备与洁净压缩空气需求。",
+          "title": "晶圆厂新建/扩产：台积电新3nm厂、GlobalFoundries两座新厂、Intel亚利桑那",
+          "what_happened": "台积电台湾新3nm厂扩产；GlobalFoundries计划在纽约州Malta新建两座晶圆厂（资金210亿美元）；Intel亚利桑那Fab 62开始装机，目标2028年运营。",
+          "impact": "晶圆厂建设带来工艺真空与高洁净压缩空气需求；海外项目需通过全球客户渠道跟进，影响待评估。",
+          "impact_area": "销售机会",
+          "level": "中",
+          "references": [
+            {
+              "id": "S115",
+              "title": "TSMC expands Taiwan chipmaking capacity with new 3nm fab",
+              "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPdDhlNkZmRU5BOHFFYmVjaXVqOXAyZVpLTWVYdVJWazZaNk1nSW5XZjNFZ2JPNU5nbFNHdEN0bEJGbG9tUkh0emswOVpQb1RkS3BkNGdjSXM3Yk5CYW15b1pVVjVLT080TmJrLVJUNVB1VVdBeWNMc1FEZ3BWcVVzZ1g2al8xMTBqdmhTWg?oc=5",
+              "source": "Cleanroom Technology",
+              "published_at": "2026-10-20T15:32:59Z"
+            },
+            {
+              "id": "S113",
+              "title": "GlobalFoundries Plans Two New Semiconductor Fabs in Malta, NY with $21B in Funding",
+              "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVFFqcGlOWWQ4Ym9MRC1vWU9sTXE3V0ZxQm8wSTdWOFMtS3ZwZDdiQ0pEXzN0dEFRbEVhVUxQQkhyaEZKSEJYNzZoSml5djNvT0pLMUh2U0xDbzFmRFZGVHNTbXFLNDZSRFMtQ2RuUkswMEQ2N1RSTTZzZTRwemVjNVBGYVAyM0I0QzJWME5zLUFNYWRmYldIYWEzY0FaQjZoZFHSAbIBQVVfeXFMUHVIbmlWajVRVGo2QVhwYWhPQ2xQamZtNGVrOTI2Tjd1c2RrQ0ZuWGhfY0lVcG9OcjlWX2RGeEZtWlhnWGdSZVpCVF82dlVMZmpWVWd6TDZYV3VocS1RdnZlTlFOODJsWGNUVUdDSV93bnltV2E3bFhsQTJhSWNTNkxHUWZZUEtibExyMk00TkxobHc5enVkOEhwNzBrdzdHU1pudG1jc2piZFBDcHJmWmtsdw?oc=5",
+              "source": "ConstructConnect News",
+              "published_at": "2026-10-20T18:08:34Z"
+            },
+            {
+              "id": "S103",
+              "title": "[News] Intel Begins Equipment Installation at Arizona Fab 62, Targeting 2028 Operations; Ohio One Advances",
+              "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPX0NpVUs5OFJkUEVOcGplcnQ2dkoxN3ZvbEFwMDNXTVdGN0VOUXlLVkhFWEtJMGFrOVFQY3N1X1pyam9ObWlRbFg0b0x2aWVZREhfcDdXZ0ZobEVVejUzRDFGbmoyMnB0dnBFOTFyRkZMSXNJbGdPN2pJekFkV1BmLURZd3lJMFE0NHJpcWgxTVhzLWZZd2VYNURiOVk2a2tjV2lHVlhvUmRfdUJuNGhUYW5oOTdDNDA4dTc0R2p1RjB3RDA2Vjk0a1kwNVU2azJXVlU4azJadXIwRnNpMXhB?oc=5",
+              "source": "TrendForce",
+              "published_at": "2026-10-22T04:02:08Z"
+            }
+          ]
+        },
+        {
+          "title": "三星、SK海力士扩产带动设备商订单积压翻番",
+          "what_happened": "韩国多家半导体设备商积压订单翻番，受益三星、SK海力士扩产。",
+          "impact": "存储厂扩产信号明确，工艺真空设备需求增长，对我们的影响待评估。",
           "impact_area": "市场",
           "level": "中",
           "references": [
             {
-              "id": "S109",
-              "title": "SEMI报告：随着建设提速，预测全球300mm晶圆厂设备支出将在2029年达到2270亿美元",
-              "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQY0hOVE5nbUIwRTA2bDVVUFVUUzBWb1kwV1FRZ1lJX1l2SXd2Mmk1Z1BPbVZfTkZkSmV2MW1DcU40Nm1rZmNMWEVzdFRJX0U4N18xd2NYUjdQemhBSTlvS3N6cWZObkZ5ZlB1WXB2cEI0Z19fTmZqc0FhYV9PcEdyTDFCckktdw?oc=5",
-              "source": "www.semi.org.cn",
-              "published_at": "2026-10-14T08:37:25Z"
-            },
-            {
               "id": "S101",
-              "title": "晶圆设备投资猛增！2029年300mm晶圆设备支出将达2270亿美元",
-              "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFA4VHJ4RkFxZWFnUnpNV190eE9YMng5MHlBbWZoOTZXQUNvOWdSam90YmhPVk0zbTM0YjJlMWQ1MFpRRk85dmVVVEFLT1paUkZXTndDVDBaT2g0a2F4?oc=5",
-              "source": "电子工程专辑",
-              "published_at": "2026-10-15T00:15:01Z"
-            },
-            {
-              "id": "S110",
-              "title": "美洲晶圆厂设备支出2029年翻倍至406亿美元，AI资本开支竞赛转入订单验证期",
-              "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFAtT1cyMXZGQVJFUGJiM3c2Q1plaTNCQmg5aFZ0S0w1al9wblNGRXVTU3F3YTlCR1l1UlBLY0djZjM3VXE2SV9QaTdVbXg1OWRIRHdV?oc=5",
-              "source": "华尔街见闻",
-              "published_at": "2026-10-14T07:47:16Z"
-            }
-          ]
-        },
-        {
-          "title": "台积电亚利桑那第二座厂建成，探讨德州扩产",
-          "what_happened": "台积电在三季报中称亚利桑那第二座晶圆厂建设完成，并在探讨德州扩张。",
-          "impact": "美国晶圆厂建设持续，配套设备需求影响待评估。",
-          "impact_area": "销售机会",
-          "level": "中",
-          "references": [
-            {
-              "id": "S095",
-              "title": "Second Arizona fab construction complete, TSMC says during 3Q report",
-              "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQa1AxdTVGaVpyMjZSUEpvWGhpaXR2dDJJNVBQN05pVnkzM0V3VjRxTzNQd1lfY2ZaR1htUjVZRWRHZThuWmRXR25TQjZGNmpvU2dXZlBzdjNzY280S21Tb1RHSUhmc2l2U0VqMEMtM01RclJ5YmhOQjltN0VMTC1JVFZEWEpicE1RUEsxeGRZczNnVkgxRGtubWh1cFlZNjJwd2ZuMnNwVkdjaHJpZXBZNXFZVGNENkVzbUYxSUdLaEUwTC1qMHNF?oc=5",
-              "source": "Your Valley",
-              "published_at": "2026-10-15T16:52:49Z"
-            },
-            {
-              "id": "S094",
-              "title": "TSMC, world’s largest chipmaker, explores Texas expansion, Terafab role",
-              "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOamhNellFNHczRjQwb0ZaVnFpbHllYzFZRlVHWDhxWmRkNjZaNzk5aEhxQ1BDYWdlWVE1b2xJeHhrTHVFT2JnZ1ZoNlVWQkd4RGR5N2dlbHpVb0tYRmptY0lVRkstdjl2RzNiNGg2Wno1S3k1Z3Iza2Y4WUQxd3E0emRfcmtBVEhUa0x2cTRreGFqVHVlNWhQRldwWWYzQXRkUHpxVg?oc=5",
-              "source": "Austin American-Statesman",
-              "published_at": "2026-10-15T19:13:30Z"
-            }
-          ]
-        },
-        {
-          "title": "三星、SK 海力士扩产，国内粤芯半导体上市募资扩产",
-          "what_happened": "韩国设备商积压订单翻番；粤芯半导体登陆创业板，半数募资用于扩产能。",
-          "impact": "亚洲晶圆厂扩产可带来国内及韩国客户的真空需求，具体影响待评估。",
-          "impact_area": "销售机会",
-          "level": "中",
-          "references": [
-            {
-              "id": "S096",
               "title": "受益三星、SK海力士扩产 韩国多家半导体设备商积压订单翻番",
               "url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBPemxFemNST3hJMmVrUkNGTTNzNEU5TDdxZ1pucVNlRFdwbzZ5V1huX2pXei1ra0JQaUgxaUZtQUlPd1llZHlOUA?oc=5",
               "source": "财联社",
-              "published_at": "2026-10-15T15:48:41Z"
-            },
-            {
-              "id": "S114",
-              "title": "粤芯半导体登陆创业板 硬科技晶圆制造迎来新标杆",
-              "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5wVWFFNFFRemRtV2FMclB0ODV2UjVXTDlSYzB1SWRWUEViU20yNEIwX0dLYmMyNHRDZF9Udy1WbE9UWnlFczBodlVPLXhYS3AwY0FHQUdublJOVHU0aHdCZFpuRU4wZmdwX0hOYjV0S0J0T3IwYkNiOA?oc=5",
-              "source": "中证网",
-              "published_at": "2026-10-13T00:00:00Z"
-            },
-            {
-              "id": "S115",
-              "title": "粤芯半导体将登创业板：“芯片国产替代潮”催化代工厂产能扩张，半数募资扩产能",
-              "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBFcXZIOFdvUzhpTFlPVTRlQ3ZNVHZPQVdvRUQ1YnRiaXhCdlBhMF9HRTVrQXJkNUVfcW1yTmUyRkJRdERJcnFEWFc1UzBWSDkxTk5qX3hBT2h6SGZ4M0UwbDln?oc=5",
-              "source": "同花顺财经",
-              "published_at": "2026-10-12T09:18:19Z"
+              "published_at": "2026-10-23T07:00:00Z"
             }
           ]
         }
@@ -346,41 +270,34 @@
       "name": "压缩空气与真空竞品",
       "hotspots": [
         {
-          "title": "Bitzer 发布数据中心冷却用螺杆压缩机",
-          "what_happened": "Bitzer 推出面向数据中心冷却的螺杆压缩机。",
-          "impact": "属制冷压缩机，与我们的空气压缩机直接竞争有限，影响待评估。",
-          "impact_area": "产品",
+          "title": "渠道端数字化工具：Brabazon发布免费压缩空气计算器",
+          "what_happened": "Brabazon向美国中西部制造企业发布免费压缩空气与泵计算工具。",
+          "impact": "属于渠道端获客动作，对我们的影响待评估。",
+          "impact_area": "市场",
           "level": "低",
           "references": [
             {
               "id": "S123",
-              "title": "Bitzer debuts screw compressor for data centre cooling",
-              "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOMG1FdE9RYUlvTXl6WU10T1FlU1c1Q25yb1BlMlpoT1pPZ0U2b1JTVkx4aFM0UWpDcmdLdkV2TmNNbFFmUGJBZDhoMkEzWWdDQ1NRSFRpcGJ2WTZlT0d3eUtDQnZQXzVvWDJxTnNmM0xFaWRXdm9nZFhTd3lGUVU2RzJhWl9TaFRObzVEZGk5TV9LaS1QWjYw?oc=5",
-              "source": "Cooling Post",
-              "published_at": "2026-10-12T15:55:46Z"
+              "title": "Brabazon Launches Free Compressed Air and Pump Calculator Tools for Midwest Manufacturers",
+              "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxPeGNrY01pUmpKNnY4MmQ2dlJGR3c5d296S3FMb2t2UDZ2d2JMeTZpNFZjemRQZ3U5Nk9FSmpYakZyeDFmQzJRS3lXYUQ2eXJUbHFPX05oZlZkSzN3MG5URHdxc0pKc2d0LXlTTHhQLXVaWlY4LXczby0wVmQzYW1aUlAwRVZIeVJCODZ3NFhaQ0ZKRWQxU0Zvc2RvbjhxMjI0ZEw4M2ZUSmFOVDhXV190b0tvQno4Nkw0elFLbl9ZQXZyZll1Y2diTjJ3WUc4UTlodENHYnY4RndnQnhoMEQ2M1Z4Q2dHUU0yUlE?oc=5",
+              "source": "Democrat and Chronicle",
+              "published_at": "2026-10-21T19:49:56Z"
             }
           ]
         },
         {
-          "title": "工业空压站节能改造成为项目热点",
-          "what_happened": "北海造船完成全链条数字化空压站改造；行业文章评析空压站节能改造模式。",
-          "impact": "数字化、节能化空压站改造趋势明显，可作为智能运维与节能改造方案的销售切入点。",
-          "impact_area": "销售机会",
-          "level": "中",
+          "title": "国产真空设备厂商中科仪发声",
+          "what_happened": "中科仪被报道“泵”出硬核新动能，具体产品和价格动作未披露。",
+          "impact": "国产真空泵厂商动向，对产品线冲击影响待评估。",
+          "impact_area": "风险",
+          "level": "低",
           "references": [
             {
-              "id": "S125",
-              "title": "北海造船全链条数字化空压站改造项目完工- 船厂动态",
-              "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1NMEdmUFotakdXMTh3NlpjM3ktLVlTV2s2cnE1MkRzMVRGdWNZZzRSelp5Tzg3RmpGaDFWbHJZLV9saFhLRHNzYm9BVUUxbDFyNGs4N3p2enBkZjZiQzlxRVhIZERJMXNkUTNzbW1Takg?oc=5",
-              "source": "国际船舶网",
-              "published_at": "2026-10-12T09:49:30Z"
-            },
-            {
-              "id": "S120",
-              "title": "工业空压站节能改造模式评析",
-              "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNOVcyQkh1Tmx5aHNlME15MDJyRHZxX3NGTm4tVl83UnpnYWJoUDRleWVCajQ0c1dCSWZRMmJ6NmR3dThLZnVaUHoxcEpkMWxWWjYxRVI1WFpmRWIzSExWM1ZoNXRpT2RRa1Y0dEh2dWlrX1hBVzMwUFNUR0g1YjNqNzNZWVBvTXBT?oc=5",
-              "source": "搜狐",
-              "published_at": "2026-10-14T03:31:28Z"
+              "id": "S129",
+              "title": "中科仪：“泵”出硬核新动能",
+              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9Sa2NXOGI4WkxaRGJGQkhBdndqZC1FaC1rQVBQVzByN3lNM1pBSG1CbmZCWktTM2E5cWQ0WWlWM2RZZzF1MnBKMUg2YjlxVUVMbFluWlJ3?oc=5",
+              "source": "搜狐网",
+              "published_at": "2026-10-20T00:06:21Z"
             }
           ]
         }
@@ -390,78 +307,69 @@
       "name": "节能降碳政策",
       "hotspots": [
         {
-          "title": "上海印发节能降碳和循环经济「十五五」规划",
-          "what_happened": "规划提出提升数据中心能效准入门槛，推进绿色数据中心建设。",
-          "impact": "高能效设备替换需求在上海及数据中心、工业客户中可能增加，具体补贴细则影响待评估。",
+          "title": "工信部印发工业和信息化领域碳排放双控工作体系实施方案（2026—2030年）",
+          "what_happened": "工信部10月21日前后印发实施方案，建立工业和信息化领域碳排放双控体系。",
+          "impact": "工业用户碳排放进入量化考核，空压站和真空系统节能改造、能效升级的驱动力增强，利好高能效/变频设备。具体考核指标影响待评估。",
           "impact_area": "销售机会",
           "level": "高",
           "references": [
             {
-              "id": "S141",
-              "title": "《上海市节能降碳和循环经济发展“十五五”规划》印发",
-              "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPM0dTUTFHWDBOVUVwV0J5bUlBRHVqbW51czZCOV9raXlzRC1KSklYVjkyV0t5U0VpY1BhaUJwcEVWckRSZVkwYTJ2SEJlOE9ETjc0U1lUcEc5VHBjZC1LbF95TTQtNHZSZFZST0hEcDlONGdYZ3UzRU9mNk1XOWhQY0lCeTcwZUVVMVF3cm1PTQ?oc=5",
+              "id": "S135",
+              "title": "我国加快构建工业和信息化领域碳排放双控工作体系",
+              "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBWX0dfTXE1NnhrV2V5dlVWRElYeVZHbmxDcUlCLUJsSk1SNXNxX2tIZlg3eTNqZVdRRlFwRVdnWDJkMk00U0NNcHlWVlAwa1ZIeHI2VUNFRlVPVFoyMjBXSG1tNjlBdEZReFhIUVVB?oc=5",
+              "source": "fjrb.fjdaily.com",
+              "published_at": "2026-10-23T09:49:49Z"
+            },
+            {
+              "id": "S136",
+              "title": "工业和信息化部关于印发《加快构建工业和信息化领域碳排放双控工作体系实施方案（2026—2030年）》的通知",
+              "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBpR25PWm9XNkk0bHBaZ2dwZWhTY3FKTmpEMUVLM2ozR2prM0pKTzZ0c2JnQjN2TUc5SFBWdnU5ekJpRTFVcGtXanZlS080dFM1TE5sLTVVWFVVOXI2WUhaRVo1RQ?oc=5",
+              "source": "国际节能环保网",
+              "published_at": "2026-10-22T02:52:40Z"
+            },
+            {
+              "id": "S138",
+              "title": "推动工业节能降碳 工业和信息化部印发实施方案",
+              "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQVnMweFIza1luamlobGlhUzJnaWRNbHQ2a1hxbGtuQTJjaVZOa2QtanhtUXNHT2lQVGN2bE9pLTFWRGdJSlZUeXcwdVpZY3lMQ0drU19DY3BDTFpWQ05oVkMyQmtQbk1MQnk4ZDNHYnBGRVMzMDROQ3dpUDZsb3pBVnFMaTBUWGgxZ3hBMFhVUQ?oc=5",
               "source": "21财经",
-              "published_at": "2026-10-13T11:58:00Z"
+              "published_at": "2026-10-21T14:38:09Z"
+            },
+            {
+              "id": "S140",
+              "title": "事关工业节能降碳，工信部印发实施方案",
+              "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5ZR1VkdS1QcU5Hd3NNQWcxQXE5VGVwdHFBSlFtV2NpZzJNUGZLRTF5Yl9ZTU8xNU5fQmcyUFE5bHo4SDI4UG9nNGFLQmdqWUg0d1E?oc=5",
+              "source": "凤凰网",
+              "published_at": "2026-10-21T09:59:31Z"
             },
             {
               "id": "S142",
-              "title": "一图读懂《上海市节能降碳和循环经济发展“十五五”规划》",
-              "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOR0ZmdTBPR194a2Zpay01ZWEwanFmZWFzV3NKS3l3eFI5NE5qa1dHeGRKRHNRN1gyUERoWXJiOXhWbFVZUE84SE00ZVFtZnBwMzNicWxuRktsa3BpNmg1QjZXeVprYkVCUHduV2FxWWhLRmFFTDh5SjFrR1lnSVg4bUVxMWVCcC1LUlE?oc=5",
-              "source": "上海市人民政府",
-              "published_at": "2026-10-13T11:20:52Z"
-            },
-            {
-              "id": "S139",
-              "title": "上海印发节能降碳“十五五”规划 提出推进绿色数据中心建设",
-              "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBXS1NxX1VRVDZPc1hWNl96WnV2bV9yU0MybE5qUW5zZnAtZjB6d0xITGp6aW9IUTBYQmc1ZGprR3l6WEpGYzZ5bFR5Y1Aydw?oc=5",
-              "source": "观点网",
-              "published_at": "2026-10-14T00:36:05Z"
-            },
-            {
-              "id": "S143",
-              "title": "小K播早报|上海：提升数据中心项目能效准入门槛 谷歌推出前沿模型Gemini 4 Argon",
-              "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9nN1E5WkI0UVhPYTczSVVRUV9YNFkxb0wtQmkxaWh6ODBBTkw3TXVpWnY0Qzc2R0J1VEhqYmpYMXQ3OHpNc3c?oc=5",
-              "source": "财联社电报",
-              "published_at": "2026-10-13T09:04:00Z"
+              "title": "《加快构建工业和信息化领域碳排放双控工作体系实施方案（2026—2030年）》解读（附一图读懂）",
+              "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBXYlRQdWxyVVplRjFjMzNmVFU4OWpwQjlBR2prbnhIVm5Wa3cxcEluWm1ZVDQ4NWRpNF83ZDdUWl9rYWxYaVdVQ1pBbG1xcUdocE9kSXZQMzk?oc=5",
+              "source": "兰格钢铁网",
+              "published_at": "2026-10-21T07:47:52Z"
             }
           ]
         },
         {
-          "title": "广东启动节能降碳三年攻坚，十大行业迎能效考核",
-          "what_happened": "广东面向十大行业开展能效提升三年行动。",
-          "impact": "制造业客户面临能效压力，空压站节能改造与变频产品有机会，具体行业清单影响待评估。",
-          "impact_area": "销售机会",
-          "level": "高",
-          "references": [
-            {
-              "id": "S138",
-              "title": "广东启动节能降碳“三年攻坚”，十大行业迎能效大考",
-              "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOdXdwdlo2Z2FwYjEwd0NXWWYycFFOU3VCLWhyeHJvNVBSNFNYS3UydFk1ZzFHZS0yLVlNREpXdVNtb01iVkpzSk9IUWNja2ZHSGNlRU12MmZEejhTWVFTNFlBdmhJS2xQQ1FhX2Z3RGttOVlvTXJZZzMyRHpaWTVBM2VoQ3NaTmNH?oc=5",
-              "source": "搜狐",
-              "published_at": "2026-10-14T01:40:04Z"
-            }
-          ]
-        },
-        {
-          "title": "能效标识目录更新",
-          "what_happened": "能效标识目录更新，节能设备从政策约束走向市场筛选。",
-          "impact": "是否涵盖空压机或真空设备影响待评估，需产品团队核对目录。",
-          "impact_area": "产品",
+          "title": "超长期特别国债收官，万亿资金支持“两重”“两新”；中央绿色转型意见发布",
+          "what_happened": "今年超长期特别国债发行收官；中共中央国务院发布加快经济社会发展全面绿色转型的意见。",
+          "impact": "设备更新资金与绿色转型政策共同利好客户更新高能效设备，具体补贴细则影响待评估。",
+          "impact_area": "市场",
           "level": "中",
           "references": [
             {
-              "id": "S146",
-              "title": "能效标识目录更新，节能设备从政策约束走向市场筛选",
-              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9LdHl0UHBaRXNfUk9uTlZDQmc3ZUpKRWx5WTZ1WHBrcjFBWHpXX1RMbEFtSm84ekRSdElwRmY0LXRwYllpamE4c2dacU9ic054Z0ZMai1R?oc=5",
-              "source": "QQ News",
-              "published_at": "2026-10-13T02:54:00Z"
+              "id": "S150",
+              "title": "今年超长期特别国债发行收官，万亿级资金支持“两重”“两新”",
+              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KQTBQREYyU3BGYVpjNFloSk9sTjlsVzFpVkpBUHJmZy15blZ4WHNPYmVfMnN2NzQ5TjhzTmpnNjRuMGlzMTBnTC1jZ29OQVV3VDNCblRB?oc=5",
+              "source": "搜狐网",
+              "published_at": "2026-10-19T03:43:01Z"
             },
             {
-              "id": "S147",
-              "title": "能效标识目录更新，节能设备从政策约束走向市场筛选_公司新闻_财经",
-              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMb1pMcTIyNFR6c3d4V25KX0l0MGZGNHFlS2pFRFROeENNZHdnMmJmbVBSTDFUajF3Nm9CTDBOU1A3UndYWFk3ZF9oZHNISHMxbXcxQ2ZMejhJTEhaQTRoVw?oc=5",
-              "source": "证券之星",
-              "published_at": "2026-10-13T02:48:59Z"
+              "id": "S149",
+              "title": "中共中央 国务院关于加快经济社会发展全面绿色转型的意见",
+              "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1xWEM4OHBQdzdnTl9hR2IzY3prM0JDZldaV2tRMzB1cjFZX1ZzTF9FaEZRY2xmMEFGVUptV2tpOHloaWlTQzlHQ3lFeTRIb2p2YlRiUHpiblJTN0wxNmRyR2NLTDR6cXZZY3ZDUXpXRWRDNlE?oc=5",
+              "source": "潮新闻客户端",
+              "published_at": "2026-10-19T06:09:19Z"
             }
           ]
         }
@@ -471,45 +379,40 @@
   "actions": [
     {
       "owner": "销售",
-      "action": "跟进长安-CATL 75GWh 与宝马沈阳电池产线的设备采购联系人，摸清压缩空气与拧紧设备需求",
-      "basis": "S024、S015"
+      "action": "梳理华天、日月新等国内封测项目及台积电、GlobalFoundries相关供应链，跟进洁净压缩空气与工艺真空设备的选型窗口",
+      "basis": "S097、S104、S115、S113"
+    },
+    {
+      "owner": "市场",
+      "action": "围绕工信部碳排放双控方案和“两新”资金，准备空压站节能改造宣讲材料与案例",
+      "basis": "S136、S138、S150"
+    },
+    {
+      "owner": "产品",
+      "action": "评估碳排放双控对高能效、变频空压机与真空设备的产品要求，补充能效对比资料",
+      "basis": "S136、S142"
     },
     {
       "owner": "销售",
-      "action": "梳理广东十大行业与上海重点制造客户的空压站改造清单，主推高能效与变频方案",
-      "basis": "S138、S141、S125"
+      "action": "核查中国车企与电池厂海外建厂项目（零跑欧洲、国轩美国、奇瑞加拿大）中我们的接触点",
+      "basis": "S045、S068、S024"
     },
     {
       "owner": "产品",
-      "action": "核对最新能效标识目录是否涵盖空压机、真空泵，并评估现有产品线合规与能效差距",
-      "basis": "S146、S147"
-    },
-    {
-      "owner": "产品",
-      "action": "评估固态电池与晶圆厂对干燥压缩空气、真空的规格要求",
-      "basis": "S069、S078"
-    },
-    {
-      "owner": "市场",
-      "action": "针对半导体和电池海外建厂组织技术交流与案例宣传，覆盖国芯展等客户场景",
-      "basis": "S073、S109、S119"
-    },
-    {
-      "owner": "市场",
-      "action": "补充竞品信息源，覆盖头部竞品官网与 Compressed Air Best Practices",
-      "basis": "S123"
+      "action": "补抓竞品信息源（Compressed Air Best Practices 本周抓取失败），确认Kaeser、Ingersoll Rand等动态后再评估冲击",
+      "basis": "数据缺口：竞品信号仅S120-S132，无有效竞品新品信息"
     }
   ],
   "coverage": [
     {
       "topic": "新能源汽车",
-      "items": 55,
+      "items": 56,
       "requests_ok": 7,
       "requests_failed": []
     },
     {
       "topic": "锂电",
-      "items": 22,
+      "items": 23,
       "requests_ok": 3,
       "requests_failed": []
     },
@@ -521,7 +424,7 @@
     },
     {
       "topic": "压缩空气与真空竞品",
-      "items": 16,
+      "items": 13,
       "requests_ok": 4,
       "requests_failed": [
         "Compressed Air Best Practices"
